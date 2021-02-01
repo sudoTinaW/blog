@@ -1,5 +1,5 @@
 ---
-published: false
+published: true
 layout: post
 date: '2020-02-01 10:50:00 -0000'
 categories: quick sort
@@ -634,4 +634,4 @@ public void rerange(int[] A) {
 }
 ```
 
-##### 
+#####
