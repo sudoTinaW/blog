@@ -16,9 +16,8 @@ Two-pointer technique is commonly used to solve array, string and linked list pr
 
 - Fast and slow pointer will both start from the first element. The fast pointer will enumerate all elements. We will move slow pointer only when fast pointer's element satisfied some requirements.
 
-- The fast and slow pointer is similar to sliding window. The difference is slow pointer is usually moving one step forward for each right element. In most cases, we need to consider what condition the fast pointer needs to satisfy to make slow pointer move.(要么slow pointer， fast pointer都走一步， 要么slow pointer不走， fast pointer走)。
+- The fast and slow pointer is similar to sliding window. The difference is slow pointer is usually moving one step forward for each right element. In most cases, we need to consider what condition the fast pointer needs to satisfy to make **slow pointer move**  .(slow pointer 什么时候走)。
 
-  
 
 #### Left and Right Pointer:
 
@@ -403,7 +402,7 @@ Example:
 
 Analysis:
 
-If want to delete an element which equals to the target without moving all other elements multiple times, we can try to use fast slow pointer. Slow pointer will move and copy right pointer's value when the element doesn't equal to the target.
+If we want to delete an element which equals to the target without moving all other elements multiple times, we can try to use fast slow pointer. Slow pointer will move and copy right pointer's value when the element doesn't equal to the target.
 
 ```java
 public int removeElement(int[] A, int elem) {
@@ -484,82 +483,6 @@ public void moveZeroes(int[] nums) {
     }
 
 }
-```
-
-######  [610. Two Sum - Difference equals to target](https://www.lintcode.com/problem/two-sum-difference-equals-to-target/description)
-
-Description:
-
-Given an sorted array of integers, find two numbers that their `difference` equals to a target value.
-return a list with two number like `[num1, num2]` that the difference of `num1` and `num2` equals to target value, and `num1` is less than`num2`.
-
-Example 1:
-
-```
-Input: nums = [2, 7, 15, 24], target = 5 
-Output: [2, 7] 
-Explanation:
-(7 - 2 = 5)
-```
-
-Example 2:
-
-```
-Input: nums = [1, 1], target = 0
-Output: [1, 1] 
-Explanation:
-(1 - 1 = 0)
-```
-
-Notice:
-
-It's guaranteed there is only one available solution.
-
-Analysis:
-
-This question is using a combination of left and right pointer and sliding window techniques. 
-
-- Why the question can use sliding window template:
-
-  When right pointer moves, the left pointer can move multiple steps or not move. However,  this question doesn't require a substring or subarray but only two points. Sliding window template is too fancy to use. 
-
-- Why the question can use left and right pointer template:  
-
-  The array is sorted and the question only requires 2 points satisfying the requirement. However, we need to modify the left and right pointer a bit different from other questions. In this question, the left and right pointer will go along the same direction. The left and right pointer template main point is either left or right element will move in each iteration. In this question,  If the left and the right pointer go towards each other, we can not decide which pointer shall move in one iteration. The moving of either left or right pointer will both make difference less. If the left and right pointer goes along the same direction, the difference will become greater when the right pointer moves, and difference will become less when the left pointer moves. Therefore, we will use left and right pointer technique but making the two pointers going along each other.
-
-
-
-```java
-    public int[] twoSum7(int[] nums, int target) {
-        
-        int fast = 0;
-        int slow = 0;
-        
-        if(target < 0) {
-            target *= (-1);
-        }
-        
-        while(fast < nums.length) {
-            if(slow == fast) {
-                fast++;
-                continue;
-            }
-
-            if(nums[fast] - nums[slow] == target) {
-                return new int[]{nums[slow], nums[fast]};
-            }
-            
-            if(nums[fast] - nums[slow] > target) {
-                slow++;
-            }else {
-                fast++;
-            }
-            
-            
-        }
-        
-        return new int[]{-1, -1};
-    }
 ```
 
 
@@ -701,6 +624,7 @@ This question is 2-sum + remove duplicate.
 Here I will list a **wrong solution** first. This solution will pass the test, but its correctness is caused by a coincidence. The solution will first check whether there is a duplicate, and will move left pointer to the last duplicated element. If all elements are the same. We will move the left pointer to the right pointer to make them equal. Left and right pointers equal make no scenes in two-sum question. However, here, we have not check left and right's position after we move left either, it will makes the program calculate a sum of one element twice. Since left and right will be the same only under the condition that left and right are duplicates, the one element adding up twice makes up the first sum-up before removing duplicates.
 
 ```java
+//Wrong solution
 public int twoSum6(int[] nums, int target) {
 
     if(nums == null || nums.length == 0) {
@@ -1090,75 +1014,6 @@ Fix 2 points and get the sum as target - numbers[i] - numbers[j] in the rest of 
     }
 ```
 
-
-
-######  [610. Two Sum - Difference equals to target](https://www.lintcode.com/problem/two-sum-difference-equals-to-target/description)
-
-Description:
-
-Given an sorted array of integers, find two numbers that their `difference` equals to a target value.
-return a list with two number like `[num1, num2]` that the difference of `num1` and `num2` equals to target value, and `num1` is less than`num2`.
-
-Example 1:
-
-```
-Input: nums = [2, 7, 15, 24], target = 5 
-Output: [2, 7] 
-Explanation:
-(7 - 2 = 5)
-```
-
-Example 2:
-
-```
-Input: nums = [1, 1], target = 0
-Output: [1, 1] 
-Explanation:
-(1 - 1 = 0)
-```
-
-Notice:
-
-It's guaranteed there is only one available solution.
-This question needs to be resolved in place.
-
-Analysis: This question is a bit different from the 2 
-
-```java
-public int[] twoSum7(int[] nums, int target) {
-
-    int left = 0;
-    int right = 0;
-
-    if(target < 0) {
-        target *= (-1);
-    }
-
-    while(right < nums.length) {
-        if(left == right) {
-            right++;
-            continue;
-        }
-
-        if(nums[right] - nums[left] == target) {
-            return new int[]{nums[left], nums[right]};
-        }
-
-        if(nums[right] - nums[left] > target) {
-            left++;
-        }else {
-            right++;
-        }
-
-
-    }
-
-    return new int[]{-1, -1};
-}
-```
-
-
-
 ###### [382. Triangle Count](https://www.lintcode.com/problem/triangle-count/solution)
 
 Description:
@@ -1287,3 +1142,78 @@ public int[] sortedSquares(int[] A) {
 
 }
 ```
+
+######  [610. Two Sum - Difference equals to target](https://www.lintcode.com/problem/two-sum-difference-equals-to-target/description)
+
+Description:
+
+Given an sorted array of integers, find two numbers that their `difference` equals to a target value.
+return a list with two number like `[num1, num2]` that the difference of `num1` and `num2` equals to target value, and `num1` is less than`num2`.
+
+Example 1:
+
+```
+Input: nums = [2, 7, 15, 24], target = 5 
+Output: [2, 7] 
+Explanation:
+(7 - 2 = 5)
+```
+
+Example 2:
+
+```
+Input: nums = [1, 1], target = 0
+Output: [1, 1] 
+Explanation:
+(1 - 1 = 0)
+```
+
+Notice:
+
+It's guaranteed there is only one available solution.
+
+Analysis:
+
+This question is using a combination of left and right pointer and sliding window techniques. 
+
+- Why the question can use sliding window template:
+
+  When right pointer moves, the left pointer can move multiple steps or not move. However,  this question doesn't require a substring or subarray but only two points. Sliding window template is too fancy to use. 
+
+- Why the question can use left and right pointer template:  
+
+  The array is sorted and the question only requires 2 points satisfying the requirement. However, we need to modify the left and right pointer a bit different from other questions. In this question, the left and right pointer will go along the same direction. The left and right pointer template main point is either left or right element will move in each iteration. In this question,  If the left and the right pointer go towards each other, we can not decide which pointer shall move in one iteration. The moving of either left or right pointer will both make difference less. If the left and right pointer goes along the same direction, the difference will become greater when the right pointer moves, and difference will become less when the left pointer moves. Therefore, we will use left and right pointer technique but making the two pointers going along each other.
+
+```java
+    public int[] twoSum7(int[] nums, int target) {
+        
+        int left = 0;
+        int right = 0;
+        
+        if(target < 0) {
+            target *= (-1);
+        }
+        
+        while(right < nums.length) {
+            if(left == right) {
+                right++;
+                continue;
+            }
+
+            if(nums[right] - nums[left] == target) {
+                return new int[]{nums[left], nums[right]};
+            }
+            
+            if(nums[right] - nums[left] > target) {
+                left++;
+            }else {
+                right++;
+            }
+            
+            
+        }
+        
+        return new int[]{-1, -1};
+    }
+```
+
