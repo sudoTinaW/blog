@@ -1,5 +1,5 @@
 ---
-published: false
+published: true
 layout: post
 date: '2020-2-09 14:50:00 -0000'
 categories: prefix sum
@@ -424,5 +424,3 @@ This question includes following techniques,
       }
   }
   ```
-
-  
