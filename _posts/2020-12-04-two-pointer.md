@@ -11,11 +11,10 @@ Two-pointer technique is commonly used to solve array, string and linked list pr
 #### Fast and Slow Pointer (Hare & Tortoise):
 
 - It is mostly applied on the linked list or sorted array. The question usually requires O(1) extra space, i.e., no extra spaces.
-
 - It is mostly used by single linked list, whose pointer can not traverse reversely.
-
-- Fast and slow pointer will both start from the first element. The fast pointer will enumerate all elements. We will move slow pointer only when fast pointer's element satisfied some requirements.
-
+- The slow pointer represents the last qualified result before fast pointer. The fast pointer will enumerate all elements. Faster pointer will always move in each iteration no matter slow pointer moves or not. The slow pointer will move only when fast pointer's element satisfied some requirements. Such moving way can make sure the slow pointer always fall behind the fast pointer.
+- Since the slow pointer represents the last qualified result, the slow pointer can start from the first element when the first element is a valid result. Slow pointer can also start before the first element such as dummy head or null when the first element may or may not be a valid result.  
+- Since the fast pointer represents all possible elements, the fast pointer usually starts from the first element.
 - The fast and slow pointer is similar to sliding window. The difference is slow pointer is usually moving one step forward for each right element. In most cases, we need to consider what condition the fast pointer needs to satisfy to make **slow pointer move**  .(slow pointer 什么时候走)。
 
 
@@ -1216,4 +1215,3 @@ This question is using a combination of left and right pointer and sliding windo
         return new int[]{-1, -1};
     }
 ```
-
