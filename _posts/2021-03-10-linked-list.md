@@ -1,5 +1,8 @@
 ---
 published: false
+layout: post
+date: '2021-03-10 10:50:00 -0000'
+categories: linked list
 ---
 A linked list is composed of multiple `ListNode` nodes. `ListNode` is an object and it occupies 8 bytes (integer value 4 bytes + `ListNode` reference next 4 bytes) in heap memory. Each node is a reference of a `ListNode` object. It is similar to next reference. The node/next reference saves an address of a `ListNode` object in stack memory and occupies 4 bytes as well.
 
