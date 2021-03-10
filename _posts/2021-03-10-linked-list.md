@@ -1,5 +1,5 @@
 ---
-published: false
+published: true
 layout: post
 date: '2021-03-10 10:50:00 -0000'
 categories: linked list
