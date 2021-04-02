@@ -20,6 +20,10 @@ description: >- # this means to ignore newlines until "baseurl:"
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://www.tinawang.ca" # the base hostname & protocol for your site, e.g. http://example.com
 
+
+author: Tina Wang
+google_analytics: G-NK6YYJETFZ
+
 github_username: sudoTinaW
 linkedin_username: tina-wang
 social:
