@@ -78,7 +78,7 @@ A hash table is a data structure that is used to store key-value pairs. It uses 
 
 ##### Hash Table Basic Operation:
 
-###### [129. Rehashing](https://www.lintcode.com/problem/rehashing/description)
+#### [129. Rehashing](https://www.lintcode.com/problem/rehashing/description)
 
 Description:
 
