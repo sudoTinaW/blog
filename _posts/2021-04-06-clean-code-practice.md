@@ -1,8 +1,8 @@
 ---
-published: false
+published: true
 layout: post
 date: '2021-04-06 10:50:00 -0000'
-categories: CleanCodePractice
+categories: algo
 ---
 #### Two Ways to Initialize an Array with Default Value
 
