@@ -4,10 +4,6 @@ layout: post
 date: '2021-01-28 10:50:00 -0000'
 categories: hash table
 ---
-# Hash Table
-
-### Basic Knowledge: 
-
 A hash table is a data structure that is used to store key-value pairs. It uses a hash function to compute an index into an array in which an element will be inserted or searched. By using a good hash function, hashing can work well. Its **advantage** over other data structures is the average **search** time for an element is **`O(1)`**.
 
 - Time Complexity of Operations:
@@ -184,7 +180,7 @@ public ListNode[] rehashing(ListNode[] hashTable) {
 
 Hash table is often used to look-up elements in `O(1)` time. It is a data structure and often used with other algorithms. Depends on different situations, there are two ways to save the elements into the hash table. **First is saving all elements into the hash table all together and looking up the table. Second is looking up already saved elements from hash table before saving a new element.** Since elements in hash table don't have order or duplicates, we can only use the first way when the element's order or duplicate doesn't matter. Otherwise, we will use the second way. Most of times, if a question can use the first way, it can also use the second way. However, if a question can use the second way, it cannot usually use the first way. **Therefore, we will use the second way as much as possible**
 
-#### 1369 · Most Common Word
+#### [1369 Most Common Word](https://www.lintcode.com/problem/1369/)
 
 Description:
 
@@ -210,6 +206,8 @@ and that "hit" isn't the answer even though it occurs more because it is banned.
 Analysis:
 
 This question is a very common use of hash table, which is collecting each word's frequency. Here we can use both ways to save (word, frequency) element into hash table. We will use second way, which is counting and comparing elements' frequencies at the same time.
+
+
 
 ```java
     public String mostCommonWord(String paragraph, String[] banned) {
