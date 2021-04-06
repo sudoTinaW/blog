@@ -207,7 +207,9 @@ Analysis:
 
 This question is a very common use of hash table, which is collecting each word's frequency. Here we can use both ways to save (word, frequency) element into hash table. We will use second way, which is counting and comparing elements' frequencies at the same time.
 
+[Remove all Punctuations(Not Including Space) in a String ](./CleanCodePractice.md)
 
+[Split a String by Whitespaces](./CleanCodePractice.md)
 
 ```java
     public String mostCommonWord(String paragraph, String[] banned) {
@@ -240,7 +242,6 @@ This question is a very common use of hash table, which is collecting each word'
         return result;
     }
 ```
-
 
 
 #### [644. Strobogrammatic Number](https://www.lintcode.com/problem/strobogrammatic-number/solution)
