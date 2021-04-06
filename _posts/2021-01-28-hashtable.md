@@ -4,6 +4,10 @@ layout: post
 date: '2021-01-28 10:50:00 -0000'
 categories: hash table
 ---
+# Hash Table
+
+### Basic Knowledge: 
+
 A hash table is a data structure that is used to store key-value pairs. It uses a hash function to compute an index into an array in which an element will be inserted or searched. By using a good hash function, hashing can work well. Its **advantage** over other data structures is the average **search** time for an element is **`O(1)`**.
 
 - Time Complexity of Operations:
@@ -76,7 +80,7 @@ A hash table is a data structure that is used to store key-value pairs. It uses 
 
 ### Problems:
 
-##### Hash Table Basic Operation:
+#### Hash Table Basic Operation:
 
 #### [129. Rehashing](https://www.lintcode.com/problem/rehashing/description)
 
@@ -176,11 +180,72 @@ public ListNode[] rehashing(ListNode[] hashTable) {
 }
 ```
 
-##### Hash Table Application:
+#### Hash Table Application:
 
-Hash table is often used as one step in one algorithm.  It is usually used for looking up some values by keys. When we build the table, we often have to consider 2 situations, the key exists in the table, and the key doesn't exist in the table.
+Hash table is often used to look-up elements in `O(1)` time. It is a data structure and often used with other algorithms. Depends on different situations, there are two ways to save the elements into the hash table. **First is saving all elements into the hash table all together and looking up the table. Second is looking up already saved elements from hash table before saving a new element.** Since elements in hash table don't have order or duplicates, we can only use the first way when the element's order or duplicate doesn't matter. Otherwise, we will use the second way. Most of times, if a question can use the first way, it can also use the second way. However, if a question can use the second way, it cannot usually use the first way. **Therefore, we will use the second way as much as possible**
 
-###### [644. Strobogrammatic Number](https://www.lintcode.com/problem/strobogrammatic-number/solution)
+#### 1369 · Most Common Word
+
+Description:
+
+Given a paragraph and a list of banned words, return the most frequent word that is not in the list of banned words. It is guaranteed there is at least one word that isn't banned, and that the answer is unique.
+
+Words in the list of banned words are given in lowercase, and free of punctuation. Words in the paragraph are not case sensitive. The answer is in lowercase.
+
+1 <= paragraph.length <= 1000.1 <= banned.length <= 100.1 <= banned[i].length <= 10.The answer is unique, and written in lowercase (for example: word "library", you need to return "library")paragraph only consists of letters, spaces, or the punctuation symbols !?',;.Different words in paragraph are always separated by a space.There are no hyphens or hyphenated words.Words only consist of letters, never apostrophes or other punctuation symbols.
+
+Example:
+
+```
+Input:  paragraph = "Bob hit a ball, the hit BALL flew far after it was hit." and banned = ["hit"]
+Output: "ball"
+Explanation:
+"hit" occurs 3 times, but it is a banned word.
+"ball" occurs twice (and no other word does), so it is the most frequent non-banned word in the paragraph. 
+Note that words in the paragraph are not case sensitive,
+that punctuation is ignored (even if adjacent to words, such as "ball,"), 
+and that "hit" isn't the answer even though it occurs more because it is banned.
+```
+
+Analysis:
+
+This question is a very common use of hash table, which is collecting each word's frequency. Here we can use both ways to save (word, frequency) element into hash table. We will use second way, which is counting and comparing elements' frequencies at the same time.
+
+```java
+    public String mostCommonWord(String paragraph, String[] banned) {
+        String[] words = paragraph.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
+
+        Map<String, Integer> map = new HashMap<>();
+        Set<String> bannedSet = new HashSet<>();
+
+        for(String b : banned) {
+            bannedSet.add(b);
+        }
+        
+        int max = -1;
+        String result = null;
+
+        for(String w : words) {
+            if(!bannedSet.contains(w)) {
+                map.put(w, (map.getOrDefault(w, 0) + 1));
+                
+                if(map.get(w) > max) {
+                max = map.get(w);
+                result = w;
+            }
+            }
+
+
+        }
+
+
+        return result;
+    }
+```
+
+
+
+#### [644. Strobogrammatic Number](https://www.lintcode.com/problem/strobogrammatic-number/solution)
 
 Description:
 
@@ -204,9 +269,38 @@ Output : false
 
 Analysis:
 
-This questions needs to translate each integer composing the number to its mirror integer and compare the original number to the new composed number in reverse order. Here we need to find an integer's mirror number. We will use hash map  to save data as (integer, integer mirror number) .
+This questions needs to translate each integer's composing number to its mirror number and compare the original integer with the new composed integer in reverse order. Here, we use the first way to build a static hash map and look it up as we translate the input integer.
 
-###### [487. Name Deduplication](https://www.lintcode.com/problem/name-deduplication/description)
+```java
+public boolean isStrobogrammatic(String num) {
+    map.put('6', '9');
+    map.put('9', '6');
+    map.put('8', '8');
+    map.put('1', '1');
+    map.put('0', '0');
+
+
+    if(num == null || num.length() == 0) {
+        return true;
+    }
+
+
+    char[] chars = num.toCharArray();
+
+    StringBuilder sb = new StringBuilder();
+    for(char c : chars) {
+        if(!map.containsKey(c)) {
+            return false;
+        }
+        sb.append(map.get(c));
+
+    }
+    String result = sb.reverse().toString();
+    return num.equals(result);
+}
+```
+
+#### [487. Name Deduplication](https://www.lintcode.com/problem/name-deduplication/description)
 
 Description:
 
@@ -237,7 +331,7 @@ You can assume that the name contains only uppercase and lowercase letters and s
 
 Analysis:
 
-Set is a data structure that has no duplications. We can put all elements into a set to remove all duplications and output the set as a list.
+We can put all elements into a hash set to remove all duplications and output the set as a list. This question can use both ways to build up the hash table, and we will use the second way.
 
 ```java
 public List<String> nameDeduplication(String[] names) {
@@ -259,7 +353,7 @@ public List<String> nameDeduplication(String[] names) {
 }
 ```
 
-###### [171. Anagrams](lintcode.com/problem/anagrams/description)
+#### [171. Anagrams](lintcode.com/problem/anagrams/description)
 
 Description:
 
@@ -289,7 +383,7 @@ All inputs will be in lower-case.
 
 Analysis:
 
-This question needs to classify strings with same characters. We can sort each word in alphabetical order and save all words with same sorted alphabetical order into a list.  To place each word into its corresponding list, we need to find the list. Here we can use hash map to save data as  (word in alphabetical order, list of words) .
+This question needs to classify strings with same characters. We can sort each word in alphabetical order and save all words with same sorted alphabetical order into a list.  To place each word into its corresponding list, we need to search the same list many times. Here we can use hash map to save data as  (word in alphabetical order, list of words) . We build the hash map using the second way.
 
 [Update an Object as a Property of Another Object(Owner)](./CleanCodePractice.md)
 
@@ -334,7 +428,7 @@ public List<String> anagrams(String[] strs) {
 }
 ```
 
-###### [56. Two Sum](https://www.lintcode.com/problem/two-sum/description)
+#### [56. Two Sum](https://www.lintcode.com/problem/two-sum/description)
 
 Description:
 
@@ -359,7 +453,7 @@ You may assume that each input would have exactly one solution
 
 Analysis:
 
-If traverse each element in the array, we want to find whether the `target - element` is in the array as well.  If we can save all elements in a hash table, we can find an element in `O(1)`.  What is more, since the question is looking for index, we have to save the index with each element as well. Here we will use hash map to save data as (number[i], i).
+If traverse each element in the array, we want to find whether the `target - element` is in the array as well.  If we can save all elements in a hash table, we can find an element in `O(1)`.  What is more, since the question is looking for index, we have to save the index with each element as well. Here we will use hash map to save data as (number[i], i). This question we can only use the second way to build the hash table since the input data's order or duplicate matters.
 
 ```java
 public int[] twoSum(int[] numbers, int target) {
@@ -379,7 +473,7 @@ public int[] twoSum(int[] numbers, int target) {
 }
 ```
 
-###### [134. LRU Cache](https://www.lintcode.com/problem/lru-cache/description)
+#### [134. LRU Cache](https://www.lintcode.com/problem/lru-cache/description)
 
 Description:
 
@@ -565,7 +659,7 @@ This question uses Hash Table and [LinkedList](./LinkedList.md) basic data struc
      ```
 
 
-###### [124. Longest Consecutive Sequence](https://www.lintcode.com/problem/longest-consecutive-sequence/description)
+#### [124. Longest Consecutive Sequence](https://www.lintcode.com/problem/longest-consecutive-sequence/description)
 
 Description,
 
@@ -583,7 +677,7 @@ Your algorithm should run in O(*n*) complexity.
 
 Analysis:
 
-This question [Leetcode](https://leetcode.com/problems/longest-consecutive-sequence/solution/) offers detailed solution. The brute force way introduces a new way of thinking. We can increase each number until there is no bigger consecutive number. Then we can compare each number's consecutive streak and get the longest. After we came up with the brute force solution, we can optimize the solution by improving search time with hash set. As well, if a number belongs to a longer consecutive sequence and it is not the smallest number, we will skip it.  Thus our algorithm takes worst `O(2n)`  time.
+This question [Leetcode](https://leetcode.com/problems/longest-consecutive-sequence/solution/) offers detailed solution. The brute force way introduces a new way of thinking. We can increase each number until there is no bigger consecutive number. Then we can compare each number's consecutive streak and get the longest. After we came up with the brute force solution, we can optimize the solution by improving search time with hash set. Here the data's order doesn't matter we will use the first way to manipulate the hash set. As well, if a number belongs to a longer consecutive sequence and it is not the smallest number, we will skip it.  Thus our algorithm takes worst `O(2n)`  time.
 
 There are other solutions as well. We can delete not used numbers from hash set to minimize the search range. Here we won't discuss other solutions in detail. One thing we need to pay attention is removing elements during iteration of hash set.
 
@@ -624,3 +718,4 @@ There are other solutions as well. We can delete not used numbers from hash set 
         return result;
     }
 ```
+
