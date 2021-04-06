@@ -2,7 +2,7 @@
 published: true
 layout: post
 date: '2020-08-04 14:50:00 -0000'
-categories: Binary Tree
+categories: algo
 ---
 Binary Tree is a data structure extended from linked list data structure. It has the character of inconsecutive data storage , and indirect data access(unlike array's direct access). **It suits to traverse by recursion**. 
 
@@ -1642,4 +1642,3 @@ private boolean helper(TreeNode node1, TreeNode node2) {
 - If an operation's requirment need left or right subtree's result, and result usually contains countable properties( most of them is 1) not a list, we will use **divide-conquer**.
   - [97. Maximum Depth of Binary Tree](#97. Maximum Depth of Binary Tree): Maximum depth is max of left subtree's maximum depth and right subtree's maximum depth + 1. Here we need to use left subtree's result, and right subtree's result. We will use divide-conquer.
 - If an operration's requirment only need left or right subtree info but not root's info, we shall **pass 2 nodes into the method** and find rules with left and right subtree's children. It can use **traversal or divide-conquer**
-
