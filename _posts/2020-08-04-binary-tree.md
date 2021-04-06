@@ -6,9 +6,6 @@ categories: algo
 ---
 Binary Tree is a data structure extended from linked list data structure. It has the character of inconsecutive data storage , and indirect data access(unlike array's direct access). **It suits to traverse by recursion**. 
 
-
-### Basic Knowledge
-
 There are 3 ways of traversal. Most of the issues can be resolved using the 3 ways of traversal. 
 
 Pre-order Traversal,
@@ -43,13 +40,13 @@ public void traverse(TreeNode root) {
 
 We can resolve a binary tree problem using traversal way or divide and conquer way.
 
-###### Traversal: Do something for one node and all nodes on its subtrees need to do the same operation.
+#### Traversal: Do something for one node and all nodes on its subtrees need to do the same operation.
 
 - Do what a node shall do.  明确一个节点要做的事
 - Recursive call a node's subtrees. 递归调用所有子树
 - The traversal way usually use with class property.
 
-###### Divide and conquer: The final result will get from its left subtree's and right subtree's result.
+#### Divide and conquer: The final result will get from its left subtree's and right subtree's result.
 
 - Recursive call the node's left and right tree. 递归调用左右子树
 - Use left and right subtree returning result to calculate final result.  
@@ -57,7 +54,7 @@ We can resolve a binary tree problem using traversal way or divide and conquer w
 
 ### Problem
 
-######  [66. Binary Tree Preorder Traversal (Non-recursion Version)](https://www.lintcode.com/problem/binary-tree-preorder-traversal/note/224954)
+####  [66. Binary Tree Preorder Traversal (Non-recursion Version)](https://www.lintcode.com/problem/binary-tree-preorder-traversal/note/224954)
 
 Given a binary tree, return the preorder traversal of its nodes' values.
 
@@ -146,7 +143,7 @@ class Pair {
 
 
 
-###### [481. Binary Tree Leaf Sum](https://www.lintcode.com/problem/binary-tree-leaf-sum/description)
+#### [481. Binary Tree Leaf Sum](https://www.lintcode.com/problem/binary-tree-leaf-sum/description)
 
 Description:
 
@@ -228,7 +225,7 @@ The binary tree's leaf sum equals the sum of its left subtree's leaf sum and rig
     }
 ```
 
-###### [482. Binary Tree Level Sum](https://www.lintcode.com/problem/binary-tree-level-sum/description)
+#### [482. Binary Tree Level Sum](https://www.lintcode.com/problem/binary-tree-level-sum/description)
 
 Description:
 
@@ -319,7 +316,7 @@ public int levelSum(TreeNode root, int level) {
 }
 ```
 
-###### [480. Binary Tree Paths](https://www.lintcode.com/problem/binary-tree-paths/description)
+#### [480. Binary Tree Paths](https://www.lintcode.com/problem/binary-tree-paths/description)
 
 Description:
 
@@ -393,7 +390,7 @@ Divide-conquer:
 
 Get all left subtree's paths, and all right subtree's paths. Add the cur value to all left subtree's paths, and right subtree's paths in the front of all paths iteratively. 
 
-###### [469. Same Tree](https://www.lintcode.com/problem/same-tree/description)
+#### [469. Same Tree](https://www.lintcode.com/problem/same-tree/description)
 
 Description:
 
@@ -458,7 +455,7 @@ If left subtree and right subtree are identical, and the cur value from a and b 
     }
 ```
 
-###### [175. Invert Binary Tree](https://www.lintcode.com/problem/invert-binary-tree/description)
+#### [175. Invert Binary Tree](https://www.lintcode.com/problem/invert-binary-tree/description)
 
 Description:
 
@@ -510,7 +507,7 @@ Even though after the swap the traverse order of left and right will change, it 
     }
 ```
 
-###### [97. Maximum Depth of Binary Tree](https://www.lintcode.com/problem/maximum-depth-of-binary-tree/description)
+#### [97. Maximum Depth of Binary Tree](https://www.lintcode.com/problem/maximum-depth-of-binary-tree/description)
 
 Description:
 
@@ -559,109 +556,73 @@ A tree's max depth is the max depth of its left subtree and right subtree + 1.
     }
 ```
 
-###### [93. Balanced Binary Tree](https://www.lintcode.com/problem/balanced-binary-tree/description)
+#### [1181 Diameter of Binary Tree](https://www.lintcode.com/problem/1181/?_from=ladder&fromId=137)
 
 Description:
 
-Given a binary tree, determine if it is height-balanced.
+Given a binary tree, you need to compute the length of the diameter of the tree. The diameter of a binary tree is the length of the longest path between any two nodes in a tree.
 
-For this problem, a height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of every node never differ by more than 1.
+The length of path between two nodes is represented by the number of edges between them.
+
+Example 1:
 
 ```
-Example  1:
-	Input: tree = {1,2,3}
-	Output: true
-	
-	Explanation:
-	This is a balanced binary tree.
-		  1  
-		 / \                
-		2  3
+Given a binary tree 
+          1
+         / \
+        2   3
+       / \     
+      4   5    
+Return 3, which is the length of the path [4,2,1,3] or [5,2,1,3].
+```
 
-	
-Example  2:
-	Input: tree = {3,9,20,#,#,15,7}
-	Output: true
-	
-	Explanation:
-	This is a balanced binary tree.
-		  3  
-		 / \                
-		9  20                
-		  /  \                
-		 15   7 
+Example 2:
 
-	
-Example  3:
-	Input: tree = {1,#,2,3,4}
-	Output: false
-	
-	Explanation:
-	This is not a balanced tree. 
-	The height of node 1's right sub-tree is 2 but left sub-tree is 0.
-		  1  
-		   \                
-		   2                
-		  /  \                
-		 3   4
+```
+Input:[2,3,#,1]
+Output:2
+
+Explanation:
+      2
+    /
+   3
+ /
+1
 ```
 
 Analysis:
 
-Since this question requires return value and the value type is a primary type. We will use divide-conquer method to resolve this question.
-
-Divide-conquer:
-
-Left subtree is balanced, right subtree is balanced, and their heights' differences are not greater than 1, then we can say the tree is a balanced tree. Therefore, we need to return both heights and whether the current tree is a balanced tree. **If we need to return 2 different primary types for one method call, we can create an object and save those 2 return results into object's properties.**
+First we need to find a diameter of a tree is actually a tree's root's left subtree's height + right subtree's height. Then we can use **divide-conquer** to calculate any tree's height, and add up the root's left subtree's height and right subtree's height.
 
 ```java
-public class Solution {
-    /**
-     * @param root: The root of binary tree.
-     * @return: True if this Binary tree is Balanced, or false.
-     */
-     
-    
-    public boolean isBalanced(TreeNode root) {
-        
-        ResultType result = helper(root);
-        return result.isBalanced;
-    }
-    
-    private ResultType helper(TreeNode cur) {
-    
-        if(cur == null) {
-            return new ResultType(0, true);
+    public int diameterOfBinaryTree(TreeNode root) {
+        int result = 0;
+        if(root.left != null) {
+            result += findHeight(root.left);
         }
-        
-        ResultType left = helper(cur.left);
-        ResultType right = helper(cur.right);
-        
-        if(!left.isBalanced || !right.isBalanced || Math.abs(left.depth - right.depth) > 1) {
-            return new ResultType(Math.max(left.depth, right.depth) + 1, false);
+        if(root.right != null) {
+            result += findHeight(root.right);
         }
-        
-        return new ResultType(Math.max(left.depth, right.depth) + 1, true);
-        
-    } 
-    
-    
-    
-}
 
-class ResultType {
-    int depth;
-    boolean isBalanced;
-    
-    ResultType(int depth, boolean isBalanced) {
-        
-        this.depth = depth;
-        this.isBalanced = isBalanced;
+        return result;
     }
-}
+
+    private int findHeight(TreeNode root) {
+
+        if(root == null) {
+            return 0;
+        }
+
+        int left = findHeight(root.left);
+        int right = findHeight(root.right);
+
+        return Math.max(left, right) + 1;
+    }
 ```
 
-###### [376. Binary Tree Path Sum](https://www.lintcode.com/problem/binary-tree-path-sum/description)
+
+
+#### [376. Binary Tree Path Sum](https://www.lintcode.com/problem/binary-tree-path-sum/description)
 
 Description:
 
@@ -758,7 +719,7 @@ Divide-conquer:
 
 Find all paths in left subtree and right subtree their sum equals target - root's value. Collect all left and right subtree's result.
 
-######  [246. Binary Tree Path Sum II](https://www.lintcode.com/problem/binary-tree-path-sum-ii/description)
+####  [246. Binary Tree Path Sum II](https://www.lintcode.com/problem/binary-tree-path-sum-ii/description)
 
 Your are given a binary tree in which each node contains a value. Design an algorithm to get all paths which sum to a given value. The path does not need to start or end at the root or a leaf, but it must go in a straight line down.
 
@@ -841,7 +802,7 @@ private void helper(TreeNode cur, int target, List<Integer> subset, List<List<In
 
 ######  
 
-###### [124. Binary Tree Maximum Path Sum(leetcode)](https://leetcode.com/problems/binary-tree-maximum-path-sum/)
+#### [124. Binary Tree Maximum Path Sum(leetcode)](https://leetcode.com/problems/binary-tree-maximum-path-sum/)
 
 Given a **non-empty** binary tree, find the maximum path sum.
 
@@ -914,7 +875,7 @@ class ResultType {
 }
 ```
 
-###### [475. Binary Tree Maximum Path Sum II](https://www.lintcode.com/problem/binary-tree-maximum-path-sum-ii/description)
+#### [475. Binary Tree Maximum Path Sum II](https://www.lintcode.com/problem/binary-tree-maximum-path-sum-ii/description)
 
 Given a binary tree, find the maximum path sum from root.
 
@@ -963,7 +924,7 @@ We can get left subtree's max path sum and right subtree's max path sum. Compare
     }
 ```
 
-###### [596. Minimum Subtree](https://www.lintcode.com/problem/minimum-subtree/solution)
+#### [596. Minimum Subtree](https://www.lintcode.com/problem/minimum-subtree/solution)
 
 Description:
 
@@ -1087,7 +1048,7 @@ class ResultType {
 }
 ```
 
-###### [597. Subtree with Maximum Average](https://www.lintcode.com/problem/subtree-with-maximum-average/solution)
+#### [597. Subtree with Maximum Average](https://www.lintcode.com/problem/subtree-with-maximum-average/solution)
 
 Descriptions:
 
@@ -1193,7 +1154,7 @@ class ResultType{
 }
 ```
 
-###### [595. Binary Tree Longest Consecutive Sequence](https://www.lintcode.com/problem/binary-tree-longest-consecutive-sequence/solution)
+#### [595. Binary Tree Longest Consecutive Sequence](https://www.lintcode.com/problem/binary-tree-longest-consecutive-sequence/solution)
 
 Descriptions:
 
@@ -1279,9 +1240,111 @@ public class Solution {
 }
 ```
 
+#### 93. Balanced Binary Tree](https://www.lintcode.com/problem/balanced-binary-tree/description)
 
+Description:
 
-######  [88. Lowest Common Ancestor of a Binary Tree](https://www.lintcode.com/problem/lowest-common-ancestor-of-a-binary-tree/description)
+Given a binary tree, determine if it is height-balanced.
+
+For this problem, a height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of every node never differ by more than 1.
+
+```
+Example  1:
+	Input: tree = {1,2,3}
+	Output: true
+	
+	Explanation:
+	This is a balanced binary tree.
+		  1  
+		 / \                
+		2  3
+
+	
+Example  2:
+	Input: tree = {3,9,20,#,#,15,7}
+	Output: true
+	
+	Explanation:
+	This is a balanced binary tree.
+		  3  
+		 / \                
+		9  20                
+		  /  \                
+		 15   7 
+
+	
+Example  3:
+	Input: tree = {1,#,2,3,4}
+	Output: false
+	
+	Explanation:
+	This is not a balanced tree. 
+	The height of node 1's right sub-tree is 2 but left sub-tree is 0.
+		  1  
+		   \                
+		   2                
+		  /  \                
+		 3   4
+```
+
+Analysis:
+
+Since this question requires return value and the value type is a primary type. We will use divide-conquer method to resolve this question.
+
+Divide-conquer:
+
+Left subtree is balanced, right subtree is balanced, and their heights' differences are not greater than 1, then we can say the tree is a balanced tree. Therefore, we need to return both heights and whether the current tree is a balanced tree. **If we need to return 2 different primary types for one method call, we can create an object and save those 2 return results into object's properties.**
+
+```java
+public class Solution {
+    /**
+     * @param root: The root of binary tree.
+     * @return: True if this Binary tree is Balanced, or false.
+     */
+     
+    
+    public boolean isBalanced(TreeNode root) {
+        
+        ResultType result = helper(root);
+        return result.isBalanced;
+    }
+    
+    private ResultType helper(TreeNode cur) {
+    
+        if(cur == null) {
+            return new ResultType(0, true);
+        }
+        
+        ResultType left = helper(cur.left);
+        ResultType right = helper(cur.right);
+        
+        if(!left.isBalanced || !right.isBalanced || Math.abs(left.depth - right.depth) > 1) {
+            return new ResultType(Math.max(left.depth, right.depth) + 1, false);
+        }
+        
+        return new ResultType(Math.max(left.depth, right.depth) + 1, true);
+        
+    } 
+    
+    
+    
+}
+
+class ResultType {
+    int depth;
+    boolean isBalanced;
+    
+    ResultType(int depth, boolean isBalanced) {
+        
+        this.depth = depth;
+        this.isBalanced = isBalanced;
+    }
+}
+```
+
+#### 
+
+####  [88. Lowest Common Ancestor of a Binary Tree](https://www.lintcode.com/problem/lowest-common-ancestor-of-a-binary-tree/description)
 
 Description:
 
@@ -1360,7 +1423,7 @@ This question is a variation of finding a node from binary tree. Once we find a 
     }
 ```
 
-###### [474. Lowest Common Ancestor II](https://www.lintcode.com/problem/lowest-common-ancestor-ii/description)
+#### [474. Lowest Common Ancestor II](https://www.lintcode.com/problem/lowest-common-ancestor-ii/description)
 
 Description:
 
@@ -1445,7 +1508,7 @@ This question is  [88. Lowest Common Ancestor of a Binary Tree](#88. Lowest Comm
     }
 ```
 
-###### [578. Lowest Common Ancestor III](https://www.lintcode.com/problem/lowest-common-ancestor-iii/solution)
+#### [578. Lowest Common Ancestor III](https://www.lintcode.com/problem/lowest-common-ancestor-iii/solution)
 
 Description:
 
@@ -1563,7 +1626,7 @@ class ResultType {
 }
 ```
 
-###### [1360. Symmetric Tree](https://www.lintcode.com/problem/symmetric-tree/description)
+#### [1360. Symmetric Tree](https://www.lintcode.com/problem/symmetric-tree/description)
 
 Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
 
@@ -1631,14 +1694,13 @@ private boolean helper(TreeNode node1, TreeNode node2) {
 }
 ```
 
-
-
 ### Summery: 
 
 - If an operation's requirement doesn't need any left or right subtree's info but only use root's info, we can use **traversal** directly. 
   - [481. Binary Tree Leaf Sum](# 481. Binary Tree Leaf Sum): We only need to check whether a node is a leaf and calculate the sum. The calculation doesn't need any info from left or right subtree.
-- If an operation's requirement need all nodes info from left or right subtree, even though, we need all nodes on left or right subtree, we still need to run operation on all nodes. We still can use **traversal**.
-  - [95. Validate Binary Search Tree](https://www.lintcode.com/problem/validate-binary-search-tree/description): One of the requirements is all nodes on left subtree must be less than the root and right subtree must be greater than root. Here we need to check whether each node is in a range using traversal.
+- If an operation's requirement need all nodes info from left or right subtree, we shall try to use **traversal**. Even though, we need info from left or right subtree, we shall be able to use  **divide-conquer**. However, if we use  **divide-conquer**, we need to save a list of all sub nodes' info, which is not suitable for **divide-conquer**.
+  - [95. Validate Binary Search Tree](https://www.lintcode.com/problem/validate-binary-search-tree/description): One of the requirements is all nodes on left subtree must be less than the root and right subtree must be greater than root. Here we will use traversal to check whether each node is in a range.
 - If an operation's requirment need left or right subtree's result, and result usually contains countable properties( most of them is 1) not a list, we will use **divide-conquer**.
   - [97. Maximum Depth of Binary Tree](#97. Maximum Depth of Binary Tree): Maximum depth is max of left subtree's maximum depth and right subtree's maximum depth + 1. Here we need to use left subtree's result, and right subtree's result. We will use divide-conquer.
 - If an operration's requirment only need left or right subtree info but not root's info, we shall **pass 2 nodes into the method** and find rules with left and right subtree's children. It can use **traversal or divide-conquer**
+
