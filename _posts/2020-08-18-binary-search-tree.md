@@ -2,7 +2,7 @@
 published: true
 layout: post
 date: '2020-08-18 14:50:00 -0000'
-categories: Binary Search Tree
+categories: algo
 ---
 Binary Search Tree is one of the commonly used binary tree. Its definition is all nodes on the left subtree are <= the node, and all nodes on the right subtree are >= the node.
 
