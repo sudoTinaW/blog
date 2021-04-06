@@ -2,7 +2,7 @@
 published: true
 layout: post
 date: '2020-06-11 14:50:00 -0000'
-categories: Binary Search
+categories: algo
 ---
 Binary Search main thought is decreasing the searching range by half for every loop. Its time complexity is O(logn).
 
