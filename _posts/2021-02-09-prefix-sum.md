@@ -2,7 +2,7 @@
 published: true
 layout: post
 date: '2021-2-09 14:50:00 -0000'
-categories: prefixSum
+categories: algo
 ---
 Prefix sum is a simple yet powerful technique that allows to perform fast calculation on the sum of elements in a given range(called contagious segments of array). It often resolves questions relating to array interval.
 
