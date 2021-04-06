@@ -2,7 +2,7 @@
 published: true
 layout: post
 date: '2021-01-09 10:50:00 -0000'
-categories: quick sort
+categories: algo
 ---
 Quick Sort is the sort algorithm widely used in Java and many other languages. Its average time complexity is the same as merge sort, but its space complexity is better than merge sort, which is in place. The main thought of partition is often asked in the interview questions.
 
