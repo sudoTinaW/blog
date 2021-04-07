@@ -237,3 +237,10 @@ Collections like map, set etc., all have iterators. When we use an iterator of a
 #### Split a String by Whitespaces
 
 `String[] strs = s.split("\\s+")`
+#### The Difference of any Two Elements in a Sorted Array Variation Pattern
+
+- The difference of any two elements in a sorted array is increasing as the two elements are getting further apart (两元素相隔越远，两元素差越大).
+
+- If the two elements are separated in the same distance, the difference has no monotonicity.
+- The smallest difference can only exist in every 2 closest elements(相临两元素之间).
+- The biggest difference can only be the difference of the last element and first element, which are the two elements furthest apart.
