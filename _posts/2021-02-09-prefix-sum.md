@@ -10,7 +10,7 @@ Prefix sum is a simple yet powerful technique that allows to perform fast calcul
 
   `preSum[i]` is `num[0...i]` 's sum. Here is the example,
 
-  ![](E:\study\jiuzhang\Notes\PreSum.JPG)
+  ![preSum](./PreSum.JPG)
 
 - How to implement it?
 
@@ -42,7 +42,7 @@ Prefix sum is a simple yet powerful technique that allows to perform fast calcul
 
 ### Problems:
 
-######  [138. Subarray Sum](https://www.lintcode.com/problem/subarray-sum/description)
+####  [138. Subarray Sum](https://www.lintcode.com/problem/subarray-sum/description)
 
 Description:
 
@@ -96,7 +96,7 @@ public List<Integer> subarraySum(int[] nums) {
 }
 ```
 
-###### [838. Subarray Sum Equals K](https://www.lintcode.com/problem/838/)
+#### [838. Subarray Sum Equals K](https://www.lintcode.com/problem/838/)
 
 Description:
 
@@ -159,7 +159,7 @@ public int subarraySumEqualsK(int[] nums, int k) {
 }
 ```
 
-###### [41. Maximum Subarray(leetcode)](https://leetcode.com/problems/maximum-subarray/)
+#### [41. Maximum Subarray(leetcode)](https://leetcode.com/problems/maximum-subarray/)
 
 Description:
 
@@ -218,9 +218,7 @@ public int maxSubArray(int[] nums) {
 }
 ```
 
-
-
-###### [139. Subarray Sum Closest](https://www.lintcode.com/problem/subarray-sum-closest/description)
+#### [139. Subarray Sum Closest](https://www.lintcode.com/problem/subarray-sum-closest/description)
 
 Description:
 
@@ -259,6 +257,8 @@ This question includes following techniques,
 - Find any two elements' difference closet to 0. To find two elements' difference closet to a value in a sorted array, we can think of using left and right pointer and sliding window techniques. It is similar to question [610. Two Sum - Difference equals to target](./TwoPointer.md). Here we will find the closet difference of any two qualified left and right pointer to 0. 
 
   Since this question is looking for any two elements' difference closet to **0**, we can translate the question to find the minimum difference of any two elements from the prefix sum array. After sort, we can find the minimum diff can only exit between two closed elements. Therefore, we can simplify this question to find the minimum diff of any two elements next to each other.
+
+  [The Difference of any Two Elements in a Sorted Array Variation Pattern](./CleanCodePractice.md)
 
   Here we will post generalized and simplified way to find any two elements' difference closet to 0.
 
@@ -424,3 +424,5 @@ This question includes following techniques,
       }
   }
   ```
+
+  
