@@ -624,7 +624,7 @@ public int removeElement(int[] A, int elem) {
 }
 ```
 
-####  [539. Move Zeroes]()
+####  [539. Move Zeroes](https://www.lintcode.com/problem/539/)
 
 Description:
 
