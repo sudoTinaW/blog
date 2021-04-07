@@ -258,7 +258,7 @@ This question includes following techniques,
 
   Since this question is looking for any two elements' difference closet to **0**, we can translate the question to find the minimum difference of any two elements from the prefix sum array. After sort, we can find the minimum diff can only exit between two closed elements. Therefore, we can simplify this question to find the minimum diff of any two elements next to each other.
 
-  [The Difference of any Two Elements in a Sorted Array Variation Pattern](#the-difference-of-any-two-elements-in-a-sorted-array-variation-pattern)
+  [The Difference of any Two Elements in a Sorted Array Variation Pattern](https://www.tinawang.ca/algo/2021/04/06/clean-code-practice.html)
 
   Here we will post generalized and simplified way to find any two elements' difference closet to 0.
 
