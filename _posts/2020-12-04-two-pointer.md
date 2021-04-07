@@ -169,7 +169,7 @@ Constraints:
 Analysis:
 
 This question is extended from [141. Linked List Cycle(Leetcode)](#141. Linked List Cycle(Leetcode)). There is a tricky math equation. If we say slow pointer walks k distance when it meets with fast pointer, fast pointer walks 2k distance. k = head to cycle start + cycle start to meet-up spot because slow pointer walks k distance in total. Also, k = cycle start to meet up spot + meet up spot to cycle start, which is a cycle distance, which is exactly the fast pointer walks faster than slow pointer. 
-![img](https://gblobscdn.gitbook.com/assets%2F-MWvhB2heCSJoT6IpxDY%2Fsync%2F87b533c20312b343bc76402d886046a5f9ac08d4.jpeg?alt=media)
+![img](https://labuladong.gitbook.io/algo/shu-ju-jie-gou-xi-lie/shou-ba-shou-shua-shu-zu-ti-mu/shuang-zhi-zhen-ji-qiao)
 
 ​	So first we let the first and slow meet first time, and let any of them go back from head to move at the same speed until they meet again. The second meetup point is the cycle start time.
 
