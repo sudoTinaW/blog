@@ -4,7 +4,7 @@ layout: post
 date: '2020-12-04 14:50:00 -0000'
 categories: algo
 ---
-Two-pointer technique is commonly used to solve array, string and linked list problem. It often solves the problem in place. We have classified the two-pointer questions by its templates. The two pointer questions include *[sliding window](./SlidingWindow.md)*,  *[partition(merge sort, quick sort)](./Sort.md)*,  *[binary search](./BinarySearch.md)*, [*fast and slow pointer*](#Fast and Slow Pointer (Hare & Tortoise)), and [*left and right pointer*](Left and Right Pointer) problems. In this article, we will only describe  [*fast and slow pointer*](#Fast and Slow Pointer (Hare & Tortoise)), and [*left and right pointer*](Left and Right Pointer) .
+Two-pointer technique is commonly used to solve array, string and linked list problem. It often solves the problem in place. We have classified the two-pointer questions by its templates. The two pointer questions include *[sliding window](https://www.tinawang.ca/algo/2020/10/20/sliding-window.html)*,  *[partition(merge sort, quick sort)](https://www.tinawang.ca/algo/2021/01/08/sort.html)*,  *[binary search](https://www.tinawang.ca/algo/2020/06/11/binary-search.html)*, [*fast and slow pointer*](#Fast and Slow Pointer (Hare & Tortoise)), and [*left and right pointer*](Left and Right Pointer) problems. In this article, we will only describe  [*fast and slow pointer*](#Fast and Slow Pointer (Hare & Tortoise)), and [*left and right pointer*](Left and Right Pointer) .
 
 *The main thought in this article is originated from [labuladong](https://labuladong.gitbook.io/algo/suan-fa-si-wei-xi-lie/shuang-zhi-zhen-ji-qiao), and [jiuzhang](https://www.jiuzhang.com/course/)*
 
@@ -90,7 +90,7 @@ Linked List can only access each node's next element. If we want to know whether
 
 The cycle can only appear at the end of the tail element.
 
-[Boundary Check](CleanCodePractice.md)
+[Boundary Check](https://www.tinawang.ca/algo/2021/04/06/clean-code-practice.html)
 
 ```java
 public boolean hasCycle(ListNode head) {
@@ -170,7 +170,7 @@ Analysis:
 
 This question is extended from [141. Linked List Cycle(Leetcode)](#141. Linked List Cycle(Leetcode)). There is a tricky math equation. If we say slow pointer walks k distance when it meets with fast pointer, fast pointer walks 2k distance. k = head to cycle start + cycle start to meet-up spot because slow pointer walks k distance in total. Also, k = cycle start to meet up spot + meet up spot to cycle start, which is a cycle distance, which is exactly the fast pointer walks faster than slow pointer. As the picture showed in [labuladong](https://labuladong.gitbook.io/algo/suan-fa-si-wei-xi-lie/shuang-zhi-zhen-ji-qiao)
 
-![LinkedListCycleII](E:\study\jiuzhang\Notes\linkedListCycleII.png)
+![LinkedListCycleII](/asset/linkedListCycleII.png)
 
 ​	So first we let the first and slow meet first time, and let any of them go back from head to move at the same speed until they meet again. The second meetup point is the cycle start time.
 
@@ -991,7 +991,7 @@ This question's solution will be based on the [Two Sum - Unique pairs](#587. Two
 
 - The unique pair requires the first element is unique, and two sum unique. Here we need to collect at least one result before we remove duplicate elements so that we won't miss the result of all elements are the same situation.
 
-  [Remove Duplicates Trick among Consecutive Duplicates ](CleanCodePractice.md)
+  [Remove Duplicates Trick among Consecutive Duplicates ](https://www.tinawang.ca/algo/2021/04/06/clean-code-practice.html)
 
 ```java
 public List<List<Integer>> threeSum(int[] numbers) {
@@ -1463,7 +1463,7 @@ This question is not a typical two pointer problem. We put it here because it is
 - We can cut two elements off from the start, and 1 element from the end of the input array.
 - We can cut three elements off from the start, and no element from the end of the input array.
 
-[The Difference of any Two Elements in a Sorted Array Variation Pattern](./CleanCodePractice.md)
+[The Difference of any Two Elements in a Sorted Array Variation Pattern](https://www.tinawang.ca/algo/2021/04/06/clean-code-practice.html)
 
 ```java
     public int MinimumAmplitude(int[] A) {
