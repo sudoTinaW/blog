@@ -10,7 +10,7 @@ Prefix sum is a simple yet powerful technique that allows to perform fast calcul
 
   `preSum[i]` is `num[0...i]` 's sum. Here is the example,
 
-  ![preSum](../asset/PreSum.JPG)
+  ![preSum](/asset/PreSum.JPG)
 
 - How to implement it?
 
@@ -424,5 +424,3 @@ This question includes following techniques,
       }
   }
   ```
-
-  
