@@ -651,7 +651,7 @@ Notice:
 
 Analysis:
 
-This question is similar to [172. Remove Element](#172. Remove Element). This question's target element is 0. After we find all elements which are not equal to the target, we will wipe the rest element's to 0.
+This question is similar to [172. Remove Element](#172-remove-element). This question's target element is 0. After we find all elements which are not equal to the target, we will wipe the rest element's to 0.
 
 
 
