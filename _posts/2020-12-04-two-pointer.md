@@ -15,7 +15,7 @@ Two-pointer technique is commonly used to solve array, string and linked list pr
 - The slow pointer represents the last qualified result before fast pointer. The fast pointer will enumerate all elements. Faster pointer will always move in each iteration no matter slow pointer moves or not. The slow pointer will move only when fast pointer's element satisfied some requirements. Such moving way can make sure the slow pointer always fall behind the fast pointer.
 - Since the slow pointer represents the last qualified result, the slow pointer can start from the first element when the first element is a valid result. Slow pointer can also start before the first element such as dummy head or null when the first element may or may not be a valid result.  
 - Since the fast pointer represents all possible elements, the fast pointer usually starts from the first element.
-- The fast and slow pointer is similar to sliding window. The difference is slow pointer is usually moving one step forward for each right element. In most cases, we need to consider what condition the fast pointer needs to satisfy to make **slow pointer move**  .(slow pointer 什么时候走)。
+- The fast and slow pointer is similar to sliding window. The difference is slow pointer is usually moving one step forward for each right element. In most cases, we need to consider what condition the fast pointer needs to satisfy to make **slow pointer move**. (slow pointer 什么时候走)。
 
 
 #### Left and Right Pointer:
@@ -23,12 +23,16 @@ Two-pointer technique is commonly used to solve array, string and linked list pr
 - It is often used for searching a group of elements satisfying some requirements in sorted array or linked list. The group can be a pair, 3 elements or even a sub array.
 - In each iteration, either left and right pointer will move.（要么left pointer走一步， 要么right pointer走一步）。
 
+#### Two Different Array Pointers:
+
+The two pointers are moving on two different array or list.
+
 
 ### Problems
 
 #### Fast and Slow Pointer (Hare & Tortoise):
 
-###### [141. Linked List Cycle (Leetcode)](https://leetcode.com/problems/linked-list-cycle/)
+#### [141. Linked List Cycle (Leetcode)](https://leetcode.com/problems/linked-list-cycle/)
 
 Given `head`, the head of a linked list, determine if the linked list has a cycle in it.
 
@@ -110,7 +114,7 @@ public boolean hasCycle(ListNode head) {
 }
 ```
 
-###### [142. Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
+#### [142. Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
 
 Description:
 
@@ -207,7 +211,193 @@ public ListNode detectCycle(ListNode head) {
 }
 ```
 
-######  [1609. Middle of the Linked List](https://www.lintcode.com/problem/middle-of-the-linked-list/description)
+#### [380. Intersection of Two Linked Lists](https://www.lintcode.com/problem/380/my-submissions)
+
+Description:
+
+Write a program to find the node at which the intersection of two singly linked lists begins.
+
+Example 1:
+
+```
+Input:
+	A:          a1 → a2
+	                   ↘
+	                     c1 → c2 → c3
+	                   ↗            
+	B:     b1 → b2 → b3
+Output: c1
+Explanation ：begin to intersect at node c1.
+```
+
+Example 2:
+
+```
+Input:
+Intersected at 6
+1->2->3->4->5->6->7->8->9->10->11->12->13->null
+6->7->8->9->10->11->12->13->null
+Output: Intersected at 6
+Explanation：begin to intersect at node 6.
+```
+
+Notes:
+
+Your code should preferably run in O(*n*) time and use only O(*1*) memory.
+
+- If the two linked lists have no intersection at all, return `null`.
+- The linked lists must retain their original structure after the function returns.
+- You may assume there are no cycles anywhere in the entire linked structure.
+
+Analysis:
+
+This question have a trick to use. I will use 2 ways to resolve this problem. 
+
+- The first way is connecting any one list's tail with its head to make a cycle. The question will transform to find the entrance of a cycle. One detail that we need to pay attention is we shall make sure slow and fast pointer starts at the same node and the while loop will be always true until slow and fast pointer meet together again.
+
+  ```java
+  public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+  
+      if(headA == null || headB == null) {
+          return null;
+      }
+  
+      ListNode result = null;
+  
+      ListNode aTail = headA;
+  
+      while(aTail.next != null) {
+          aTail = aTail.next;
+      }
+  
+      aTail.next = headA;
+  
+      result = findCycleStart(headB);
+  
+      aTail.next = null;
+  
+      return result;
+  }
+  
+  private ListNode findCycleStart(ListNode head) {
+  
+      ListNode slow = head;
+      ListNode fast = head;
+  
+      while(true) {
+          slow = slow.next;
+          fast = fast.next.next;
+          if(slow == fast) {
+              break;
+          }
+      }
+  
+      slow = head;
+  
+      while(fast != slow) {
+          fast = fast.next;
+          slow = slow.next;
+      }
+  
+      return slow;
+  }
+  ```
+
+  
+
+- The second way is cutting the long list's front elements until the length same as the short list. Then we can move two pointers on both lists parallel until we find two pointers are the same. This method is not an application of fast and slow pointer.
+
+  
+
+  ```java
+  /**
+   * Definition for ListNode
+   * public class ListNode {
+   *     int val;
+   *     ListNode next;
+   *     ListNode(int x) {
+   *         val = x;
+   *         next = null;
+   *     }
+   * }
+   */
+  
+  public class Solution {
+      /**
+       * @param headA: the first list
+       * @param headB: the second list
+       * @return: a ListNode
+       */
+      public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+  
+          if(headA == null || headB == null) {
+              return null;
+          }
+  
+  
+          ListNode result = null;
+  
+          int aLen = getLen(headA);
+          int bLen = getLen(headB);
+  
+          if(aLen > bLen) {
+              ListNode aStartNode = moveNSteps(headA, aLen - bLen);
+              result = findSameNode(aStartNode, headB);
+  
+          }else if(aLen < bLen) {
+              ListNode bStartNode = moveNSteps(headB, bLen - aLen);
+              result = findSameNode(headA, bStartNode);
+          }else if(aLen == bLen) {
+              result = findSameNode(headA, headB);
+          }
+  
+          return result;
+      }
+  
+      private int getLen(ListNode head) {
+  
+          int result = 0;
+  
+          while(head != null) {
+              result++;;
+              head = head.next;
+          }
+  
+          return result;
+      }
+  
+      private ListNode findSameNode(ListNode nodeA, ListNode nodeB) {
+  
+          ListNode result = null;
+  
+          while(nodeA != null) {
+  
+              if(nodeA == nodeB) {
+                  result = nodeA;
+                  break;
+              }
+  
+              nodeA = nodeA.next;
+              nodeB = nodeB.next;
+          }
+  
+          return result;
+      }
+  
+      private ListNode moveNSteps(ListNode head, int n) {
+          
+          for(int i = 0; i < n; i++) {
+              head = head.next;
+          }
+  
+          return head;
+      }
+  }
+  ```
+
+  
+
+####  [1609. Middle of the Linked List](https://www.lintcode.com/problem/middle-of-the-linked-list/description)
 
 Description:
 
@@ -257,7 +447,7 @@ public ListNode middleNode(ListNode head) {
 }
 ```
 
-###### [166. Nth to Last Node in List](https://www.lintcode.com/problem/nth-to-last-node-in-list/description)
+#### [166. Nth to Last Node in List](https://www.lintcode.com/problem/nth-to-last-node-in-list/description)
 
 Find the nth to last element of a singly linked list. 
 
@@ -298,7 +488,52 @@ First we let the fast pointer go n step. Then we let slow and fast pointer go to
     }
 ```
 
-######  [100. Remove Duplicates from Sorted Array](https://www.lintcode.com/problem/remove-duplicates-from-sorted-array/solution)
+#### [112. Remove Duplicates from Sorted List](https://www.lintcode.com/problem/remove-duplicates-from-sorted-list/description)
+
+Description:
+
+Given a sorted linked list, delete all duplicates such that each element appear only *once*.
+
+```
+Example 1:
+	Input:  1->1->2->null
+	Output: 1->2->null
+	
+Example 2:
+	Input:  1->1->2->3->3->null
+	Output: 1->2->3->null
+```
+
+Analysis: This question has similar thought as   [100. Remove Duplicates from Sorted Array](#100. Remove Duplicates from Sorted Array). The difference is for sorted array, we will copy value from fast to slow. For the linked list, we can directly change the slow pointer's next to fast element. One more thing needs to pay attention is after we get the last element as slow, we need to cut the rest of link list by `slow.next = null`. Otherwise, the last duplicate element will still be linked.
+
+```java
+public ListNode deleteDuplicates(ListNode head) {
+
+    if(head == null) {
+        return head;
+    }
+
+    ListNode slow = head;
+    ListNode fast = head;
+
+    while(fast != null) {
+        if(slow.val != fast.val) {
+            slow.next = fast;
+            slow = slow.next;
+        }
+        fast = fast.next;
+    }
+    slow.next = null;
+
+    return head;
+}
+```
+
+###### 
+
+
+
+####  [100. Remove Duplicates from Sorted Array](https://www.lintcode.com/problem/remove-duplicates-from-sorted-array/solution)
 
 Description:
 
@@ -341,48 +576,7 @@ public int removeDuplicates(int[] nums) {
 }
 ```
 
-###### [112. Remove Duplicates from Sorted List](https://www.lintcode.com/problem/remove-duplicates-from-sorted-list/description)
-
-Description:
-
-Given a sorted linked list, delete all duplicates such that each element appear only *once*.
-
-```
-Example 1:
-	Input:  1->1->2->null
-	Output: 1->2->null
-	
-Example 2:
-	Input:  1->1->2->3->3->null
-	Output: 1->2->3->null
-```
-
-Analysis: This question has similar thought as   [100. Remove Duplicates from Sorted Array](#100. Remove Duplicates from Sorted Array). The difference is for sorted array, we will copy value from fast to slow. For the linked list, we can directly change the slow pointer's next to fast element. One more thing needs to pay attention is after we get the last element as slow, we need to cut the rest of link list by `slow.next = null`. Otherwise, the last duplicate element will still be linked.
-
-```java
-public ListNode deleteDuplicates(ListNode head) {
-
-    if(head == null) {
-        return head;
-    }
-
-    ListNode slow = head;
-    ListNode fast = head;
-
-    while(fast != null) {
-        if(slow.val != fast.val) {
-            slow.next = fast;
-            slow = slow.next;
-        }
-        fast = fast.next;
-    }
-    slow.next = null;
-
-    return head;
-}
-```
-
-###### [172. Remove Element](https://www.lintcode.com/problem/remove-element/description)
+#### [172. Remove Element](https://www.lintcode.com/problem/remove-element/description)
 
 Description:
 
@@ -431,7 +625,7 @@ public int removeElement(int[] A, int elem) {
 }
 ```
 
-######  [539. Move Zeroes]()
+####  [539. Move Zeroes]()
 
 Description:
 
@@ -488,7 +682,7 @@ public void moveZeroes(int[] nums) {
 
 #### Left and Right Pointer:
 
-###### [56. Two Sum](https://www.lintcode.com/problem/two-sum/my-submissions)
+#### [56. Two Sum](https://www.lintcode.com/problem/two-sum/my-submissions)
 
 Description:
 
@@ -593,7 +787,7 @@ class MyComparator implements Comparator<Pair> {
 }
 ```
 
-###### [587. Two Sum - Unique pairs](https://www.lintcode.com/problem/two-sum-unique-pairs/description)
+#### [587. Two Sum - Unique pairs](https://www.lintcode.com/problem/two-sum-unique-pairs/description)
 
 Description:
 
@@ -704,7 +898,7 @@ public int twoSum6(int[] nums, int target) {
 }
 ```
 
-###### [533. Two Sum - Closest to target](https://www.lintcode.com/problem/two-sum-closest-to-target/description)
+#### [533. Two Sum - Closest to target](https://www.lintcode.com/problem/two-sum-closest-to-target/description)
 
 Description:
 
@@ -763,7 +957,7 @@ public int twoSumClosest(int[] nums, int target) {
 }
 ```
 
-###### [57. 3Sum](https://www.lintcode.com/problem/3sum/solution)
+#### [57. 3Sum](https://www.lintcode.com/problem/3sum/solution)
 
 Description:
 
@@ -848,7 +1042,7 @@ public List<List<Integer>> threeSum(int[] numbers) {
 }
 ```
 
-###### [59. 3Sum Closest](https://www.lintcode.com/problem/3sum-closest/solution)
+#### [59. 3Sum Closest](https://www.lintcode.com/problem/3sum-closest/solution)
 
 Description:
 
@@ -923,7 +1117,7 @@ public int threeSumClosest(int[] numbers, int target) {
 }
 ```
 
-###### [58. 4Sum](https://www.lintcode.com/problem/4sum/description)
+#### [58. 4Sum](https://www.lintcode.com/problem/4sum/description)
 
 Description:
 
@@ -1013,7 +1207,7 @@ Fix 2 points and get the sum as target - numbers[i] - numbers[j] in the rest of 
     }
 ```
 
-###### [382. Triangle Count](https://www.lintcode.com/problem/triangle-count/solution)
+#### [382. Triangle Count](https://www.lintcode.com/problem/triangle-count/solution)
 
 Description:
 
@@ -1079,7 +1273,7 @@ public int triangleCount(int[] S) {
 }
 ```
 
-977. ###### [(Leetcode) Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/)
+#### [(Leetcode)977 Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/)
 
 Description:
 
@@ -1142,7 +1336,7 @@ public int[] sortedSquares(int[] A) {
 }
 ```
 
-######  [610. Two Sum - Difference equals to target](https://www.lintcode.com/problem/two-sum-difference-equals-to-target/description)
+####  [610. Two Sum - Difference equals to target](https://www.lintcode.com/problem/two-sum-difference-equals-to-target/description)
 
 Description:
 
@@ -1215,3 +1409,149 @@ This question is using a combination of left and right pointer and sliding windo
         return new int[]{-1, -1};
     }
 ```
+
+#### [1859 · Minimum Amplitude](lintcode.com/problem/1859/?_from=ladder&fromId=148)
+
+Description:
+
+Given an array A consisting of N integers. In one move, we can choose any element in this array and replace it with any value.
+The amplitude of an array is the difference between the largest and the smallest values it contains.
+Return the smallest amplitude of array A that we can achieve by performing at most three moves.
+
+N is an integer within the range: [2, 10000]each element of array A is an integer within the range: [-50, 50]
+
+Example 1
+
+```
+Input:
+A = [-9, 8, -1]
+Output:
+0
+Explanation: 
+We can replace -9 and 8 with -1 so that all element are equal to -1, and then the amplitude is 0
+```
+
+Example 2
+
+```
+Input:
+A = [14, 10, 5, 1, 0]
+Output: 
+1
+Explanation: 
+To achieve an amplitude of 1, we can replace 14, 10 and 5 with 1 or 0.
+```
+
+Example 3
+
+```
+Input:
+A = [11, 0, -6, -1, -3, 5]
+Output: 
+3
+Explanation: 
+This can be achieved by replacing 11, -6 and 5 with three values of -2.
+```
+
+Analysis:
+
+This question is not a typical two pointer problem. We put it here because it is a question about difference. Since amplitude is the difference between the largest and the smallest, and we want get the smallest amplitude, we need to minimize the range from either end to make the rest smallest and largest number closer. If the array size is `> 4`, we shall cut 3 elements off to make the range as small as possible. We can cut off elements as following,
+
+- We can cut no element off from the start, and 3 elements from the end of the input array. 
+
+- We can cut one elements off from the start, and 2 elements from the end of the input array.
+- We can cut two elements off from the start, and 1 element from the end of the input array.
+- We can cut three elements off from the start, and no element from the end of the input array.
+
+[The Difference of any Two Elements in a Sorted Array Variation Pattern](./CleanCodePractice.md)
+
+```java
+    public int MinimumAmplitude(int[] A) {
+        
+        if(A.length <= 4) {
+            return 0;
+        }
+
+        Arrays.sort(A);
+
+        int minDiff = Integer.MAX_VALUE;
+        for(int i = 0; i < 4; i++) {
+            minDiff = Math.min(minDiff, A[A.length - 4 + i] - A[i]);
+        }
+
+        return minDiff;
+    }
+```
+
+
+
+#### Two Different Array Pointers:
+
+#### [547. Intersection of Two Arrays](https://www.lintcode.com/problem/547/my-submissions)
+
+Description:
+
+Given two arrays, write a function to compute their intersection .Each element in the result must be unique. The order of the results needs to be ascending.
+
+Example 1:
+
+```
+Input: nums1 = [1, 2, 2, 1], nums2 = [2, 2], 
+Output: [2].
+```
+
+Example 2:
+
+```
+Input: nums1 = [1, 2], nums2 = [2], 
+Output: [2].
+```
+
+Analysis:
+
+The two pointers are moving on two different arrays. We will always move the smaller value's pointer forward. If they are the same, we can collect the result. Since we only collect unique value, we will add unique condition when we collect result. One more thing, since we only collect the intersections, the result array size is not fixed. We need to collect the result using a bigger temporary array, and copy the valid value to the final result array after we collect all results.
+
+ 
+
+```java
+public int[] intersection(int[] nums1, int[] nums2) {
+
+
+    if(nums1 == null || nums1.length == 0 || nums2 == null || nums2.length == 0) {
+        return new int[0];
+    }
+
+    Arrays.sort(nums1);
+    Arrays.sort(nums2);
+
+    int[] temp = new int[Math.min(nums1.length, nums2.length)];
+
+    int i = 0;
+    int j = 0;
+
+    int last = 0;
+    while(i < nums1.length && j < nums2.length) {
+
+        if(nums1[i] > nums2[j]) {
+            j++;
+        }else if(nums1[i] < nums2[j]) {
+            i++;
+        }else {
+            if(last == 0 || temp[last - 1] != nums1[i]) {
+                temp[last++] = nums1[i];
+            }
+            i++;
+            j++;
+
+        }
+    }
+
+    int[] result = new int[last];
+    for(int k = 0; k < last; k++) {
+        result[k] = temp[k];
+    }
+
+    return result;
+}
+```
+
