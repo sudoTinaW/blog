@@ -1143,6 +1143,8 @@ Here is the decision tree, '(' marks as 0, and ')' marks as 1.
 
 *This problem modifies the permutation with duplicates template by selecting all paths whose left brackets >= right brackets all the time.*
 
+[StringBuilder Used in DFS Template](https://www.tinawang.ca/algo/2021/04/06/clean-code-practice.html)
+
 ```java
 public List<String> generateParenthesis(int n) {
     
