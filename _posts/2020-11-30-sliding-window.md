@@ -256,7 +256,7 @@ public int[] winSum(int[] nums, int k) {
 }
 ```
 
-[*Create an Empty Array*](CleanCodePractice.md)
+[*Create an Empty Array*](https://www.tinawang.ca/algo/2021/04/06/clean-code-practice.html)
 
 ####  [1169. Permutation in String](https://www.lintcode.com/problem/permutation-in-string/description)
 
