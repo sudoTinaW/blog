@@ -495,6 +495,84 @@ Analysis:  This is a combination variation. Instead of enumerate all possible n 
     }
 ```
 
+#### [973 1-bit and 2-bit Characters](https://www.lintcode.com/problem/973/)
+
+Description:
+
+We have two special characters. The first character can be represented by one bit `0`. The second character can be represented by two bits (`10` or `11`).
+
+Now given a string represented by several bits. Return whether the last character must be a one-bit character or not. The given string will always end with a zero.
+
+1.`1 <= len(bits) <= 1000`.
+2.`bits[i]` is always `0` or `1`.
+
+Example 1:
+
+```
+Input: 
+bits = [1, 0, 0]
+Output: True
+Explanation: 
+The only way to decode it is two-bit character and one-bit character. So the last character is one-bit character.
+```
+
+Example 2:
+
+```
+Input: 
+bits = [1, 1, 1, 0]
+Output: False
+Explanation: 
+The only way to decode it is two-bit character and two-bit character. So the last character is NOT one-bit character.
+```
+
+Analysis:
+
+This is a combination variation. It is similar to [680. Split String](https://www.lintcode.com/problem/split-string/description). The difference is [680. Split String](https://www.lintcode.com/problem/split-string/description) needs all solutions of cuts with every 1 element and every 2 element. Here if we cut every one element, the element can only be 0. If we cut every two element, the first element can only be 1, which is 10 or 11. Each horizontal enumeration has a different condition. Therefore, for-loop is not suitable for horizontal enumeration any more. What is more, when we can split all elements except the last one, we can set our result as true and stop enumeration. If we can not split all elements except the last one after trying all possible enumeration, we will return false as result.
+
+![img](/asset/1bitAnd2bitCharactor.png)
+
+```java
+public class Solution {
+    /**
+     * @param bits: a array represented by several bits. 
+     * @return: whether the last character must be a one-bit character or not
+     */
+
+    private boolean result;
+    public boolean isOneBitCharacter(int[] bits) {
+        result = false;
+        dfs(bits, 0, "");
+        return result;
+    }
+
+
+    private void dfs(int[] bits, int start, String s) {
+
+        if(result) {
+            return;
+        }
+
+        if(s.length() == bits.length - 1) {
+            result = true;
+            return;
+        }
+
+        if(s.length() >= bits.length) {
+            return;
+        }
+
+        if(start < bits.length && bits[start] == 1) {
+            dfs(bits, start + 2, s + bits[start] + bits[start + 1]);
+        }
+
+        if(bits[start] == 0) {
+            dfs(bits, start + 1, s + bits[start]);
+        }
+    }
+}
+```
+
 
 
 #### [15. Permutations](https://www.lintcode.com/problem/permutations/description)
@@ -1616,4 +1694,3 @@ To solve DFS problems,
 - We shall tell the question is a combination or a permutation problem. If a result's member changes its order and the result will count as another solution, it is a permutation problem. Otherwise, it is a combination problem. 
 - The enumeration varies in different ways. It is not necessary always from 0 to n. It can be 4 directions of a point, neighbors of a node, and so on. The loop inside dfs will help to enumerate all possibilities. 
 - The recursion can control the vertically loop by call another dfs or return. The for loop can control horizontally loop by conditionally call dfs recursion.
-
