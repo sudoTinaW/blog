@@ -1499,7 +1499,7 @@ From the tree, we can see each new level of siblings are not repeated from last 
         return map;
     }
 ```
-
+<!--
 #### [37. Sudoku Solver](https://leetcode.com/problems/sudoku-solver/)
 
 Description:
@@ -1608,7 +1608,7 @@ class Solution {
 
 }
 ```
-
+ -->
 Summery:
 
 To solve DFS problems, 
