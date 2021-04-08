@@ -46,7 +46,8 @@ Sliding Window often applies on finding consecutive elements. When we need to fi
   - The left pointer moves when a window **disqualifies** the question's requirement to get the **max** window, the inner loop condition shall be when window disqualifies the question's requirement. Therefore, the inner loop condition shall be when window disqualifies the question's requirement.
 
   - The result will always be updated when the window qualifies the question's requirement. When the left pointer moves when a window qualifies the question's requirement, the result will be updated inside the left pointer's move condition. When the left pointer moves when a window disqualifies the question's requirement, the result will be updated outside the left pointer's while loop whenever a right pointer moves and left and updates to a new valid window.
-      
+
+    
 
   ```java
   /* 滑动窗口算法框架 */
@@ -85,7 +86,7 @@ Sliding Window often applies on finding consecutive elements. When we need to fi
 
 ### Problems
 
-###### [32. Minimum Window Substring](https://www.lintcode.com/problem/minimum-window-substring/solution)
+#### [32. Minimum Window Substring](https://www.lintcode.com/problem/minimum-window-substring/solution)
 
 Description:
 
@@ -197,7 +198,7 @@ public String minWindow(String source , String target) {
 }
 ```
 
-###### [604. Window Sum](https://www.lintcode.com/problem/window-sum/solution)
+#### [604. Window Sum](https://www.lintcode.com/problem/window-sum/solution)
 
 Description:
 
@@ -257,7 +258,7 @@ public int[] winSum(int[] nums, int k) {
 
 [*Create an Empty Array*](CleanCodePractice.md)
 
-######  [1169. Permutation in String](https://www.lintcode.com/problem/permutation-in-string/description)
+####  [1169. Permutation in String](https://www.lintcode.com/problem/permutation-in-string/description)
 
 Description:
 
@@ -352,7 +353,7 @@ public boolean checkInclusion(String s1, String s2) {
 }
 ```
 
-###### [647. Find All Anagrams in a String](https://www.lintcode.com/problem/find-all-anagrams-in-a-string/description)
+#### [647. Find All Anagrams in a String](https://www.lintcode.com/problem/find-all-anagrams-in-a-string/description)
 
 Description:
 
@@ -439,7 +440,7 @@ public List<Integer> findAnagrams(String s, String p) {
 }
 ```
 
-###### [384. Longest Substring Without Repeating Characters](https://www.lintcode.com/problem/longest-substring-without-repeating-characters/description)
+#### [384. Longest Substring Without Repeating Characters](https://www.lintcode.com/problem/longest-substring-without-repeating-characters/description)
 
 Description:
 
@@ -502,7 +503,7 @@ public int lengthOfLongestSubstring(String s) {
 }
 ```
 
-###### [386. Longest Substring with At Most K Distinct Characters](https://www.lintcode.com/problem/longest-substring-with-at-most-k-distinct-characters/solution)
+#### [386. Longest Substring with At Most K Distinct Characters](https://www.lintcode.com/problem/longest-substring-with-at-most-k-distinct-characters/solution)
 
 Description:
 
@@ -568,3 +569,79 @@ public int lengthOfLongestSubstringKDistinct(String s, int k) {
     return result;
 }
 ```
+
+#### [1859 · Minimum Amplitude](https://www.lintcode.com/problem/1859/)
+
+Description:
+
+Given an array A consisting of N integers. In one move, we can choose any element in this array and replace it with any value.
+The amplitude of an array is the difference between the largest and the smallest values it contains.
+Return the smallest amplitude of array A that we can achieve by performing at most three moves.
+
+N is an integer within the range: [2, 10000]each element of array A is an integer within the range: [-50, 50]
+
+Example 1
+
+```
+Input:
+A = [-9, 8, -1]
+Output:
+0
+Explanation: 
+We can replace -9 and 8 with -1 so that all element are equal to -1, and then the amplitude is 0
+```
+
+Example 2
+
+```
+Input:
+A = [14, 10, 5, 1, 0]
+Output: 
+1
+Explanation: 
+To achieve an amplitude of 1, we can replace 14, 10 and 5 with 1 or 0.
+```
+
+Example 3
+
+```
+Input:
+A = [11, 0, -6, -1, -3, 5]
+Output: 
+3
+Explanation: 
+This can be achieved by replacing 11, -6 and 5 with three values of -2.
+```
+
+Analysis:
+
+This question is not a typical fixed size sliding window problem. Since amplitude is the difference between the largest and the smallest, and we want get the smallest amplitude, only when we cut off largest or smallest, the result will be influenced. We need to cur the furthest three elements apart from all middle elements. The easiest way to find the furthest element apart from all middle elements is to enumerate all possible results after cutting off and to find the minimum one. We can cut off elements as following,
+
+- We can cut no element off from the start, and 3 elements from the end of the input array. 
+- We can cut one elements off from the start, and 2 elements from the end of the input array.
+- We can cut two elements off from the start, and 1 element from the end of the input array.
+- We can cut three elements off from the start, and no element from the end of the input array.
+
+*Pit: When I first do this question, I fall into a pit. Since the result requires the smallest difference and total difference is fixed, we shall remove as larger difference as possible. We have known the more elements apart, the difference bigger. Therefore, I think we shall remove the first and last elements since they have the largest difference among all. This is wrong because when we move first and last element, the difference we removed is the difference between the first and second element, as well, the difference between the last and the element before the last. Those two differences are not the necessary the largest difference we can cut off.*
+
+```java
+    public int MinimumAmplitude(int[] A) {
+        
+        if(A.length <= 4) {
+            return 0;
+        }
+
+        Arrays.sort(A);
+
+        int minDiff = Integer.MAX_VALUE;
+        for(int i = 0; i < 4; i++) {
+            minDiff = Math.min(minDiff, A[A.length - 4 + i] - A[i]);
+        }
+
+        return minDiff;
+    }
+```
+
+
+
+#### 
