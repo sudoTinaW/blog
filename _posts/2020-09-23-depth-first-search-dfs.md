@@ -1617,3 +1617,10 @@ To solve DFS problems,
 - We shall tell the question is a combination or a permutation problem. If a result's member changes its order and the result will count as another solution, it is a permutation problem. Otherwise, it is a combination problem. 
 - The enumeration varies in different ways. It is not necessary always from 0 to n. It can be 4 directions of a point, neighbors of a node, and so on. The loop inside dfs will help to enumerate all possibilities. 
 - The recursion can control the vertically loop by call another dfs or return. The for loop can control horizontally loop by conditionally call dfs recursion.
+
+<details>
+<summary><b>My section header in bold</b></summary>
+
+Any folded content here. It requires an empty line just above it.
+
+</details>
