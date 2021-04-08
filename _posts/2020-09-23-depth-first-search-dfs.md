@@ -6,8 +6,7 @@ categories: algo
 ---
 Depth First Search is traversing through a multiple-branch decision tree. The question usually requires **all** solutions. Since DFS time complexity is O(2^n) or O(n!), tree's depth can not be very big. DFS is often used to resolve Combination and Permutation problems.
 
-### Basic Knowledge
-
+### Basic Knowledge:
 DFS problem has a template. As long as you can draw the decision tree, you can resolve the issue by the template. Here is the template, modified from [labuladong](https://labuladong.gitbook.io/algo/suan-fa-si-wei-xi-lie/hui-su-suan-fa-xiang-jie-xiu-ding-ban) 
 
 ```
@@ -28,11 +27,11 @@ The main issue that DFS can resolve is to enumerate all combinations or permutat
 
  Combination:
 
-![Combination](/asset/DFSCom.jpg)
+![img](/asset/DFSCom.jpg)
 
 Permutation:
 
-![Permutation](/asset/Perm.jpg)
+![img](/asset/Perm.jpg)
 
 Combination decision tree has more nodes on the left side than on the right side. Permutation decision tree are equally distributed on the left and right side.
 
@@ -82,17 +81,17 @@ If there are duplicates in permutation or combination, we only choose the duplic
 
 Combination with duplicates(After sorting, the same element appears more than once): 
 
-![Combination with duplicates](/asset/comb2.jpg)
+![img](/asset/comb2.jpg)
 
 Permutation with duplicates:
 
-![Permutation with duplicates](/asset/perm2.jpg)
+![img](/asset/perm2.jpg)
 
 
 
 ### Problems:
 
-###### [17. Subsets](https://www.lintcode.com/problem/subsets/solution)
+#### [17. Subsets](https://www.lintcode.com/problem/subsets/solution)
 
 Description:
 
@@ -146,7 +145,7 @@ This is the template of Combination.
     }
 ```
 
-[18. Subsets II](https://www.lintcode.com/problem/subsets-ii/description) 
+#### [18. Subsets II](https://www.lintcode.com/problem/subsets-ii/description) 
 
 Description:
 
@@ -207,7 +206,7 @@ This question only needs to add one more condition to exclude the duplicate choi
     }
 ```
 
-######  [135. Combination Sum](https://www.lintcode.com/problem/combination-sum/description)
+####  [135. Combination Sum](https://www.lintcode.com/problem/combination-sum/description)
 
 Descriptions:
 
@@ -242,7 +241,7 @@ This is a combination problem because all results don't have an order difference
 
 Then we can draw the decision tree to see which choices we need to collect.
 
-![CombinationSum](/asset/CombinationSum.jpg)
+![img](/asset/CombinationSum.jpg)
 
 
 
@@ -287,7 +286,7 @@ From the decision tree, we can see that recursion quit condition is sum > target
     }
 ```
 
-###### [90. k Sum II](https://www.lintcode.com/problem/k-sum-ii/description)
+#### [90. k Sum II](https://www.lintcode.com/problem/k-sum-ii/description)
 
 Descriptions:
 
@@ -315,7 +314,7 @@ First the result order doesn't matter. For example, [1, 4] and [4, 1] only count
 
 *This question is modifying template by adding a terminate condition.*
 
-![kSumII](/asset/kSumII.jpg)
+![img](/asset/kSumII.jpg)
 
 ```java
     public List<List<Integer>> kSumII(int[] A, int k, int target) {
@@ -348,7 +347,7 @@ First the result order doesn't matter. For example, [1, 4] and [4, 1] only count
     }
 ```
 
-###### [136. Palindrome Partitioning](https://www.lintcode.com/problem/palindrome-partitioning/description)
+#### [136. Palindrome Partitioning](https://www.lintcode.com/problem/palindrome-partitioning/description)
 
 Descriptions:
 
@@ -377,7 +376,7 @@ This question's the length of each element in the result set is different, which
 
 The common way  to partition a string is, for each cut from 0 to length, enumerate the cut positions, and take the left side of cut as a partition. For example string "aab" partition's decision tree is as following,
 
-![PalindromePartition](/asset/palindromePartition.jpg)
+![img](/asset/palindromePartition.jpg)
 
 From the picture, horizontally, we will enumerate each position for a new cut, and vertically, we will enumerate number of cuts. each node is the substring between start and loop index. If the all substrings are palindrome vertically, we can add all substrings into the result. If there is any substring which is not a palindrome, we will not call its recursion any further. 
 
@@ -434,7 +433,7 @@ From the picture, horizontally, we will enumerate each position for a new cut, a
     }
 ```
 
-###### [680. Split String](https://www.lintcode.com/problem/split-string/description)
+#### [680. Split String](https://www.lintcode.com/problem/split-string/description)
 
 Description:
 
@@ -456,7 +455,7 @@ Output: [["1","23","45"],["12","3","45"],["12","34","5"],["1","2","3","45"],["1"
 
 Analysis:  This is a combination variation. Instead of enumerate all possible n numbers in one node's all siblings, it only needs to enumerate first 2 siblings. Therefore, the index `i` will not be only  between `start` and `string.length()`, but also in the range of `start` and `start + 2`.  Here is the decision tree. 
 
-![SplitString](/asset/splitString.jpg)
+![img](/asset/splitString.jpg)
 
 *This problem modifies the combination template by narrowing the index `i` range, which is shorting the ending position.*
 
@@ -496,9 +495,87 @@ Analysis:  This is a combination variation. Instead of enumerate all possible n 
     }
 ```
 
+#### [973 1-bit and 2-bit Characters](https://www.lintcode.com/problem/973/)
+
+Description:
+
+We have two special characters. The first character can be represented by one bit `0`. The second character can be represented by two bits (`10` or `11`).
+
+Now given a string represented by several bits. Return whether the last character must be a one-bit character or not. The given string will always end with a zero.
+
+1.`1 <= len(bits) <= 1000`.
+2.`bits[i]` is always `0` or `1`.
+
+Example 1:
+
+```
+Input: 
+bits = [1, 0, 0]
+Output: True
+Explanation: 
+The only way to decode it is two-bit character and one-bit character. So the last character is one-bit character.
+```
+
+Example 2:
+
+```
+Input: 
+bits = [1, 1, 1, 0]
+Output: False
+Explanation: 
+The only way to decode it is two-bit character and two-bit character. So the last character is NOT one-bit character.
+```
+
+Analysis:
+
+This is a combination variation. It is similar to [680. Split String](https://www.lintcode.com/problem/split-string/description). The difference is [680. Split String](https://www.lintcode.com/problem/split-string/description) needs all solutions of cuts with every 1 element and every 2 element. Here if we cut every one element, the element can only be 0. If we cut every two element, the first element can only be 1, which is 10 or 11. Each horizontal enumeration has a different condition. Therefore, for-loop is not suitable for horizontal enumeration any more. What is more, when we can split all elements except the last one, we can set our result as true and stop enumeration. If we can not split all elements except the last one after trying all possible enumeration, we will return false as result.
+
+![img](/asset/1bitAnd2bitCharactor.png)
+
+```java
+public class Solution {
+    /**
+     * @param bits: a array represented by several bits. 
+     * @return: whether the last character must be a one-bit character or not
+     */
+
+    private boolean result;
+    public boolean isOneBitCharacter(int[] bits) {
+        result = false;
+        dfs(bits, 0, "");
+        return result;
+    }
 
 
-###### [15. Permutations](https://www.lintcode.com/problem/permutations/description)
+    private void dfs(int[] bits, int start, String s) {
+
+        if(result) {
+            return;
+        }
+
+        if(s.length() == bits.length - 1) {
+            result = true;
+            return;
+        }
+
+        if(s.length() >= bits.length) {
+            return;
+        }
+
+        if(start < bits.length && bits[start] == 1) {
+            dfs(bits, start + 2, s + bits[start] + bits[start + 1]);
+        }
+
+        if(bits[start] == 0) {
+            dfs(bits, start + 1, s + bits[start]);
+        }
+    }
+}
+```
+
+
+
+#### [15. Permutations](https://www.lintcode.com/problem/permutations/description)
 
 Descriptions:
 
@@ -567,7 +644,7 @@ DFS permutation template.
     }
 ```
 
-###### [16. Permutations II](https://www.lintcode.com/problem/permutations-ii/description)
+#### [16. Permutations II](https://www.lintcode.com/problem/permutations-ii/description)
 
 Description:
 
@@ -635,7 +712,7 @@ DFS permutation template +  skipping the duplicate sibling branch horizontally.
     }
 ```
 
-###### [33. N-Queens](https://www.lintcode.com/problem/n-queens/description)
+#### [33. N-Queens](https://www.lintcode.com/problem/n-queens/description)
 
 Descriptions:
 
@@ -677,7 +754,7 @@ Pruning Condition:
 
 Here are the decision tree without pruning condition 3 and 4.
 
-![NQueens](/asset/NQueens.jpg)
+![img](/asset/NQueens.jpg)
 
 *This question modifies permutation template by only selecting some paths.*
 
@@ -750,7 +827,7 @@ Here are the decision tree without pruning condition 3 and 4.
     }
 ```
 
-###### [34. N-Queens II](https://www.lintcode.com/problem/n-queens-ii/description)
+#### [34. N-Queens II](https://www.lintcode.com/problem/n-queens-ii/description)
 
 Description: Follow up for [33. N-Queens](#33. N-Queens) problem. Now, instead outputting board configurations, return the total number of distinct solutions.
 
@@ -822,7 +899,7 @@ The main DFS function is the same as  [33. N-Queens](#33. N-Queens). The differe
     }
 ```
 
-###### [816. Traveling Salesman Problem](https://www.lintcode.com/problem/traveling-salesman-problem/description)
+#### [816. Traveling Salesman Problem](https://www.lintcode.com/problem/traveling-salesman-problem/description)
 
 Description:
 
@@ -851,7 +928,7 @@ Analysis:
 
   From the decision tree, we can see, the permutation will start with 1 element and the first element can only be 1. Vertically, the permutation position will start from 2nd position which depth = 1. Here we can see horizontally and vertically all starts from 2nd position. Therefore, our index `i` will start from 2nd value which is 1.
 
-![travellingSalesman](/asset/travellingSalesman.jpg)
+![img](/asset/travellingSalesman.jpg)
 
 *This problem modifies the permutation template by narrowing the index `i` range, which is starting the position from 2nd position.*
 
@@ -941,7 +1018,7 @@ public class Solution {
 
   With this method, **graph will be saved as a map (city: neighbors).**
 
-![TravelingSalesman](/asset/TravelingSalesman.jpg)
+![img](/asset/TravelingSalesman.jpg)
 
 
 
@@ -1032,7 +1109,7 @@ class Pair {
 }
 ```
 
-###### [427. Generate Parentheses](https://www.lintcode.com/problem/generate-parentheses/description)
+#### [427. Generate Parentheses](https://www.lintcode.com/problem/generate-parentheses/description)
 
 Descriptions:
 
@@ -1060,11 +1137,13 @@ This question is to get all permutations of n pairs of '(' and ')'. The duplicat
 
 Here is the decision tree, '(' marks as 0, and ')' marks as 1. 
 
- ![generateParenthesis](/asset/generateParenthesis.jpg)
+ ![img](/asset/generateParenthesis.jpg)
 
 
 
 *This problem modifies the permutation with duplicates template by selecting all paths whose left brackets >= right brackets all the time.*
+
+[StringBuilder Used in DFS Template](https://www.tinawang.ca/algo/2021/04/06/clean-code-practice.html)
 
 ```java
 public List<String> generateParenthesis(int n) {
@@ -1128,7 +1207,7 @@ private void dfs(String parentheses, boolean[] visited, StringBuilder perm, List
 }
 ```
 
-###### [815. Course Schedule IV](https://www.lintcode.com/problem/course-schedule-iv/description)
+#### [815. Course Schedule IV](https://www.lintcode.com/problem/course-schedule-iv/description)
 
 There are a total of `n` courses you have to take, labeled from `0` to `n - 1`.
 Some courses may have prerequisites, for example to take course `0` you have to first take course `1`, which is expressed as a pair: `[0,1]`
@@ -1152,15 +1231,15 @@ The problem is asking to get 0 to n - 1 permutations with condition that all pre
 
 Here is its decision tree.
 
-![coursescheduleIV](/asset/coursescheduleIV.jpg)
+![img](/asset/coursescheduleIV.jpg)
 
 *This problem modifies permutation template by selecting all paths satisfying pre-requisite course orders.*
 
 1. Every time when we add a new element into a set along one path vertically, we can check whether the set contains this new element's all prerequisite-course list . The checking list is getting longer and longer. Each element in the set will be checked multiple times. All elements in the set will be checked in average O(n ^ 2) (n + n - 1 + n - 2 + ... + 1)time, and each check will take O(n) time in worst case. Therefore the checking time of one path will be O(n ^ 3).
 
-   *[7. Set often used functions](/_posts/CleanCodePractice.md)*
+   *[Set often used functions](https://www.tinawang.ca/algo/2021/04/06/clean-code-practice.html)*
 
-   *[8. For each parameter can not be null](CleanCodePractice.md)*
+   *[For each parameter can not be null](https://www.tinawang.ca/algo/2021/04/06/clean-code-practice.html)*
 
    ```java
    public class Solution {
@@ -1318,13 +1397,13 @@ public class Solution {
 
 *This question we use 2 ways to save a graph. Firstly, we save the graph by map(key: key's direct neighbors). Secondly, we use matrix to save any two courses' relationship.*
 
-###### [795. 4-Way Unique Paths](https://www.lintcode.com/problem/4-way-unique-paths/description)
+#### [795. 4-Way Unique Paths](https://www.lintcode.com/problem/4-way-unique-paths/description)
 
 Analysis:
 
 This question is also a permutation problem. The unique part is siblings in the horizontal level are not enumeration from 1 to n. It is the parent's node's 4 directions. You can not get siblings horizontally from each other. You can only get them from parent value. Here are the decision tree.
 
-![4-unique-path](/asset/4-unique-path.jpg)
+![img](/asset/4-unique-path.jpg)
 
 
 
@@ -1401,7 +1480,7 @@ public class Solution {
 }
 ```
 
-###### [425. Letter Combinations of a Phone Number](https://www.lintcode.com/problem/letter-combinations-of-a-phone-number/solution)
+#### [425. Letter Combinations of a Phone Number](https://www.lintcode.com/problem/letter-combinations-of-a-phone-number/solution)
 
 Description:
 
@@ -1430,7 +1509,7 @@ Analysis:
 
 The decision tree is here.
 
-![letterComofaPhoneNum](/asset/letterComofaPhoneNum.jpg)
+![img](/asset/letterComofaPhoneNum.jpg)
 
 From the tree, we can see each new level of siblings are not repeated from last level. Horizontally, you only need to loop through 1 digit's all letters. Vertically, you need to move the position. This permutation won't need check whether a number is visited or not because each level's enumeration are in order, and you can not reverse the order.
 
@@ -1501,7 +1580,7 @@ From the tree, we can see each new level of siblings are not repeated from last 
     }
 ```
 
-###### [37. Sudoku Solver](https://leetcode.com/problems/sudoku-solver/)
+#### [37. Sudoku Solver](https://leetcode.com/problems/sudoku-solver/)
 
 Description:
 
@@ -1535,7 +1614,7 @@ Another point to this question is how to exam the 3 X 3 sub boxes of the grid.
 
 First row / 3 and column / 3 can get the point 's row and column start in one of sub boxes. If we serialize the 9 units from 0 to 8. Any point's row index will serialized total / 3, and its column index will be serialized total % 3. In such way, you get 9 elements' index in one sub box. By adding the start point, we can get any sub box's index.
 
-![sudokuSolver](/asset/sudokuSolver.jpg)
+![img](/asset/sudokuSolver.jpg)
 
 ```java
 class Solution {
@@ -1609,7 +1688,6 @@ class Solution {
 
 }
 ```
-
 Summery:
 
 To solve DFS problems, 
