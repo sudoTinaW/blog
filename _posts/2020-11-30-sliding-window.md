@@ -642,6 +642,3 @@ This question is not a typical fixed size sliding window problem. Since amplitud
     }
 ```
 
-
-
-#### 
