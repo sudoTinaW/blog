@@ -6,51 +6,38 @@ categories: algo
 ---
 Binary Tree is a data structure extended from linked list data structure. It has the character of inconsecutive data storage , and indirect data access(unlike array's direct access). **It suits to traverse by recursion**. 
 
-There are 3 ways of traversal. Most of the issues can be resolved using the 3 ways of traversal. 
+When we traverse a binary tree, we will visit each node twice, once along the top-down direction, once along the bottom-up direction. The node is actually a pointer to access each element on the tree.
 
-Pre-order Traversal,
+#### Top-down: 
 
-```java
-public void traverse(TreeNode root) { 
-    //root will reslove the smaller issue for one node.
-    traverse(root.left);
-    traverse(root.right);
-}
-```
+- Along the top-down direction, we often run operations before subtrees' recursive call. The operations often save some data from ancestor's nodes and use it after subtrees' return when we visit the node again in the bottom-up direction. Those data is often saved as local variables. If we want to update any variable permanently during a top-down visit, we need to save the variable as an object's property or an element of a list. 
+- The (local or global) variable will only be updated when it is satisfied with the question's requirements. We don't need to consider what needs to be updated to when the variable is not satisfied with the requirements. If the variable is not satisfied with the requirement, we can choose not to update it.
 
-In-order Traversal,
+#### Bottom-up:
 
-```java
-public void traverse(TreeNode root) { 
-    traverse(root.left);
-    //root will reslove the smaller issue for one node.
-    traverse(root.right);
-}
-```
+- Along the bottom-up direction, we often run operations after subtrees' recursive call. The operations are often used to get the final result. The result can be updated in two ways,
+  - We can save the result in the return type. This way is actually as a conquer operation. Since binary tree naturally separates the problem into left and right subproblems, we can say this way as **divide and conquer**.
+  - We also can save the result as an object's property or an element of a list, similarly to a top-down permanent variable. We use this way to collect the final result is usually because we can not get some intermediate result when we traverse along top-down direction. That is to say, we often apply this bottom-up traversal on intermediate result.
+- The result has always to be updated using **divide and conquer** method , no matter whether the result qualified with the question's requirement or not. That is because every subtree needs to have a return result even when the result is not updated. Therefore, we need to consider what to return when the result doesn't need any update. We can think from situations,
+  - Both left and right subtree has qualified result.
+  - Left or right subtree has a qualified result, but the other subtree doesn't. Here we need to consider what needs to be returned when the result is not qualified with the requirement.
+  - Neither left or right subtree has a qualified result. Here we need to consider what needs to be returned when the result is not qualified with the requirement.
 
-Post-order Traversal,
+#### When to use bottom-up and when to use top-down?
 
-```java
-public void traverse(TreeNode root) { 
-    traverse(root.left);
-    traverse(root.right);
-    //root will reslove the smaller issue for one node.
-}
-```
+- If a question requires operations differently on left and right subtrees, we can only run those operations along the top-down direction. Only along the top-down direction we can tell a node is on a left or right subtree, but not along the bottom-up direction. 
 
-We can resolve a binary tree problem using traversal way or divide and conquer way.
+- If the final result only needs **left or right subtree's result**, top-down or bottom-up will both work.
 
-#### Traversal: Do something for one node and all nodes on its subtrees need to do the same operation.
+  ![img](binaryTreeSingalPath.png)
 
-- Do what a node shall do.  明确一个节点要做的事
-- Recursive call a node's subtrees. 递归调用所有子树
-- The traversal way usually use with class property.
+- If the final result only needs both **left and right subtree's topmost node**, we can use top-down method with 2 pointers.
 
-#### Divide and conquer: The final result will get from its left subtree's and right subtree's result.
+- If the final result needs both **left and right subtree's result**, bottom-up method is easier to solve the problem. For example, if we need to get all path sums of a tree, and the path needs to cross a node from the node's left side to its right side as showing in the below picture, bottom-up method can resolve the issue easily but top-down method will be hard.
 
-- Recursive call the node's left and right tree. 递归调用左右子树
-- Use left and right subtree returning result to calculate final result.  
-- The divide and conquer way usually has a return type because it needs to use left and right subtree's result.
+  ![img](binaryTreeCrossingPath.png)
+
+  
 
 ### Problem
 
@@ -81,7 +68,7 @@ As the picture described, each method (including its instructions and parameters
 
 Because java can not save 2 types in one stack. We will create a customized object to bundle a tree node and marker(whether it is a value, or a node).
 
-![](E:\study\jiuzhang\Notes\BinaryTreeRecursionStack.JPG)
+![img](BinaryTreeRecursionStack.JPG)
 
 Since stack is popping in the reversed order of pushing. Here we need to save the nodes in reversed visited order, which means for preorder, we will push the nodes as right, left, and node itself. Right and left are pushed as subtree, node itself will be pushed as wait for visited.
 
@@ -176,11 +163,7 @@ Explanation：
 
 Analysis:
 
-Here we can use both traversal and divide-conquer.
-
-Traversal: 
-
-Check a node, if it is a leaf node, add its value to the final sum. The left subtree and right subtree do the same operation. The traversal method needs to use a class property to remember the final result, so it has a side effect.
+It is an easy problem. We can collect the sum as a class property and run the sum-up calculation along the top-down direction. 
 
 ```java
 public int sum;
@@ -205,9 +188,7 @@ private void traverse(TreeNode cur) {
 }
 ```
 
-Divide-conquer： 
-
-The binary tree's leaf sum equals the sum of its left subtree's leaf sum and right subtree's leaf sum. 
+We can also collect the sum in the return result and run sum-up calculation along the bottom-up direction. The sum is the total of right subtree's leaf sum and left subtree's leaf sum. This is the divide-conquer way.
 
 ```java
     public int leafSum(TreeNode root) {
@@ -267,36 +248,36 @@ Explanation：
 
 Analysis:
 
-Traversal:
-
-Check a node whether it is in the target level, if yes, we will add the node's value to the final sum result. Do the same operations for nodes on the left and right subtree.
+We can check a node whether it is in the target level and collect the satisfied level's sum as a class property along the top-down direction. 
 
 ```java
-int sum;
+private int sum;
 public int levelSum(TreeNode root, int level) {
-    traverse(root, level, 1);
-    return sum;
+
+  sum = 0;
+  findSum(root, level);
+  return sum;
 }
 
-private void traverse(TreeNode cur, int level, int height) {
-    
-    if(cur == null) {
-        return;
-    }
-    
-    if(level == height) {
-        sum += cur.val;
-        return;
-    }
-    
-    traverse(cur.left, level, height + 1);
-    traverse(cur.right, level, height + 1);
+
+public void findSum(TreeNode root, int level) {
+
+  if(root == null) {
+    return;
+  }
+
+  if(level == 1) {
+    sum += root.val;
+  }
+
+  findSum(root.left, level - 1);
+  findSum(root.right, level - 1);
 }
 ```
 
 Divide-conquer:
 
-以root为顶点的树到targeted level 的level sum = left-subtree's level sum +  right subtree's level sum.
+We can also collect the sum in the return result and run sum-up calculation along the bottom-up direction. The sum is the total of right subtree's targeted level's sum and left subtree's targeted level's sum. Here `level `variable is updated along the top-down direction, and  is for assisting to find the final result.
 
 ```java
 public int levelSum(TreeNode root, int level) {
@@ -316,79 +297,6 @@ public int levelSum(TreeNode root, int level) {
 }
 ```
 
-#### [480. Binary Tree Paths](https://www.lintcode.com/problem/binary-tree-paths/description)
-
-Description:
-
-Given a binary tree, return all root-to-leaf paths.
-
-Example 1:
-
-```
-Input：{1,2,3,#,5}
-Output：["1->2->5","1->3"]
-Explanation：
-   1
- /   \
-2     3
- \
-  5
-```
-
-Example 2:
-
-```
-Input：{1,2}
-Output：["1->2"]
-Explanation：
-   1
- /   
-2     
-```
-
-Analysis:
-
-Traversal: A node will collect the path with its left child's value for left subtree, and the path with its right child's value for right subtree. Since the returning type is a `List<String>`, we can build the result through input parameter instead of using global variables.
-
-*[5. Modifying input parameters during a method call](CleanCodePractice.md)*
-
-Here we will only post the traversal traversal way since it is easier to think of.
-
-```java
-    public List<String> binaryTreePaths(TreeNode root) {
-        List<String> result = new ArrayList<>();
-        
-        if(root == null) {
-            return result;
-        }
-        traverse(root, "" + root.val, result);
-        
-        return result;
-    }
-    
-    private void traverse(TreeNode cur, String path, List<String> result) {
-        
-        if(cur.left == null && cur.right == null) {
-            result.add(path);
-            
-            return;
-        }
-        
-        
-        if(cur.left != null) {
-            traverse(cur.left, path + "->" + cur.left.val, result);
-
-        }
-        if(cur.right != null) {
-            traverse(cur.right, path + "->" + cur.right.val, result);
-        }
-
-    }
-```
-
-Divide-conquer: 
-
-Get all left subtree's paths, and all right subtree's paths. Add the cur value to all left subtree's paths, and right subtree's paths in the front of all paths iteratively. 
 
 #### [469. Same Tree](https://www.lintcode.com/problem/same-tree/description)
 
@@ -399,60 +307,25 @@ Check if two binary trees are identical. Identical means the two binary trees ha
 Example 1:
 
 ```
-Input:{1,2,2,4},{1,2,2,4}
-Output:true
-Explanation:
-        1                   1
-       / \                 / \
-      2   2   and         2   2
-     /                   /
-    4                   4
-
-are identical.
+Input:{1,2,2,4},{1,2,2,4}Output:trueExplanation:        1                   1       / \                 / \      2   2   and         2   2     /                   /    4                   4are identical.
 ```
 
 Example 2:
 
 ```
-Input:{1,2,3,4},{1,2,3,#,4}
-Output:false
-Explanation:
-
-        1                  1
-       / \                / \
-      2   3   and        2   3
-     /                        \
-    4                          4
-
-are not identical.
+Input:{1,2,3,4},{1,2,3,#,4}Output:falseExplanation:        1                  1       / \                / \      2   3   and        2   3     /                        \    4                          4are not identical.
 ```
 
 Analysis:
 
-Traversal:
-
-Traverse all the nodes same time of tree a and tree b. Use a global variable to remember if they are the same or not.
+We can compare each node from tree `a` and tree `b` at the same time when we traverse each node in the top-down direction, and use a global variable to remember if they are the same or not.
 
 Divide-conquer:
 
-If left subtree and right subtree are identical, and the cur value from a and b are the same, we can return true. Otherwise, return false.
+We can also start compare each node from tree `a` and tree `b` when we return visit from bottom-up. If left subtree and right subtree are identical, and the cur value from a and b are the same, we can return true. Otherwise, return false.
 
 ```java
-    public boolean isIdentical(TreeNode a, TreeNode b) {
-        
-        if(a == null && b == null) {
-            return true;
-        }
-        
-        if(a == null && b != null || a != null && b == null) {
-            return false;
-        }
-        
-        boolean isLeftTreeIdentical = isIdentical(a.left, b.left);
-        boolean isRightTreeIdentical = isIdentical(a.right, b.right);
-        
-        return isLeftTreeIdentical && isRightTreeIdentical && a.val == b.val;
-    }
+    public boolean isIdentical(TreeNode a, TreeNode b) {                if(a == null && b == null) {            return true;        }                if(a == null && b != null || a != null && b == null) {            return false;        }                boolean isLeftTreeIdentical = isIdentical(a.left, b.left);        boolean isRightTreeIdentical = isIdentical(a.right, b.right);                return isLeftTreeIdentical && isRightTreeIdentical && a.val == b.val;    }
 ```
 
 #### [175. Invert Binary Tree](https://www.lintcode.com/problem/invert-binary-tree/description)
@@ -464,163 +337,89 @@ Invert a binary tree.left and right subtrees exchange.
 Example 1:
 
 ```
-Input: {1,3,#}
-Output: {1,#,3}
-Explanation:
-	  1    1
-	 /  =>  \
-	3        3
+Input: {1,3,#}Output: {1,#,3}Explanation:	  1    1	 /  =>  \	3        3
 ```
 
 Example 2:
 
 ```
-Input: {1,2,3,#,#,4}
-Output: {1,3,2,#,4}
-Explanation: 
-	
-      1         1
-     / \       / \
-    2   3  => 3   2
-       /       \
-      4         4
+Input: {1,2,3,#,#,4}Output: {1,3,2,#,4}Explanation: 	      1         1     / \       / \    2   3  => 3   2       /       \      4         4
 ```
 
 Analysis:
 
-Traversal: this question doesn't need a return type, so we will use traversal directly. We will swap left and right sub trees, and call recursions.  
+This question needs update left child node update to right child node, and right child node update to left child node. The left child and right child's operations are different. We will run updates along the top-down traversal.
 
-Even though after the swap the traverse order of left and right will change, it won't influence the  final result. The question only requires invert all left and sub trees.
+Even though after the swap the traverse order of left and right will change, the code can still make sure traversing both left and right subtree only once. 
 
 ```java
-    public void invertBinaryTree(TreeNode root) {
-        
-        if(root == null) {
-            return;
-        }
-        
-        TreeNode temp = root.right;
-        root.right = root.left;
-        root.left = temp;
-        invertBinaryTree(root.left);
-        invertBinaryTree(root.right);
-    }
+    public void invertBinaryTree(TreeNode root) {                if(root == null) {            return;        }                TreeNode temp = root.right;        root.right = root.left;        root.left = temp;        invertBinaryTree(root.left);        invertBinaryTree(root.right);    }
 ```
 
-#### [97. Maximum Depth of Binary Tree](https://www.lintcode.com/problem/maximum-depth-of-binary-tree/description)
+#### [1360. Symmetric Tree](https://www.lintcode.com/problem/symmetric-tree/description)
+
+Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
+
+Example1
+
+```
+Input: {1,2,2,3,4,4,3}Output: trueExplanation:    1   / \  2   2 / \ / \3  4 4  3This binary tree {1,2,2,3,4,4,3} is symmetric
+```
+
+Example2
+
+```
+Input: {1,2,2,#,3,#,3}Output: falseExplanation:    1   / \  2   2   \   \   3    3This is not a symmetric tree
+```
+
+Analysis:
+
+If a node's right subtree and left subtree are symmetric, the tree is symmetric. Normal top-down or bottom-up traversal will visit node one by one, which means we can not visit both left and right subtree at the same time. However, this question needs to visit left and right subtree at the same time so that we can compare nodes in some way to check whether they are symmetric. Therefore, we will use 2 pointers as input to let them traverse at the same time. 
+
+One subtree needs to traverse int order of right and left, the other subtree needs to traverse in order of left and right. We compare each node on 2 different trees when we traverse along top-down direction, and save the comparing result in the return type. We will conquer the return result along the bottom-up direction.
+
+If left and right subtree's value are equal, left.right subtree and right.left subtree are symmetrical, and left.left and right.right subtree are symmetrical, the tree is symmetrical. 
+
+```java
+public boolean isSymmetric(TreeNode root) {  if(root == null) {    return true;  }  return helper(root.left, root.right);}private boolean helper(TreeNode node1, TreeNode node2) {  if(node1 == null && node2 == null) {    return true;  }  if(node1 == null && node2 != null || node1 != null && node2 == null) {    return false;  }  if(node1.val != node2.val) {    return false;  }  boolean isLeft = helper(node1.right, node2.left);   boolean isRight = helper(node1.left, node2.right);  return isLeft && isRight;}
+```
+
+#### [480. Binary Tree Paths](https://www.lintcode.com/problem/binary-tree-paths/description)
 
 Description:
 
-Given a binary tree, find its maximum depth.
-
-The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+Given a binary tree, return all root-to-leaf paths.
 
 Example 1:
 
 ```
-Input: tree = {}
-Output: 0
-Explanation: The height of empty tree is 0.
+Input：{1,2,3,#,5}Output：["1->2->5","1->3"]Explanation：   1 /   \2     3 \  5
 ```
 
 Example 2:
 
 ```
-Input: tree = {1,2,3,#,#,4,5}
-Output: 3	
-Explanation: Like this:
-   1
-  / \                
- 2   3                
-    / \                
-   4   5
-it will be serialized {1,2,3,#,#,4,5}
+Input：{1,2}Output：["1->2"]Explanation：   1 /   2     
 ```
 
 Analysis:
+
+We can collect all nodes along the top-down directional visit and collect the path as the node reaches to the leaf. 
+
+This question has 2 points that need to pay attention,
+
+- when we traverse along top-down direction and aim to visit all nodes, we will return after visiting `null` node, not after leaf node.  If we want to return after leaf node, we need pay attention to the node who only has one child when we call its subtrees. 
+- Any variable who is not a property of a list or an element of a list, its update will only exit in the the scope of its level's call. After it returns, the update will disappear. For example, `path` variable will be updated when we visit the current node, and becomes its parent value after the call ends. 
+
+*[5. Modifying input parameters during a method call](CleanCodePractice.md)*
+
+```java
+public List<String> binaryTreePaths(TreeNode root) {  List<String> result = new ArrayList<>();  findPath(root, "", result);  return result;}private void findPath(TreeNode cur, String path, List<String> result) {  if(cur == null) {    return;  }  path = path + "->" + cur.val;  if(cur.left == null && cur.right == null) {    result.add(path.substring(2, path.length()));  }  findPath(cur.left, path, result);  findPath(cur.right, path, result);}
+```
 
 Divide-conquer:
 
-A tree's max depth is the max depth of its left subtree and right subtree + 1. 
-
-```java
-    public int maxDepth(TreeNode root) {
-        if(root == null) {
-            return 0;
-        }
-        
-        int left = maxDepth(root.left);
-        int right = maxDepth(root.right);
-        
-        return Math.max(left, right) + 1;
-    }
-```
-
-#### [1181 Diameter of Binary Tree](https://www.lintcode.com/problem/1181/?_from=ladder&fromId=137)
-
-Description:
-
-Given a binary tree, you need to compute the length of the diameter of the tree. The diameter of a binary tree is the length of the longest path between any two nodes in a tree.
-
-The length of path between two nodes is represented by the number of edges between them.
-
-Example 1:
-
-```
-Given a binary tree 
-          1
-         / \
-        2   3
-       / \     
-      4   5    
-Return 3, which is the length of the path [4,2,1,3] or [5,2,1,3].
-```
-
-Example 2:
-
-```
-Input:[2,3,#,1]
-Output:2
-
-Explanation:
-      2
-    /
-   3
- /
-1
-```
-
-Analysis:
-
-First we need to find a diameter of a tree is actually a tree's root's left subtree's height + right subtree's height. Then we can use **divide-conquer** to calculate any tree's height, and add up the root's left subtree's height and right subtree's height.
-
-```java
-    public int diameterOfBinaryTree(TreeNode root) {
-        int result = 0;
-        if(root.left != null) {
-            result += findHeight(root.left);
-        }
-        if(root.right != null) {
-            result += findHeight(root.right);
-        }
-
-        return result;
-    }
-
-    private int findHeight(TreeNode root) {
-
-        if(root == null) {
-            return 0;
-        }
-
-        int left = findHeight(root.left);
-        int right = findHeight(root.right);
-
-        return Math.max(left, right) + 1;
-    }
-```
-
-
+We can collect all nodes along the bottom-up return visit. We can add the cur value to all left subtree's paths, and right subtree's paths in the front of all paths iteratively. 
 
 #### [376. Binary Tree Path Sum](https://www.lintcode.com/problem/binary-tree-path-sum/description)
 
@@ -633,18 +432,7 @@ A valid path is from root node to any of the leaf nodes.
 Example 1:
 
 ```plain
-Input:
-{1,2,4,2,3}
-5
-Output: [[1, 2, 2],[1, 4]]
-Explanation:
-The tree is look like this:
-	     1
-	    / \
-	   2   4
-	  / \
-	 2   3
-For sum = 5 , it is obviously 1 + 2 + 2 = 1 + 4 = 5
+Input:{1,2,4,2,3}5Output: [[1, 2, 2],[1, 4]]Explanation:The tree is look like this:	     1	    / \	   2   4	  / \	 2   3For sum = 5 , it is obviously 1 + 2 + 2 = 1 + 4 = 5
 ```
 
 
@@ -652,72 +440,18 @@ For sum = 5 , it is obviously 1 + 2 + 2 = 1 + 4 = 5
 Example 2:
 
 ```plain
-Input:
-{1,2,4,2,3}
-3
-Output: []
-Explanation:
-The tree is look like this:
-	     1
-	    / \
-	   2   4
-	  / \
-	 2   3
-Notice we need to find all paths from root node to leaf nodes.
-1 + 2 + 2 = 5, 1 + 2 + 3 = 6, 1 + 4 = 5 
-There is no one satisfying it.
+Input:{1,2,4,2,3}3Output: []Explanation:The tree is look like this:	     1	    / \	   2   4	  / \	 2   3Notice we need to find all paths from root node to leaf nodes.1 + 2 + 2 = 5, 1 + 2 + 3 = 6, 1 + 4 = 5 There is no one satisfying it.
 ```
 
 Analysis:
 
-Traversal:
+This question is almost the same as [480. Binary Tree Paths](https://www.lintcode.com/problem/binary-tree-paths/description). Here we need an extra variable to collect the sum of all paths. We will only return paths' sum equal to target.
 
-Calculate sum and collect paths from root to all nodes during traversal traversal. When we reach to leaves and the sum is exactly target, we will collect this path to the final result. 
-
-This question includes a backtracking. Before we call the next level recursion, we will modify some properties. After the recursion return to the current level, we need to recover those modified properties.
+This question has one thing different from the [480. Binary Tree Paths](https://www.lintcode.com/problem/binary-tree-paths/description) .We will collect path by list. Before we call recursions, we will update path list. It won't revert its value after the recursion call. We need to manually revert its value back.
 
 ```java
-public List<List<Integer>> binaryTreePathSum(TreeNode root, int target) {
-    List<List<Integer>> result = new ArrayList<>();
-    
-    if(root == null) {
-        return result;
-    }
-    
-    List<Integer> path = new ArrayList<>();
-    path.add(root.val);
-    
-    traverse(root, target, path,  result, root.val);
-    return result;
-}
-
-public void traverse(TreeNode cur, int target, List<Integer> path, List<List<Integer>> result, int sum) {
-    
-    if(cur == null) {
-        return;
-    }
-    
-    if(cur.left == null && cur.right == null && sum == target) {
-        result.add(new ArrayList<>(path));
-    }
-    
-    if(cur.left != null) {
-        path.add(cur.left.val);
-        traverse(cur.left, target, path, result, sum + cur.left.val);
-        path.remove(path.size() - 1);
-    }
-    
-    if(cur.right != null) {
-        path.add(cur.right.val);
-        traverse(cur.right, target, path, result, sum + cur.right.val);
-        path.remove(path.size() - 1);
-    }
-}
+public List<List<Integer>> binaryTreePathSum(TreeNode root, int target) {  List<List<Integer>> result = new ArrayList<>();  if(root == null) {    return result;  }  getPathSum(root, target, new ArrayList<>(), result, 0);  return result;}private void getPathSum(TreeNode cur, int target, List<Integer> path, List<List<Integer>> result, int sum) {  if(cur == null) {    return;  }  path.add(cur.val);  sum += cur.val;  if(cur.left == null && cur.right == null && sum == target) {    result.add(new ArrayList<>(path));  }  getPathSum(cur.left, target, path, result, sum);  getPathSum(cur.right, target, path, result, sum);  path.remove(path.size() - 1);}
 ```
-
-Divide-conquer:
-
-Find all paths in left subtree and right subtree their sum equals target - root's value. Collect all left and right subtree's result.
 
 ####  [246. Binary Tree Path Sum II](https://www.lintcode.com/problem/binary-tree-path-sum-ii/description)
 
@@ -726,19 +460,7 @@ Your are given a binary tree in which each node contains a value. Design an algo
 Example 1:
 
 ```plain
-Input:
-{1,2,3,4,#,2}
-6
-Output:
-[[2, 4],[1, 3, 2]]
-Explanation:
-The binary tree is like this:
-    1
-   / \
-  2   3
- /   /
-4   2
-for target 6, it is obvious 2 + 4 = 6 and 1 + 3 + 2 = 6.
+Input:{1,2,3,4,#,2}6Output:[[2, 4],[1, 3, 2]]Explanation:The binary tree is like this:    1   / \  2   3 /   /4   2for target 6, it is obvious 2 + 4 = 6 and 1 + 3 + 2 = 6.
 ```
 
 Example 2:
@@ -759,48 +481,109 @@ The binary tree is like this:
 for target 10, there is no way to reach it.
 ```
 
+Analysis:
 
+This question requires to get all combinations of paths going downwards from parent to child. We can build paths either along top-bottom, or bottom-up directions. We can calculate all combinations as following situations,
+
+![img](BinaryTreePathSumII.png)
+
+Here I will post top-down solution only,
+
+```java
+public class Solution {    /*     * @param root: the root of binary tree     * @param target: An integer     * @return: all valid paths     */    public List<List<Integer>> binaryTreePathSum2(TreeNode root, int target) {        List<List<Integer>> result = new ArrayList<>();        if(root == null) {            return result;        }        traverseAllNodes(root, target, result);        return result;    }        private void traverseAllNodes(TreeNode cur, int target, List<List<Integer>> result) {        if(cur == null) {            return;        }        getAllPathSumFromOneNode(cur, target, new ArrayList<>(), result, 0);        traverseAllNodes(cur.left, target, result);        traverseAllNodes(cur.right, target, result);    }    private void getAllPathSumFromOneNode(TreeNode cur, int target, ArrayList<Integer> path, List<List<Integer>> result, int sum) {        if(cur == null) {            return;        }        path.add(cur.val);        sum += cur.val;        if(sum == target) {            result.add(new ArrayList<>(path));        }        getAllPathSumFromOneNode(cur.left, target, path, result, sum);        getAllPathSumFromOneNode(cur.right, target, path, result, sum);        path.remove(path.size() - 1);    }}
+```
+
+#### [97. Maximum Depth of Binary Tree](https://www.lintcode.com/problem/maximum-depth-of-binary-tree/description)
+
+Description:
+
+Given a binary tree, find its maximum depth.
+
+The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+
+Example 1:
+
+```
+Input: tree = {}Output: 0Explanation: The height of empty tree is 0.
+```
+
+Example 2:
+
+```
+Input: tree = {1,2,3,#,#,4,5}Output: 3	Explanation: Like this:   1  / \                 2   3                    / \                   4   5it will be serialized {1,2,3,#,#,4,5}
+```
 
 Analysis:
 
-This question requires returning  a list of all paths. We can use both traversal and divide-conquer. However, divide-conquer needs to consider the question from result to requirements. Also, traversal won't introduce extra global variables because the result is an object already. Therefore, we will use traversal for this question.
+Divide-conquer:
 
-We will build a path from root to leaf. For each node, we will iteratively calculate sum back up from each node to get sums not starting from root.
-
-This question is actually a typical DFS question. DFS is actually a traversal for multiple-branch trees. In the requirements, we can see the question is looking for **all paths**. DFS is looping each element in the same level horizontally and call recursion for each node.  this question, horizontally, we only have 2 subtrees. We will enumerate them by left and right. Here we need to pay attention, this question's iteration is different from the DFS template iteration. 
-
-Time complexity is O(n^2).
+We can get the max depth only after we visit the bottom. Therefore, we will collect result along bottom-up direction.A tree's max depth is the max depth of its left subtree and right subtree + 1. 
 
 ```java
-public List<List<Integer>> binaryTreePathSum2(TreeNode root, int target) {
-    List<List<Integer>> result = new ArrayList<>();
-    helper(root, target, new ArrayList<>(), result);
-    return result;
-}
-
-private void helper(TreeNode cur, int target, List<Integer> subset, List<List<Integer>> result) {
-    
-    if(cur == null) {
-        return;
-    }
-    
-    subset.add(cur.val);
-    
-    int subSum = 0;
-    for(int i = subset.size() - 1; i >= 0; i--) {
-        subSum += subset.get(i);
-        if(subSum == target) {
-            result.add(new ArrayList<Integer>(subset.subList(i, subset.size())));
-        }    
-    }
-    
-    helper(cur.left, target, subset, result);
-    helper(cur.right, target, subset, result);
-    subset.remove(subset.size() - 1);
-}
+    public int maxDepth(TreeNode root) {        if(root == null) {            return 0;        }                int left = maxDepth(root.left);        int right = maxDepth(root.right);                return Math.max(left, right) + 1;    }
 ```
 
-######  
+#### [1181 Diameter of Binary Tree](https://www.lintcode.com/problem/1181/)
+
+Description:
+
+Given a binary tree, you need to compute the length of the diameter of the tree. The diameter of a binary tree is the length of the longest path between any two nodes in a tree.
+
+The length of path between two nodes is represented by the number of edges between them.
+
+Example 1:
+
+```
+Given a binary tree           1         / \        2   3       / \           4   5    Return 3, which is the length of the path [4,2,1,3] or [5,2,1,3].
+```
+
+Example 2:
+
+```
+Input:[2,3,#,1]Output:2Explanation:      2    /   3 /1
+```
+
+Analysis:
+
+A subtree's longest path shall be the left subtree's max height plus right subtree's max height plus 1. If we can compare all subtree's longest path, we can get the longest path of a tree. We can get a tree's max height by [97. Maximum Depth of Binary Tree](https://www.lintcode.com/problem/maximum-depth-of-binary-tree/description)
+
+```java
+public class Solution {    /**     * @param root: a root of binary tree     * @return: return a integer     */    private int longest;    public int diameterOfBinaryTree(TreeNode root) {        longest = 0;        maxHeight(root);        return longest - 1;    }    private int maxHeight(TreeNode cur) {        if(cur == null) {            return 0;        }        int left = maxHeight(cur.left);        int right = maxHeight(cur.right);        longest = Math.max(left + right + 1, longest);        return Math.max(left, right) + 1;            }
+```
+
+#### [475. Binary Tree Maximum Path Sum II](https://www.lintcode.com/problem/binary-tree-maximum-path-sum-ii/description)
+
+Given a binary tree, find the maximum path sum from root.
+
+The path may end at any node in the tree and contain at least one node in it.
+
+Example 1:
+
+```
+Input: {1,2,3}Output: 4Explanation:    1   / \  2   31+3=4
+```
+
+Example 2:
+
+```
+Input: {1,-1,-1}Output: 1Explanation:    1   / \  -1 -1
+```
+
+Analysis: 
+
+Since this question requires collecting paths starting from root, It is easy to collect the sum along top-down traversal.
+
+```java
+public class Solution {    /**     * @param root: the root of binary tree.     * @return: An integer     */    private int max;    public int maxPathSum2(TreeNode root) {        max = root.val;        traverse(root, 0);        return max;    }    private void traverse(TreeNode root, int sum) {                if(root == null) {            return;        }        sum = sum + root.val;        max = Math.max(sum, max);        traverse(root.left, sum);        traverse(root.right, sum);    }}
+```
+
+Even we requires collection paths starting from root, we still can use bottom-up traversal. Here we need to notice that left and right subtree might not always return qualified answer. We need to find what to return when the result is not qualified with requirement. When a subtree's returned sum is less than 0, it is not a qualified result. Since we are getting sum of a path, we will return 0 as the disqualified subtree's result. The value 0 won't influence the final result. Therefore, a max path sum will be the max path sum of (left subtree, right subtree, and 0), plus the node's current value.
+
+```java
+    public int maxPathSum2(TreeNode root) {                if(root == null) {            return 0;        }                int left = maxPathSum2(root.left);        int right = maxPathSum2(root.right);                return Math.max(Math.max(0, left), right) + root.val;    }
+```
+
+
 
 #### [124. Binary Tree Maximum Path Sum(leetcode)](https://leetcode.com/problems/binary-tree-maximum-path-sum/)
 
@@ -830,132 +613,69 @@ Example 2:
 	Output: 6
 ```
 
-Analysis: To solve this question, we shall know how to do the question [475. Binary Tree Maximum Path Sum II](#475. Binary Tree Maximum Path Sum II). The max path sum is the max value of left,right subtree and crossing root path sum. the max crossing root sum =(max of (with left subtree's top as root, max path sum) and 0) + max of (with right subtree's top as root, max path sum) and 0) + root's value.
-
-```java
-public class Solution {
-    /**
-     * @param root: The root of binary tree.
-     * @return: An integer
-     */
-    public int maxPathSum(TreeNode root) {
-        
-        ResultType result = helper(root);
-        return result.maxPathSum;
-    }
-    
-    private ResultType helper(TreeNode cur) {
-        
-        if(cur == null) {
-            return new ResultType(Integer.MIN_VALUE, 0);
-        }
-        
-        ResultType left = helper(cur.left);
-        ResultType right = helper(cur.right);
-        
-        int singlePathSum = Math.max(left.singlePathSum, right.singlePathSum) + cur.val;
-        singlePathSum = Math.max(singlePathSum, 0);
-        
-        int maxPathSum = Math.max(left.maxPathSum, right.maxPathSum);
-        maxPathSum = Math.max(maxPathSum, left.singlePathSum + cur.val + right.singlePathSum);
-        
-        return new ResultType(maxPathSum, singlePathSum);
-    }
-}
-
-class ResultType {
-    int maxPathSum;
-    int singlePathSum;
-    
-    ResultType(int maxPathSum, int singlePathSum) {
-        this.maxPathSum = maxPathSum;
-        this.singlePathSum = singlePathSum;
-    }
-    
-}
-```
-
-#### [475. Binary Tree Maximum Path Sum II](https://www.lintcode.com/problem/binary-tree-maximum-path-sum-ii/description)
-
-Given a binary tree, find the maximum path sum from root.
-
-The path may end at any node in the tree and contain at least one node in it.
-
-Example 1:
-
-```
-Input: {1,2,3}
-Output: 4
-Explanation:
-    1
-   / \
-  2   3
-1+3=4
-```
-
-Example 2:
-
-```
-Input: {1,-1,-1}
-Output: 1
-Explanation:
-    1
-   / \
-  -1 -1
-```
-
 Analysis: 
 
-Divide-conquer:
+This question can be split to 2 different sub problems. One is to get the max path sum along parent-child downwards direction. The path doesn't need to start from root, neither end with leaf. The other sub problem is to get the max sum of path crossing from a node's left and right subtree. We can solve the first sub problem by either top-down or bottom-up method, because the max sum is either on the left subtree **or **right subtree. Meanwhile, the second problem is better to use bottom-up method to resolve since we need both max sums of left **and** right subtree. 
 
-We can get left subtree's max path sum and right subtree's max path sum. Compare the left subtree and right subtree. If the greater path sum is **> 0**, we will add the path sum to with the root value and return. Otherwise, we will return root value itself.
+Here is the bottom-up method and the time complexity is `O(n)`. The max path sum is the `max(max(right subtree's max path sum, 0) + parent node  max(left subtree's max path sum, 0) + parent node, and max(right subtree's max path sum, 0) + parent node + max(left subtree's max path sum, 0))`
 
 ```java
-    public int maxPathSum2(TreeNode root) {
+class Solution {
+    private int maxPathSum;
+    
+    public int maxPathSum(TreeNode root) {
         
-        if(root == null) {
+        maxPathSum = Integer.MIN_VALUE;
+        
+        getMaxPathSumOfSingalPath(root);
+        
+        return maxPathSum;
+    }
+    
+    private int getMaxPathSumOfSingalPath(TreeNode cur) {
+        
+        if(cur == null) {
             return 0;
         }
         
-        int left = maxPathSum2(root.left);
-        int right = maxPathSum2(root.right);
+        int left = getMaxPathSumOfSingalPath(cur.left);
+        int right = getMaxPathSumOfSingalPath(cur.right);
         
-        return Math.max(Math.max(0, left), right) + root.val;
+        if(left < 0) {
+            left = 0;
+        }
+        if(right < 0) {
+            right = 0;
+        }
+        
+        int maxCrossingCurSum = cur.val + left + right;
+        int maxSingalCurSum = Math.max(left + cur.val, right + cur.val);
+        
+        int maxCurSum = Math.max(maxCrossingCurSum, maxSingalCurSum);
+        
+        maxPathSum = Math.max(maxPathSum, maxCurSum);
+        
+        return maxSingalCurSum;
     }
+}
 ```
 
 #### [596. Minimum Subtree](https://www.lintcode.com/problem/minimum-subtree/solution)
 
 Description:
 
-Given a binary tree, find the subtree with minimum sum. Return the root of the subtree.
+Given a binary tree, find the subtree with minimum sum. Return the root of the subtree. 
 
 Example 1:
 
 ```
-Input:
-{1,-5,2,1,2,-4,-5}
-Output:1
-Explanation:
-The tree is look like this:
-     1
-   /   \
- -5     2
- / \   /  \
-1   2 -4  -5 
-The sum of whole tree is minimum, so return the root.
+Input:{1,-5,2,1,2,-4,-5}Output:1Explanation:The tree is look like this:     1   /   \ -5     2 / \   /  \1   2 -4  -5 The sum of whole tree is minimum, so return the root.
 ```
 
 Example 2:
 
 ```
-Input:
-{1}
-Output:1
-Explanation:
-The tree is look like this:
-   1
-There is one and only one subtree in the tree. So we return 1.
+Input:{1}Output:1Explanation:The tree is look like this:   1There is one and only one subtree in the tree. So we return 1.
 ```
 
 Notice:
@@ -963,92 +683,13 @@ Notice:
 LintCode will print the subtree which root is your return node.
 It's guaranteed that there is only one subtree with minimum sum and the given binary tree is not an empty tree.
 
-Analysis: Get sums for all subtrees. Compare each sum and maintain a minimum for all trees.
+Analysis: to get a tree's sum, we need both left and right subtree's sum result. Therefore, we can build subtree's sum from bottom, while we get the min subtree during the back traverse of the whole tree.
 
 ```java
-public class Solution {
-    private TreeNode subtree = null;
-    private int subtreeSum = Integer.MAX_VALUE;
-    /**
-     * @param root the root of binary tree
-     * @return the root of the minimum subtree
-     */
-    public TreeNode findSubtree(TreeNode root) {
-        helper(root);
-        return subtree;
-    }
-    
-    private int helper(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        
-        int sum = helper(root.left) + helper(root.right) + root.val;
-        if (sum <= subtreeSum) {
-            subtreeSum = sum;
-            subtree = root;
-        }
-        return sum;
-    }
-}
+public class Solution {    /**     * @param root: the root of binary tree     * @return: the root of the minimum subtree     */    private TreeNode subtree = null;    private int minSum = Integer.MAX_VALUE;    public TreeNode findSubtree(TreeNode root) {        getSum(root);        return subtree;    }        private int getSum(TreeNode root) {        if (root == null) {            return 0;        }                int sum = getSum(root.left) + getSum(root.right) + root.val;                if (sum <= minSum) {            minSum = sum;            subtree = root;        }        return sum;    }}
 ```
 
-Divide-conquer:
-
-minimum sum of a subtree is the minimum of (left, right, and left + right + root value).
-
-```java
-public class Solution {
-    /**
-     * @param root: the root of binary tree
-     * @return: the root of the minimum subtree
-     */
-     
-    public TreeNode findSubtree(TreeNode root) {
-        ResultType result = traverse(root);
-        return result.minNode;
-    }
-    
-    private ResultType traverse(TreeNode cur) {
-        
-        if(cur == null) {
-            return new ResultType(0, Integer.MAX_VALUE, null);
-        }
-        
-        ResultType left = traverse(cur.left);
-        ResultType right = traverse(cur.right);
-        
-        int sum = left.sum + right.sum + cur.val;
-        
-        TreeNode minNode = cur;
-        int min = sum;
-        
-        if(left.min < right.min && left.min < sum) {
-            min = left.min;
-            minNode = left.minNode;
-        }else if(left.min > right.min && right.min < sum){
-            min = right.min;
-            minNode = right.minNode;
-        }
-        
-        return new ResultType(sum, min, minNode);
-    }
-}
-
-class ResultType {
-    int sum;
-    int min;
-    TreeNode minNode;
-    
-    ResultType(int sum, int min, TreeNode minNode) {
-        this.sum = sum;
-        this.min = min;
-        this.minNode = minNode;
-    }
-}
-```
-
-#### [597. Subtree with Maximum Average](https://www.lintcode.com/problem/subtree-with-maximum-average/solution)
+#### [597. Subtree with Maximum Average](https://www.lintcode.com/problem/597/)
 
 Descriptions:
 
@@ -1057,30 +698,13 @@ Given a binary tree, find the subtree with maximum average. Return the root of t
 Example 1:
 
 ```
-Input：
-{1,-5,11,1,2,4,-2}
-Output：11
-Explanation:
-The tree is look like this:
-     1
-   /   \
- -5     11
- / \   /  \
-1   2 4    -2 
-The average of subtree of 11 is 4.3333, is the maximun.
+Input：{1,-5,11,1,2,4,-2}Output：11Explanation:The tree is look like this:     1   /   \ -5     11 / \   /  \1   2 4    -2 The average of subtree of 11 is 4.3333, is the maximun.
 ```
 
 Example 2:
 
 ```
-Input：
-{1,-5,11}
-Output：11
-Explanation:
-     1
-   /   \
- -5     11
-The average of subtree of 1,-5,11 is 2.333,-5,11. So the subtree of 11 is the maximun.
+Input：{1,-5,11}Output：11Explanation:     1   /   \ -5     11The average of subtree of 1,-5,11 is 2.333,-5,11. So the subtree of 11 is the maximun.
 ```
 
 Notice:
@@ -1090,68 +714,12 @@ It's guaranteed that there is only one subtree with maximum average.
 
 Analysis:
 
-Get all subtree's sum and its size to calculate the subtree's average. Maintain a class property of max average. This question needs to pay attention when node is null. The max average doesn't need to be calculated, instead, the leaf value is the avg. 
-
-We shall avoid using division as much as possible.
+This question needs both left and right subtree's sum and number of nodes to calculate the whole tree's average. Therefore, we will calculate the average for each subtree along bottom-up direction. We will use a class property to get the max average of all subtrees during the backwards traverse.
 
 *[6. Smallest number of integer and double](CleanCodePractice.md)*
 
 ```java
-public class Solution {
-    /**
-     * @param root: the root of binary tree
-     * @return: the root of the maximum average of subtree
-     */
-    
-    double maxAvg;
-    TreeNode maxNode;
-    
-    public TreeNode findSubtree2(TreeNode root) {
-        maxAvg = -Double.MIN_VALUE;
-        maxNode = null;
-        
-        traverse(root);
-        
-        return maxNode;
-        
-    }
-    
-    private ResultType traverse(TreeNode cur) {
-        
-        if(cur == null) {
-            
-            return new ResultType(0, 0);
-        }
-        
-        ResultType left = traverse(cur.left);
-        ResultType right = traverse(cur.right);
-        
-        int sum = left.sum + right.sum + cur.val;
-        int count = left.count + right.count + 1;
-        
-        double avg = ((double) sum) / count;
-        if(avg > maxAvg || maxNode == null) {
-            maxAvg = avg;
-            maxNode = cur;
-        }
-        
-        return new ResultType(sum, count);
-        
-                
-    }
-    
-    
-}
-
-class ResultType{
-    int sum;
-    int count;
-    
-    ResultType(int sum, int count) {
-        this.sum = sum;
-        this.count = count;
-    }
-}
+public class Solution {    /**     * @param root: the root of binary tree     * @return: the root of the maximum average of subtree     */    private TreeNode maxNode;    private double maxAvg;    public TreeNode findSubtree2(TreeNode root) {                maxAvg = -Double.MAX_VALUE;        System.out.println();        maxNode = null;        getSumAndCount(root);        return maxNode;    }    private ResultType getSumAndCount(TreeNode cur) {        if(cur == null) {            return new ResultType(0, 0);        }        ResultType left = getSumAndCount(cur.left);        ResultType right = getSumAndCount(cur.right);        int sum = left.sum + right.sum + cur.val;        int count = left.count + right.count + 1;        double curAvg = ((double)sum / count);                if(maxAvg < curAvg) {            maxAvg = curAvg;            maxNode = cur;        }        return new ResultType(sum, count);    }}class ResultType {    int sum;    int count;    ResultType(int sum, int count) {        this.sum = sum;        this.count = count;    }}
 ```
 
 #### [595. Binary Tree Longest Consecutive Sequence](https://www.lintcode.com/problem/binary-tree-longest-consecutive-sequence/solution)
@@ -1165,88 +733,30 @@ The path refers to any sequence of nodes from some starting node to any node in 
 Example 1:
 
 ```
-Input:
-   1
-    \
-     3
-    / \
-   2   4
-        \
-         5
-Output:3
-Explanation:
-Longest consecutive sequence path is 3-4-5, so return 3.
+Input:   1    \     3    / \   2   4        \         5Output:3Explanation:Longest consecutive sequence path is 3-4-5, so return 3.
 ```
 
 Example 2:
 
 ```
-Input:
-   2
-    \
-     3
-    / 
-   2    
-  / 
- 1
-Output:2
-Explanation:
-Longest consecutive sequence path is 2-3,not 3-2-1, so return 2.
+Input:   2    \     3    /    2      /  1Output:2Explanation:Longest consecutive sequence path is 2-3,not 3-2-1, so return 2.
 ```
 
 Analysis:
 
-A node's max consecutive length is the max of left subtree's consecutive length and right subtree's consecutive length + 1 or 1. We need to traverse all nodes to get the longest length.  
+A node's consecutive length is either on the left or right subtree. Therefore, we can resolve the issue along top-down or bottom-up direction. Here we will post top-down direction.
 
- 
+ Top-down: If a node's subtree's value is consecutive, we will pass the consecutive length to subtrees. Otherwise, the consecutive length will be 1. 
 
 ```java
-public class Solution {
-    /**
-     * @param root: the root of binary tree
-     * @return: the length of the longest consecutive sequence path
-     */
-     
-    int longest;
-    
-    public int longestConsecutive(TreeNode root) {
-        helper(root);
-        return longest;
-    }
-    
-    private int helper(TreeNode root) {
-                
-        if(root == null) {
-            return 0;
-        }
-        
-        int left = helper(root.left);
-        int right = helper(root.right);
-        
-        int length = 1;
-        
-        if(root.left != null && root.val + 1 == root.left.val) {
-            length = left + 1;
-        }
-        if(root.right != null && root.val + 1 == root.right.val) {
-            length = Math.max(length, right + 1);
-        }
-        
-        longest = Math.max(length, longest);
-        
-        return length;
-    }
-    
-}
+public class Solution {    /**     * @param root: the root of binary tree     * @return: the length of the longest consecutive sequence path     */    private int longestLen;    public int longestConsecutive(TreeNode root) {                longestLen = 0;        traverse(root, 1);        return longestLen;    }    private void traverse(TreeNode cur, int consecutiveLen) {        if(cur == null) {            return;        }        int curConsecutiveLen = 1;        if((cur.left != null && cur.val + 1 == cur.left.val) || (cur.right != null && cur.val + 1 == cur.right.val)) {            curConsecutiveLen = consecutiveLen + 1;        }        longestLen = Math.max(longestLen, curConsecutiveLen);               traverse(cur.left, curConsecutiveLen);        traverse(cur.right, curConsecutiveLen);    }}
 ```
 
-#### 93. Balanced Binary Tree](https://www.lintcode.com/problem/balanced-binary-tree/description)
+#### [93. Balanced Binary Tree](https://www.lintcode.com/problem/balanced-binary-tree/description)
 
 Description:
 
-Given a binary tree, determine if it is height-balanced.
-
-For this problem, a height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of every node never differ by more than 1.
+Given a binary tree, determine if it is height-balanced.For this problem, a height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of every node never differ by more than 1.
 
 ```
 Example  1:
@@ -1289,9 +799,7 @@ Example  3:
 
 Analysis:
 
-Since this question requires return value and the value type is a primary type. We will use divide-conquer method to resolve this question.
-
-Divide-conquer:
+This question requires both left and right subtrees' results for each node to judge whether a subtree is balanced or not. We will use bottom-up method.
 
 Left subtree is balanced, right subtree is balanced, and their heights' differences are not greater than 1, then we can say the tree is a balanced tree. Therefore, we need to return both heights and whether the current tree is a balanced tree. **If we need to return 2 different primary types for one method call, we can create an object and save those 2 return results into object's properties.**
 
@@ -1342,8 +850,6 @@ class ResultType {
 }
 ```
 
-#### 
-
 ####  [88. Lowest Common Ancestor of a Binary Tree](https://www.lintcode.com/problem/lowest-common-ancestor-of-a-binary-tree/description)
 
 Description:
@@ -1386,11 +892,9 @@ Assume two nodes are exist in tree.
 
 Analysis:
 
-The ancestor is the first node that diverse 2 nodes into left and right sub tree. **If we find a node, whose left subtree contains one target node, and right subtree contains another target node, the node is the lowest common ancestor** However, there is a special case, which is,  one of the target node is another target node's child. For this case, we shall return the first target node we found during the top-down traverse.  
+The ancestor is the first node that diverse 2 nodes into left and right sub tree. **If we find a node, whose left subtree contains one target node, and right subtree contains another target node, the node is the lowest common ancestor** However, there is a special case, which is, one of the target node is another target node's child. For this case, we shall return the parent one.
 
-We shall compare from the root to the leaf to see weather any node equal the target node (A or B). If we find any target node, we shall return it. if a node's left subtree contains a node, right subtree contains another node, the node is the lowest common ancestor. If we find target A and B are in the same subtree, then the first node we find in the top-down direction is the lowest common ancestor. 
-
-This question is a variation of finding a node from binary tree. Once we find a target, we will return that target directly from that node. If a node contains both targets on its left and right subtrees alone bottom-up returning direction, the node is the lowest common ancestor. We won't search the whole tree to the bottom, instead, we will return if we find any node A or B. If A or B is on the same side of tree, we need to find the topper one. Therefore, we have to return the first finding in the top-down direction, i.e., if we find a target, we shall return before we call the recursion.
+If we need to find node A from one subtree and B from the other subtree, which is finding result from both left and right subtrees. We shall use bottom-up traversal. What is more, this question shall return once we find one node instead of two nodes, because the lowest common ancestor must be any node equal to or above the finding node. At the same time, if one node is a child of the other, the first node we met along top-down traversal will be the ancestor.
 
 ```java
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode A, TreeNode B) {
@@ -1560,7 +1064,86 @@ Notice
 node A or node B may not exist in tree.
 Each node has a different value
 
-Analysis: This question is question [88. Lowest Common Ancestor of a Binary Tree](#88. Lowest Common Ancestor of a Binary Tree) + if we can find both nodes. Lowest Common Ancestor of a Binary Tree](#88. Lowest Common Ancestor of a Binary Tree) 's solution has been posted. Here we need to make sure whether we can find both nodes in  bottom-up order. We need 2 `boolean` values in the returning result to remember whether we found target A or B. If left subtree contains A, or right subtree contains A, or root == A, A exists in the tree. Same for the target B. After we can find both targets, [88. Lowest Common Ancestor of a Binary Tree](#88. Lowest Common Ancestor of a Binary Tree) 's returning is the answer. If any of them doesn't exist, we return null. The two recursion can be combined into one method. Besides we need to create a returning object, we need to pay attention the variables updating orders. Some variables has to be updated before recursion, some variables will update after recursion.
+Analysis: This question is question [88. Lowest Common Ancestor of a Binary Tree](#88. Lowest Common Ancestor of a Binary Tree) + if we can find both nodes. Since we need to find both nodes, we will need extra two boolean variables to save whether we foundA or foundB.
+
+```java
+    public TreeNode lowestCommonAncestor3(TreeNode root, TreeNode A, TreeNode B) {
+        
+        ResultType result  = new ResultType(false, false);
+        existAorB(root, A, B, result);
+
+        if(result.existA && result.existB) {
+            return findAncestor(root, A, B);
+        }
+
+        return null;
+
+    }
+
+    private void existAorB(TreeNode cur, TreeNode A, TreeNode B, ResultType result) {
+
+        if(cur == null) {
+            return;
+        }
+
+        if(cur == A) {
+            result.existA = true;
+
+        }
+
+        if(cur == B) {
+            result.existB = true;
+        }
+
+        existAorB(cur.left, A, B, result);
+        existAorB(cur.right, A, B, result);
+
+    }
+
+    private TreeNode findAncestor(TreeNode cur, TreeNode A, TreeNode B) {
+
+        if(cur == null) {
+            return null;
+        }
+
+        if(cur == A || cur == B) {
+            return cur;
+        }
+
+        TreeNode left = findAncestor(cur.left, A, B);
+        TreeNode right = findAncestor(cur.right, A, B);
+
+        if(left != null && right != null) {
+            return cur;
+        }
+
+        if(left != null) {
+            return left;
+        }
+
+        if(right != null) {
+            return right;
+        }
+
+        return null;
+    }
+
+}
+
+class ResultType{
+    boolean existA;
+    boolean existB;
+
+    ResultType(boolean existA, boolean existB) {
+        this.existA = existA;
+        this.existB = existB;
+    }
+}
+```
+
+
+
+Here is the combination version of the two functions.
 
 ```java
 public class Solution {
@@ -1625,82 +1208,4 @@ class ResultType {
     }
 }
 ```
-
-#### [1360. Symmetric Tree](https://www.lintcode.com/problem/symmetric-tree/description)
-
-Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
-
-Example1
-
-```
-Input: {1,2,2,3,4,4,3}
-Output: true
-Explanation:
-    1
-   / \
-  2   2
- / \ / \
-3  4 4  3
-This binary tree {1,2,2,3,4,4,3} is symmetric
-```
-
-Example2
-
-```
-Input: {1,2,2,#,3,#,3}
-Output: false
-Explanation:
-    1
-   / \
-  2   2
-   \   \
-   3    3
-This is not a symmetric tree
-```
-
-Analysis:
-
-If left and right subtree's value are equal, a left.right subtree and right.left subtree are symmetrical, and a left.left and right.right are symmetrical, the tree is symmetrical. The reuqirment doesn't need any info from root, but only left and right subtree. We will pass node 1 and node2 as parameter.
-
-```java
-public boolean isSymmetric(TreeNode root) {
-  if(root == null) {
-    return true;
-  }
-
-  return helper(root.left, root.right);
-
-}
-
-
-private boolean helper(TreeNode node1, TreeNode node2) {
-
-  if(node1 == null && node2 == null) {
-    return true;
-  }
-
-  if(node1 == null && node2 != null || node1 != null && node2 == null) {
-    return false;
-  }
-
-  if(node1.val != node2.val) {
-    return false;
-  }
-
-  boolean isLeft = helper(node1.right, node2.left); 
-  boolean isRight = helper(node1.left, node2.right);
-
-  return isLeft && isRight;
-}
-```
-
-### Summery: 
-
-- If an operation's requirement doesn't need any left or right subtree's info but only use root's info, we can use **traversal** directly. 
-  - [481. Binary Tree Leaf Sum](# 481. Binary Tree Leaf Sum): We only need to check whether a node is a leaf and calculate the sum. The calculation doesn't need any info from left or right subtree.
-- If an operation's requirement need all nodes info from left or right subtree, we shall try to use **traversal**. Even though, we need info from left or right subtree, we shall be able to use  **divide-conquer**. However, if we use  **divide-conquer**, we need to save a list of all sub nodes' info, which is not suitable for **divide-conquer**.
-  - [95. Validate Binary Search Tree](https://www.lintcode.com/problem/validate-binary-search-tree/description): One of the requirements is all nodes on left subtree must be less than the root and right subtree must be greater than root. Here we will use traversal to check whether each node is in a range.
-- If an operation's requirment need left or right subtree's result, and result usually contains countable properties( most of them is 1) not a list, we will use **divide-conquer**.
-  - [97. Maximum Depth of Binary Tree](#97. Maximum Depth of Binary Tree): Maximum depth is max of left subtree's maximum depth and right subtree's maximum depth + 1. Here we need to use left subtree's result, and right subtree's result. We will use divide-conquer.
-- If an operration's requirment only need left or right subtree info but not root's info, we shall **pass 2 nodes into the method** and find rules with left and right subtree's children. It can use **traversal or divide-conquer**
 
