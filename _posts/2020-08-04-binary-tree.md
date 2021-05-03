@@ -4,10 +4,6 @@ layout: post
 date: '2020-08-04 14:50:00 -0000'
 categories: algo
 ---
-## Binary Tree
-
-### Basic Knowledge
-
 Binary Tree is a data structure extended from linked list data structure. It has the character of inconsecutive data storage , and indirect data access(unlike array's direct access). **It suits to traverse by recursion**. 
 
 When we traverse a binary tree, we will visit each node twice, once along the top-down direction, once along the bottom-up direction. The node is actually a pointer to access each element on the tree.
@@ -1506,4 +1502,3 @@ class ResultType {
     }
 }
 ```
-
