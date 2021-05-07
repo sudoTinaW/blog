@@ -4,15 +4,9 @@ layout: post
 date: '2021-05-07 14:50:00 -0000'
 categories: Math
 ---
-# Math Related Problem
-
 Pure math related problems are rarely asked during an interview. That is because an interview is usually testing an interviewee's problem solving skills. Most math problems are based on some theorems, and those theorems are hard to infer in a short time. Therefore, it is hard to show problem solving skills by resolving a pure math problem. In this article, we will focus on introducing some common used theorems to inspire sparks. 
 
 Original thought are inspired by [labuladong](https://labuladong.gitbook.io/algo/suan-fa-si-wei-xi-lie/shu-xue-yun-suan-ji-qiao)
-
- 
-
-### Basic Knowledge: 
 
 #### Bit Operation:
 
