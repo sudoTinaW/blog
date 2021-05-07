@@ -1,5 +1,5 @@
 ---
-published: false
+published: true
 layout: post
 date: '2021-05-07 14:50:00 -0000'
 categories: Math
@@ -433,4 +433,3 @@ Analysis:
 ```java
 class Solution {    /** @param head The linked list's head.        Note that the head is guaranteed to be not null, so it contains at least one node. */        private ListNode head;        public Solution(ListNode head) {        this.head = head;    }        /** Returns a random node's value. */    public int getRandom() {        Random rand = new Random();        ListNode cur = head;        int result = cur.val;        int count = 1;               while(cur != null) {            if(rand.nextInt(count) == 0) {                result = cur.val;            }            count++;            cur = cur.next;        }                return result;    }}
 ```
-
