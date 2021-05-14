@@ -4,16 +4,16 @@ layout: post
 date: '2021-03-10 10:50:00 -0000'
 categories: algo
 ---
-A linked list is composed of multiple `ListNode` nodes. `ListNode` is an object and it occupies 8 bytes (integer value 4 bytes + `ListNode` reference next 4 bytes) in heap memory. Each node is a reference of a `ListNode` object. It is similar to next reference. The node/next reference saves an address of a `ListNode` object in stack memory and occupies 4 bytes as well.
+A linked list is composed of multiple `ListNode` nodes. `ListNode` is an object and it occupies 8 bytes (integer `value` 4 bytes + `ListNode` reference `next` 4 bytes) in heap memory. Each node is a reference of a `ListNode` object. It is similar to `next`reference. The node reference saves an address of a `ListNode` object in stack memory and occupies 4 bytes as well.
 
-- Steps to Resolve Signal Linked List Problem,
+- Steps to Resolve Single Linked List Problem,
 
   - Consider previous/slow/last node as the last valid result node
   - Consider current node as a new enumerating node, and update current node.
   - Connect the updated current node to the previous/slow/last node
   - Move the previous/slow/last node forward to maintain its last position
-  - We need to consider all possible previous/slow/last node situation and cover all updates of current nodes.
-  - If we need to update the previous/slow/last node's next, we need to consider use dummy node.
+  - We need to consider all possible previous/slow/last node's situations and cover all updates of current nodes.
+  - If we need to update any node's previous node (such as slow node, or one node before the current node)'s `next` property, we need to consider use dummy node.
 
 - Three Ways to Update a Node:
 
@@ -23,7 +23,7 @@ A linked list is composed of multiple `ListNode` nodes. `ListNode` is an object 
 
 - One-Pointer Vs Two-Pointer:
 
-  Most of signally linked list questions can be resolved by both one-pointer or two-pointer. Personally, I will use two-pointer over one-pointer because two pointer's variable name (slow and fast) is clearer than one pointer's(`cur`and `cur.next`).
+  Most of singly linked list questions can be resolved by both one-pointer or two-pointer. Personally, I will use two-pointer over one-pointer because two pointer's variable name (slow and fast) is clearer than one pointer's(`cur`and `cur.next`).
 
   - One-Pointer skips the disqualified element one by one by modifying **current node's next property** to point to the elements after the next element. When the element find a valid element, **current node's property** will point to the valid element to maintain the last valid position.
 
@@ -43,12 +43,12 @@ A linked list is composed of multiple `ListNode` nodes. `ListNode` is an object 
 
   Dummy node is designed for simplifying corner cases brought by editing previous node's property before head or next node's property after tail. **If a solution requires updating a node's previous( or next for double linked list) node's properties, which are value and next, we often need to use the dummy node.** If we only need to update a node's previous node reference, we often don't need to use the dummy node.
 
-  -  Single Linked List: When we update nodes in a single linked list, we often need to update 2 node, the node to be updated, and its previous node. There is one node in the list is special, which is head. It doesn't have a previous node. Therefore, head node's operations usually need to be dealt separately, and become corner cases. If we can add a dummy node before head, we can deal with head as all other nodes who have previous node. What is more, if we know a node, we can always find its next. That is to say, even we add a dummy node before head, we still can find head through dummy.
+  -  Single Linked List: When we update nodes in a single linked list, we often need to update 2 nodes, the node to be updated, and its previous node. There is one node in the list is special, which is head. It doesn't have a previous node. Therefore, head node's operations usually need to be dealt separately, and become corner cases. If we can add a dummy node before head, we can deal with head as all other nodes who have previous node. What is more, if we know a node, we can always find its next. That is to say, even we add a dummy node before head, we still can find head through dummy.
   -  Double Linked List: When we update a node in a double linked list, we often need to update 3 nodes, the node that needs to be updated, the node before it, and the node after it. There are 2 nodes in the list are special, which are head and tail. The head doesn't have a previous node, and the tail doesn't have a next node. If we can add a dummy node before head and a dummy node after tail, we can deal with head and tail as all other nodes.
 
 ### Problems:
 
-###### [112. Remove Duplicates from Sorted List](https://www.lintcode.com/problem/112/)
+#### [112. Remove Duplicates from Sorted List](https://www.lintcode.com/problem/112/)
 
 Description:
 
@@ -160,7 +160,7 @@ public ListNode deleteDuplicates(ListNode head) {
 
 
 
-######  [113. Remove Duplicates from Sorted List II](https://www.lintcode.com/problem/113/)
+####  [113. Remove Duplicates from Sorted List II](https://www.lintcode.com/problem/113/)
 
 Description:
 
@@ -184,7 +184,7 @@ Output : 2->3->null
 
 Analysis:
 
-We can try to use fast and slow pointer to resolve this question. To use the fast and slow pointer template, we shall think of what situation can make slow  pointer moves. When the element is not a duplicate element, we shall move slow pointer. To tell whether an element is a duplicated element, we need to compare the element with its consecutive previous and next element. However, linked list node can not get its consecutive previous element. When an element is not equal to its next element, we can not tell whether this element is a duplicated number. However, when an element is equal to its next element, we are sure the element is a duplicated element. If we skip all elements equals to that duplicated elements, we can assure that the rest elements are the elements that slower pointer wants to collect.
+We can try to use fast and slow pointer to resolve this question. To use the fast and slow pointer template, we shall think of what situation can make slow pointer moves. When the element is not a duplicate element, we shall move slow pointer. To tell whether an element is a duplicated element, we need to compare the element with its consecutive previous and next element. However, linked list node can not get its consecutive previous element. When an element is not equal to its next element, we can not tell whether this element is a duplicated number. However, when an element is equal to its next element, we are sure the element is a duplicated element. If we skip all elements equals to that duplicated elements, we can assure that the rest elements are the elements that slower pointer wants to collect.
 
 Update operation `slow.next = fast`can start from the head element. Therefore, we need a dummy node.
 
@@ -292,7 +292,7 @@ public ListNode deleteDuplicates(ListNode head) {
 }
 ```
 
-###### [35. Reverse Linked List](https://www.lintcode.com/problem/35/)
+#### [35. Reverse Linked List](https://www.lintcode.com/problem/35/)
 
 Description:
 
@@ -333,7 +333,7 @@ public ListNode reverse(ListNode head) {
 }
 ```
 
-###### [36. Reverse Linked List II](https://www.lintcode.com/problem/36/)
+#### [36. Reverse Linked List II](https://www.lintcode.com/problem/36/)
 
 Description:
 
@@ -398,7 +398,7 @@ We need to find the previous node of m, reverse the node between m and n, and co
 
 
 
-###### [450. Reverse Nodes in k-Group](https://www.lintcode.com/problem/450/)
+#### [450. Reverse Nodes in k-Group](https://www.lintcode.com/problem/450/)
 
 Description:
 
@@ -496,7 +496,73 @@ This question is an extension of  [36. Reverse Linked List II](#36. Reverse Link
     }
 ```
 
-###### [(Leetcode) 138.Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/)
+#### [(Leetcode)24. Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/)
+
+Description:
+
+Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed.)
+
+ 
+
+Example 1:
+
+![img](https://assets.leetcode.com/uploads/2020/10/03/swap_ex1.jpg)
+
+```
+Input: head = [1,2,3,4]
+Output: [2,1,4,3]
+```
+
+Example 2:
+
+```
+Input: head = []
+Output: []
+```
+
+Example 3:
+
+```
+Input: head = [1]
+Output: [1]
+```
+
+Constraints:
+
+- The number of nodes in the list is in the range `[0, 100]`.
+- `0 <= Node.val <= 100`
+
+Analysis:
+
+The common way to consider swap two nodes, update the two node's previous nodes'`next`property and update the two nodes'`next`property. No matter where the two nodes are located.
+
+```java
+public ListNode swapPairs(ListNode head) {
+
+  ListNode dummy = new ListNode();
+  dummy.next = head;
+
+  ListNode pre = dummy;
+  ListNode cur = head;
+  while(cur != null && cur.next!= null) {
+    ListNode next1 = cur.next;
+    ListNode next2 = cur.next.next;
+
+    cur.next = next2;
+    next1.next = cur;
+    pre.next = next1;
+    pre = cur;
+    cur = next2;
+  }
+
+  return dummy.next;
+
+}
+```
+
+
+
+#### [(Leetcode) 138.Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/)
 
 Description:
 
@@ -522,16 +588,13 @@ Example 1:
 ![img](https://assets.leetcode.com/uploads/2019/12/18/e1.png)
 
 ```
-Input: head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
-Output: [[7,null],[13,0],[11,4],[10,2],[1,0]]
+Input: head = [[7,null],[13,0],[11,4],[10,2],[1,0]]Output: [[7,null],[13,0],[11,4],[10,2],[1,0]]
 ```
 
 Example 2:
 
 ```
-Input: head = []
-Output: []
-Explanation: The given linked list is empty (null pointer), so return null.
+Input: head = []Output: []Explanation: The given linked list is empty (null pointer), so return null.
 ```
 
 Constraints:
@@ -550,58 +613,15 @@ Here we will only use the second way to implement this question.
 
 After insertion, the list becomes as following picture,
 
-![](E:\study\jiuzhang\Notes\CopyListRandomPointer.JPG)
+![img](CopyListRandomPointer.JPG)
 
 After we copied all random pointers, we will split the list from the combined list.
 
 ```java
-public Node copyRandomList(Node head) {
-
-    if(head == null) {
-        return head;
-    }
-
-    //Create new nodes and link new nodes with orignal nodes
-    Node cur = head;
-
-    while(cur != null) {
-
-        Node newNode = new Node(cur.val);
-        newNode.next = cur.next;
-        cur.next = newNode;
-        cur = cur.next.next;
-
-    }
-    //Copy random pointer
-    cur = head;
-    while(cur != null) {
-
-        if(cur.random != null) {
-            cur.next.random = cur.random.next;
-        }
-
-        cur = cur.next.next;
-
-    }
-    //Split the new nodes with oirgnal nodes
-    Node dummy = new Node(-1);
-    Node last = dummy;
-
-    cur = head;
-    while(cur != null) {
-        last.next = cur.next;
-        last = last.next;
-        cur.next = cur.next.next;
-        cur = cur.next;
-
-    }
-
-    return dummy.next;
-
-}
+public Node copyRandomList(Node head) {    if(head == null) {        return head;    }    //Create new nodes and link new nodes with orignal nodes    Node cur = head;    while(cur != null) {        Node newNode = new Node(cur.val);        newNode.next = cur.next;        cur.next = newNode;        cur = cur.next.next;    }    //Copy random pointer    cur = head;    while(cur != null) {        if(cur.random != null) {            cur.next.random = cur.random.next;        }        cur = cur.next.next;    }    //Split the new nodes with oirgnal nodes    Node dummy = new Node(-1);    Node last = dummy;    cur = head;    while(cur != null) {        last.next = cur.next;        last = last.next;        cur.next = cur.next.next;        cur = cur.next;    }    return dummy.next;}
 ```
 
-###### [96. Partition List](https://www.lintcode.com/problem/96/)
+#### [96. Partition List](https://www.lintcode.com/problem/96/)
 
 Description:
 
@@ -612,17 +632,13 @@ You should preserve the original relative order of the nodes in each of the two 
 Example 1:
 
 ```
-Input:  list = null, x = 0
-Output: null	
-Explanation: The empty list Satisfy the conditions by itself.
+Input:  list = null, x = 0Output: null	Explanation: The empty list Satisfy the conditions by itself.
 ```
 
 Example 2:
 
 ```
-Input:  list = 1->4->3->2->5->2->null, x = 3
-Output: 1->2->2->4->3->5->null	
-Explanation:  keep the original relative order of the nodes in each of the two partitions.
+Input:  list = 1->4->3->2->5->2->null, x = 3Output: 1->2->2->4->3->5->null	Explanation:  keep the original relative order of the nodes in each of the two partitions.
 ```
 
 Analysis:
@@ -630,54 +646,17 @@ Analysis:
 This question is a basic operation of quick sort applied on the linked list. Not like partition applied on array mainly depending on swapping numbers in place, partition applied on linked list will separate the original list into 2 new lists (one contains all numbers less than the pivot, and the other contains all numbers greater than or equal to the pivot). Then we can combine the 2 new lists into a new list. Even we create 2 new lists, we just create 2 new dummy nodes. Therefore, the space complexity is still O(1).
 
 ```java
-public ListNode partition(ListNode head, int x) {
-
-    if(head == null) {
-        return null;
-    }
-
-    ListNode lessDummy = new ListNode(0);
-    ListNode lessCur = lessDummy;
-    ListNode greaterDummy = new ListNode(0);
-    ListNode greaterCur = greaterDummy;
-
-    ListNode cur = head;
-    while(cur != null) {
-
-        if(cur.val < x) {
-            lessCur.next = cur;
-            lessCur = cur;
-        }else {
-            greaterCur.next = cur;
-            greaterCur = cur;
-        }
-
-        cur = cur.next;
-    }
-
-    lessCur.next = greaterDummy.next;
-    greaterCur.next = null;
-
-    return lessDummy.next;
-
-}
+public ListNode partition(ListNode head, int x) {    if(head == null) {        return null;    }    ListNode lessDummy = new ListNode(0);    ListNode lessCur = lessDummy;    ListNode greaterDummy = new ListNode(0);    ListNode greaterCur = greaterDummy;    ListNode cur = head;    while(cur != null) {        if(cur.val < x) {            lessCur.next = cur;            lessCur = cur;        }else {            greaterCur.next = cur;            greaterCur = cur;        }        cur = cur.next;    }    lessCur.next = greaterDummy.next;    greaterCur.next = null;    return lessDummy.next;}
 ```
 
-###### [165. Merge Two Sorted Lists](https://www.lintcode.com/problem/165/solution)
+#### [165. Merge Two Sorted Lists](https://www.lintcode.com/problem/165/solution)
 
 Description:
 
 Merge two sorted (ascending) linked lists and return it as a new sorted list. The new sorted list should be made by splicing together the nodes of the two lists and sorted in ascending order.
 
 ```
-Example 1:
-	Input: list1 = null, list2 = 0->3->3->null
-	Output: 0->3->3->null
-
-
-Example 2:
-	Input:  list1 = 1->3->8->11->15->null, list2 = 2->null
-	Output: 1->2->3->8->11->15->null
+Example 1:	Input: list1 = null, list2 = 0->3->3->null	Output: 0->3->3->nullExample 2:	Input:  list1 = 1->3->8->11->15->null, list2 = 2->null	Output: 1->2->3->8->11->15->null
 ```
 
 Analysis:
@@ -685,38 +664,12 @@ Analysis:
 This is a basic operation. We will use 2 pointers to go along the two lists and always pick the smaller one to add to the final result. Then we need to append whatever left either in list1 or list2 to the final result as well. 
 
 ```java
-public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-
-    ListNode dummy = new ListNode(0);
-    ListNode cur = dummy;
-
-    while(l1 != null && l2 != null) {
-
-        if(l1.val > l2.val) {
-            cur.next = l2;
-            l2 = l2.next;
-        }else {
-            cur.next = l1;
-            l1 = l1.next;
-        }
-
-        cur = cur.next;
-    }
-
-    if(l1 != null) {
-        cur.next = l1;
-    }
-
-    if(l2 != null) {
-        cur.next = l2;
-    }
-    return dummy.next;
-}
+public ListNode mergeTwoLists(ListNode l1, ListNode l2) {    ListNode dummy = new ListNode(0);    ListNode cur = dummy;    while(l1 != null && l2 != null) {        if(l1.val > l2.val) {            cur.next = l2;            l2 = l2.next;        }else {            cur.next = l1;            l1 = l1.next;        }        cur = cur.next;    }    if(l1 != null) {        cur.next = l1;    }    if(l2 != null) {        cur.next = l2;    }    return dummy.next;}
 ```
 
 
 
-###### [98. Sort List](https://www.lintcode.com/problem/98/)
+#### [98. Sort List](https://www.lintcode.com/problem/98/)
 
 Description:
 
@@ -725,13 +678,12 @@ Quick Sort a linked list in O(*n* log *n*) time using constant space complexity.
 Example 1:
 
 ```
-Input:  1->3->2->null
-Output:  1->2->3->null
+Input:  1->3->2->nullOutput:  1->2->3->null
 ```
 
 Analysis:
 
-This question is a good practice of linked list basic operations, but it is often asked in interviews. We will use quick sort and merge sort 2 ways to implement this question. However, merge sort is more suitable to sort linked list. Quick sort's time complexity relies on how random we pick the pivot. Linked list is harder than array to pick a random pivot. Also, quick sort on an array has many swap operations to avoid extra space, but merge sort on an array need extra space. Merge sort on linked list can avoid extra space by modifying node's links.
+This question is a good practice of linked list basic operations, but it is not often asked in interviews. We will use quick sort and merge sort 2 ways to implement this question. However, merge sort is more suitable to sort linked list. Quick sort's time complexity relies on how random we pick the pivot. Linked list is harder than array to pick a random pivot. Also, quick sort on an array has many swap operations to avoid extra space, but merge sort on an array need extra space. Merge sort on linked list can avoid extra space by modifying node's links.
 
 Quick sort :
 
@@ -741,77 +693,7 @@ Quick sort :
 - After we get three lists' heads, we can concatenate the 3 separate lists back to a ordered list.
 
 ```java
-    public ListNode sortList(ListNode head) {
-        if(head == null) {
-            return head;
-        }
-
-        return quickSort(head);
-    }
-
-    private ListNode quickSort(ListNode start) {
-        if(start == null) {
-            return null;
-        }
-
-        ListNode pivot = start;
-
-        ListNode lessDummy = new ListNode(0);
-        ListNode pivotDummy = new ListNode(0);
-        ListNode greaterDummy = new ListNode(0);
-
-        ListNode lessCur = lessDummy;
-        ListNode greaterCur = greaterDummy;
-        ListNode pivotCur = pivotDummy;
-
-        ListNode cur = start;
-        while(cur != null) {
-            if(cur.val > pivot.val) {
-                greaterCur.next = cur;
-                greaterCur = greaterCur.next;
-            }else if(cur.val < pivot.val) {
-                lessCur.next = cur;
-                lessCur = lessCur.next;
-            }else if(cur.val == pivot.val) {
-                pivotCur.next = cur;
-                pivotCur = pivotCur.next;
-            }
-            cur = cur.next;
-        }
-
-        lessCur.next = null;
-        pivotCur.next = null;
-        greaterCur.next = null;    
-
-        ListNode lessHead = quickSort(lessDummy.next);
-        ListNode greaterHead = quickSort(greaterDummy.next);
-		
-        //In this method, we will both use head and tail of all 3 seperated lists. Here we will find the tail from head again rather than to use the lessCur, greaterCur, pivotCur as tail, becuase lessCur, greaterCur, pivotCur might not be the tail any more after recursion call. We need to search them again.
-        return concat(lessHead, pivotDummy.next, greaterHead);
-    }
-
-    private ListNode findLast(ListNode head) {
-
-        while(head != null && head.next != null) {
-            head = head.next;
-        }
-
-        return head;
-    }
-
-    private ListNode concat(ListNode lessHead, ListNode pivot, ListNode greaterHead) {
-
-        ListNode dummy = new ListNode(0);
-        ListNode tail = dummy;
-
-        tail.next = lessHead;
-        tail = findLast(tail);
-        tail.next = pivot;
-        tail = findLast(tail);
-        tail.next = greaterHead;
-
-        return dummy.next;
-    }
+    public ListNode sortList(ListNode head) {        if(head == null) {            return head;        }        return quickSort(head);    }    private ListNode quickSort(ListNode start) {        if(start == null) {            return null;        }        ListNode pivot = start;        ListNode lessDummy = new ListNode(0);        ListNode pivotDummy = new ListNode(0);        ListNode greaterDummy = new ListNode(0);        ListNode lessCur = lessDummy;        ListNode greaterCur = greaterDummy;        ListNode pivotCur = pivotDummy;        ListNode cur = start;        while(cur != null) {            if(cur.val > pivot.val) {                greaterCur.next = cur;                greaterCur = greaterCur.next;            }else if(cur.val < pivot.val) {                lessCur.next = cur;                lessCur = lessCur.next;            }else if(cur.val == pivot.val) {                pivotCur.next = cur;                pivotCur = pivotCur.next;            }            cur = cur.next;        }        lessCur.next = null;        pivotCur.next = null;        greaterCur.next = null;            ListNode lessHead = quickSort(lessDummy.next);        ListNode greaterHead = quickSort(greaterDummy.next);		        //In this method, we will both use head and tail of all 3 seperated lists. Here we will find the tail from head again rather than to use the lessCur, greaterCur, pivotCur as tail, becuase lessCur, greaterCur, pivotCur might not be the tail any more after recursion call. We need to search them again.        return concat(lessHead, pivotDummy.next, greaterHead);    }    private ListNode findLast(ListNode head) {        while(head != null && head.next != null) {            head = head.next;        }        return head;    }    private ListNode concat(ListNode lessHead, ListNode pivot, ListNode greaterHead) {        ListNode dummy = new ListNode(0);        ListNode tail = dummy;        tail.next = lessHead;        tail = findLast(tail);        tail.next = pivot;        tail = findLast(tail);        tail.next = greaterHead;        return dummy.next;    }
 ```
 
 Merge Sort:
@@ -819,80 +701,10 @@ Merge Sort:
 Sort linked list using merge sort can avoid extra O(n) space. Here we need to pay attention to one detail. The `findMiddle(ListNode head)` is different from [1609. Middle of the Linked List](./TwoPointer.md). The`fast` pointer starts from different position. It will lead to `slow` pointer stops at different positions when the list elements' size are even. Since we split the list as `(head, mid)`, `(mid.next, null)`. When there are 2 elements, we need mid shall be the first element. If mid stops at the second, the 2 elements won't be minimized into 0 or 1 element any more. The recursion will become infinite.
 
 ```java
-public class Solution {
-    /**
-     * @param head: The head of linked list.
-     * @return: You should return the head of the sorted linked list, using constant space complexity.
-     */
-    public ListNode sortList(ListNode head) {
-        if(head == null) {
-            return head;
-        }
-        return mergeSort(head);
-
-    }
-
-    private ListNode mergeSort(ListNode head) {
-        if(head == null || head.next == null) {
-            return head;
-        }
-
-        ListNode mid = findMiddle(head);
-        ListNode next = mid.next;
-        mid.next = null;
-
-
-        ListNode l1 = mergeSort(head);
-        ListNode l2 = mergeSort(next);
-
-        ListNode merged = merge(l1, l2);
-
-
-        return merged;
-
-    }
-
-    private ListNode merge(ListNode l1, ListNode l2) {
-        ListNode dummy = new ListNode(0);
-        ListNode cur = dummy;
-
-        while(l1 != null && l2 != null) {
-            if(l1.val < l2.val) {
-                cur.next = l1;
-                l1 = l1.next;
-            }else {
-                cur.next = l2;
-                l2 = l2.next;
-            }
-            cur = cur.next;
-        }
-
-        if(l1 != null) {
-            cur.next = l1;
-        }
-        if(l2 != null) {
-            cur.next = l2;
-        }
-        return dummy.next;
-    }
-
-    private ListNode findMiddle(ListNode head) {
-        
-        ListNode slow = head;
-        ListNode fast = head.next;
-
-
-        while(fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        return slow;
-    }
-}
+public class Solution {    /**     * @param head: The head of linked list.     * @return: You should return the head of the sorted linked list, using constant space complexity.     */    public ListNode sortList(ListNode head) {        if(head == null) {            return head;        }        return mergeSort(head);    }    private ListNode mergeSort(ListNode head) {        if(head == null || head.next == null) {            return head;        }        ListNode mid = findMiddle(head);        ListNode next = mid.next;        mid.next = null;        ListNode l1 = mergeSort(head);        ListNode l2 = mergeSort(next);        ListNode merged = merge(l1, l2);        return merged;    }    private ListNode merge(ListNode l1, ListNode l2) {        ListNode dummy = new ListNode(0);        ListNode cur = dummy;        while(l1 != null && l2 != null) {            if(l1.val < l2.val) {                cur.next = l1;                l1 = l1.next;            }else {                cur.next = l2;                l2 = l2.next;            }            cur = cur.next;        }        if(l1 != null) {            cur.next = l1;        }        if(l2 != null) {            cur.next = l2;        }        return dummy.next;    }    private ListNode findMiddle(ListNode head) {                ListNode slow = head;        ListNode fast = head.next;        while(fast != null && fast.next != null) {            slow = slow.next;            fast = fast.next.next;        }        return slow;    }}
 ```
 
-###### [99. Reorder List](https://www.lintcode.com/problem/99/solution)
+#### [99. Reorder List](https://www.lintcode.com/problem/99/solution)
 
 Description:
 
@@ -901,13 +713,7 @@ Given a singly linked list L: L0 → L1 → … → Ln-1 → Ln
 reorder it to: L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → …
 
 ```
-Example 1:
-	Input:  1->2->3->4->null
-	Output: 1->4->2->3->null
-
-Example 2:
-	Input: 1->2->3->4->5->null
-	Output: 1->5->2->4->3->null
+Example 1:	Input:  1->2->3->4->null	Output: 1->4->2->3->nullExample 2:	Input: 1->2->3->4->5->null	Output: 1->5->2->4->3->null
 ```
 
 Analysis:
@@ -920,87 +726,10 @@ This question is a combination of many sub questions of linked list.
 - We will merge the two list and set the original head to the merged head.
 
 ```java
-    public void reorderList(ListNode head) {
-
-        if(head == null || head.next == null) {
-            return;
-        }
-
-        ListNode mid = findMid(head);
-        
-
-        ListNode l2 = reverse(mid.next);
-        ListNode l1 = head;
-        mid.next = null;
-        head = merge(l1, l2);
-
-
-
-    }
-
-    private ListNode findMid(ListNode head) {
-
-        ListNode slow = head;
-        ListNode fast = head.next;
-
-        while(fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        return slow;
-    }
-
-    private ListNode reverse(ListNode head) {
-
-        ListNode pre = null;
-        ListNode cur = head;
-
-        while(cur != null) {
-            ListNode next = cur.next;
-            cur.next = pre;
-            pre = cur;
-            cur = next;
-
-        }
-
-        return pre;
-
-    }
-
-    private ListNode merge(ListNode l1, ListNode l2) {
-        ListNode dummy = new ListNode(0);
-        ListNode cur = dummy;
-
-        int count = 0;
-        while(l1 != null && l2 != null) {
-            if(count % 2 == 0) {
-                cur.next = l1;
-                l1 = l1.next;
-            }else {
-                cur.next = l2;
-                l2 = l2.next;
-            }
-            cur = cur.next;
-            count++;
-        }
-
-        if(l1 != null) {
-            cur.next = l1;
-        }
-        
-        if(l2 != null) {
-            cur.next = l2;
-        }
-
-        return dummy.next;
-
-    }
-
-
+    public void reorderList(ListNode head) {        if(head == null || head.next == null) {            return;        }        ListNode mid = findMid(head);                ListNode l2 = reverse(mid.next);        ListNode l1 = head;        mid.next = null;        head = merge(l1, l2);    }    private ListNode findMid(ListNode head) {        ListNode slow = head;        ListNode fast = head.next;        while(fast != null && fast.next != null) {            slow = slow.next;            fast = fast.next.next;        }        return slow;    }    private ListNode reverse(ListNode head) {        ListNode pre = null;        ListNode cur = head;        while(cur != null) {            ListNode next = cur.next;            cur.next = pre;            pre = cur;            cur = next;        }        return pre;    }    private ListNode merge(ListNode l1, ListNode l2) {        ListNode dummy = new ListNode(0);        ListNode cur = dummy;        int count = 0;        while(l1 != null && l2 != null) {            if(count % 2 == 0) {                cur.next = l1;                l1 = l1.next;            }else {                cur.next = l2;                l2 = l2.next;            }            cur = cur.next;            count++;        }        if(l1 != null) {            cur.next = l1;        }                if(l2 != null) {            cur.next = l2;        }        return dummy.next;    }
 ```
 
-###### [453. Flatten Binary Tree to Linked List](https://www.lintcode.com/problem/453/solution)
+#### [453. Flatten Binary Tree to Linked List](https://www.lintcode.com/problem/453)
 
 Description:
 
@@ -1011,26 +740,7 @@ Here we use the *right* pointer in `TreeNode` as the *next* pointer in `ListNode
 Example 1:
 
 ```
-Input:{1,2,5,3,4,#,6}
-Output：{1,#,2,#,3,#,4,#,5,#,6}
-Explanation：
-     1
-    / \
-   2   5
-  / \   \
- 3   4   6
-
-1
-\
- 2
-  \
-   3
-    \
-     4
-      \
-       5
-        \
-         6
+Input:{1,2,5,3,4,#,6}Output：{1,#,2,#,3,#,4,#,5,#,6}Explanation：     1    / \   2   5  / \   \ 3   4   61\ 2  \   3    \     4      \       5        \         6
 ```
 
 Analysis:
@@ -1038,40 +748,12 @@ Analysis:
 We will preorder traverse the list and maintain the last node as a class property. Here we use a similar dummy node to avoid adding root node corner case. Also, we need to save the original right child before we modify the root's right child.
 
 ```java
-public class Solution {
-    /**
-     * @param root: a TreeNode, the root of the binary tree
-     * @return: nothing
-     */
-
-    private TreeNode last;
-
-    public void flatten(TreeNode root) {
-        last = new TreeNode(0);
-        traverse(root);
-
-    }
-
-    private void traverse(TreeNode root) {
-        if(root == null) {
-            return;
-        }
-
-        TreeNode right = root.right;
-        last.right = root;
-        last = root;
-        
-        traverse(root.left);
-        root.left = null;
-        traverse(right);
-
-    }
-}
+public class Solution {    /**     * @param root: a TreeNode, the root of the binary tree     * @return: nothing     */    private TreeNode last;    public void flatten(TreeNode root) {        last = new TreeNode(0);        traverse(root);    }    private void traverse(TreeNode root) {        if(root == null) {            return;        }        TreeNode right = root.right;        last.right = root;        last = root;                traverse(root.left);        root.left = null;        traverse(right);    }}
 ```
 
 
 
-###### [104. Merge K Sorted Lists](https://www.lintcode.com/problem/104/solution)
+#### [104. Merge K Sorted Lists](https://www.lintcode.com/problem/104)
 
 Description:
 
@@ -1082,15 +764,13 @@ Analyze and describe its complexity.
 Example 1:
 
 ```
-Input:   [2->4->null,null,-1->null]
-Output:  -1->2->4->null
+Input:   [2->4->null,null,-1->null]Output:  -1->2->4->null
 ```
 
 Example 2:
 
 ```
-Input: [2->6->null,5->null,7->null]
-Output:  2->5->6->7->null
+Input: [2->6->null,5->null,7->null]Output:  2->5->6->7->null
 ```
 
 Analysis:
@@ -1098,56 +778,6 @@ Analysis:
 We can dynamically manage a heap of all current nodes of all linked list. First we will insert all not null list head into a min heap. Every time when we poll the minimum linked list node, we will add its next not null node into heap. If the list is already null, we can ignore it. After we pop all nodes in order, we can get a merged sorted list. If there is k lists, and total n nodes. Time Complexity will be `O(nlogk)`. Space Complexity will be `O(k)`
 
 ```java
-public class Solution {
-    /**
-     * @param lists: a list of ListNode
-     * @return: The head of one sorted list.
-     */
-    public ListNode mergeKLists(List<ListNode> lists) { 
-
-        if(lists == null || lists.size() == 0) {
-            return null;
-        } 
-        
-        ListNode dummy = new ListNode(0);
-        ListNode cur = dummy;
-
-
-        PriorityQueue<ListNode> minHeap = new PriorityQueue<>(lists.size(), new ListNodeComnparator());
-
-        //add all heads into heap first
-        for(ListNode ln : lists) {
-            if(ln != null) {
-                minHeap.offer(ln);
-            }
-
-        }
-
-        while(minHeap.size() != 0) {
-
-            ListNode temp = minHeap.poll();
-            cur.next = temp;
-            cur = cur.next;
-            temp = temp.next;
-            if(temp != null) {
-                minHeap.offer(temp);
-            }
-        
-            
-        }
-
-        return dummy.next;
-
-
-
-    }
-}
-
-class ListNodeComnparator implements Comparator<ListNode> {
-
-    public int compare(ListNode a, ListNode b) {
-        return a.val - b.val;
-    }
-
-}
+public class Solution {    /**     * @param lists: a list of ListNode     * @return: The head of one sorted list.     */    public ListNode mergeKLists(List<ListNode> lists) {         if(lists == null || lists.size() == 0) {            return null;        }                 ListNode dummy = new ListNode(0);        ListNode cur = dummy;        PriorityQueue<ListNode> minHeap = new PriorityQueue<>(lists.size(), new ListNodeComnparator());        //add all heads into heap first        for(ListNode ln : lists) {            if(ln != null) {                minHeap.offer(ln);            }        }        while(minHeap.size() != 0) {            ListNode temp = minHeap.poll();            cur.next = temp;            cur = cur.next;            temp = temp.next;            if(temp != null) {                minHeap.offer(temp);            }                            }        return dummy.next;    }}class ListNodeComnparator implements Comparator<ListNode> {    public int compare(ListNode a, ListNode b) {        return a.val - b.val;    }}
 ```
+
