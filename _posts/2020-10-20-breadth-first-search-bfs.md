@@ -4,16 +4,16 @@ layout: post
 date: '2020-10-20 14:50:00 -0000'
 categories: BFS
 ---
-Comparing to DFS, BFS is usually used to find shortest path. Since it is using while loop, the debug is easier, and has lower risk of stackoverflow.
+BFS is often used to find shortest path on trees or graphs.
 
-###### BFS Usage:
+#### BFS Usage:
 
 - It can be used to get a shortest path between a start and an end node in a simple graph (weight = 1 and no directions).
 
 - It can be used to traverse a graph.
 - It can be used in topological sort (weight = 1 with directions).
 
-###### BFS Template:
+#### BFS Template:
 
 We can implement BFS with queues in 3 different ways. 
 
@@ -65,7 +65,7 @@ BFS usually use queue not stack, so that the members in the same level will be v
 
 BFS **time complexity** will be O(n) and space will be O(n). Even though, we have multiple loops while + for. The worst of case of multiple loops won't happen at the same time. What is more, if you think how many times each node will be visited, it will be O(m + n). Therefore, the time complexity is O(n), but not O(n ^2) or O(n ^3).
 
-###### Topological Sort
+#### Topological Sort
 
 Topological Sort is used to offering a sort of elements having dependencies between each other.
 
@@ -74,15 +74,15 @@ Topological Sort is used to offering a sort of elements having dependencies betw
 -  BFS is more often used. BFS cares about the incoming degrees. Every round of calculation will start from any node with 0 incoming degree. 
 -  Both DFS and BFS time complexity will be O(m + n).
 
-###### Bidirectional BFS
+#### Bidirectional BFS
 
 Some BFS questions have an optimization, which is bidirectional BFS. Bidirectional BFS will spread both from start and end point until their visited points meet. 
 
 - Bidirectional BFS time complexity is also `O(n)` in general, but if the n is big, its time complexity can decrease to nearly `O(sqrt(n))`. The picture, from [labuladong](https://labuladong.gitbook.io/algo/di-ling-zhang-bi-du-xi-lie-qing-an-shun-xu-yue-du/bfs-kuang-jiashows), shows how bidirectional BFS can save time.
 
-![](E:\study\jiuzhang\Notes\biBFS1.jpeg)
+![img](https://gblobscdn.gitbook.com/assets%2F-M_pUcR-oaySVbYadzDh%2Fsync%2F96d7b1ab7db024a1831170c128f5dcacfb68abb8.jpeg?alt=media)
 
-![biBFS2](E:\study\jiuzhang\Notes\biBFS2.jpeg)
+![img](https://gblobscdn.gitbook.com/assets%2F-M_pUcR-oaySVbYadzDh%2Fsync%2F946f50b8251df56bfaa1d60a133affd736e4ebb3.jpeg?alt=media)
 
 - Bidirectional BFS can only be used in the question that we both know start and end.
 
@@ -148,9 +148,9 @@ Some BFS questions have an optimization, which is bidirectional BFS. Bidirection
 
 ### Problems
 
-##### Traverse a Graph:
+### Traverse a Graph:
 
-###### [69. Binary Tree Level Order Traversal](https://www.lintcode.com/problem/binary-tree-level-order-traversal/description)
+#### [69. Binary Tree Level Order Traversal](https://www.lintcode.com/problem/binary-tree-level-order-traversal/description)
 
 Given a binary tree, return the *level order* traversal of its nodes' values. (ie, from left to right, level by level).
 
@@ -219,7 +219,7 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 }
 ```
 
-###### [71. Binary Tree Zigzag Level Order Traversal](https://www.lintcode.com/problem/binary-tree-zigzag-level-order-traversal/description)
+#### [71. Binary Tree Zigzag Level Order Traversal](https://www.lintcode.com/problem/binary-tree-zigzag-level-order-traversal/description)
 
 Description:
 
@@ -290,7 +290,7 @@ We will use BFS to do level order traversal. For even level we will save the res
     }
 ```
 
-###### [242. Convert Binary Tree to Linked Lists by Depth](https://www.lintcode.com/problem/convert-binary-tree-to-linked-lists-by-depth/description)
+#### [242. Convert Binary Tree to Linked Lists by Depth](https://www.lintcode.com/problem/convert-binary-tree-to-linked-lists-by-depth/description)
 
 Description:
 
@@ -354,9 +354,80 @@ public List<ListNode> binaryTreeToLists(TreeNode root) {
 }
 ```
 
+#### [(LeetCode)117.Populating Next Right Pointers in Each Node II](https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/)
+
+Description:
+
+Given a binary tree
+
+```
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+```
+
+Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to `NULL`.
+
+Initially, all next pointers are set to `NULL`. 
+
+Example 1:
+
+![img](https://assets.leetcode.com/uploads/2019/02/15/117_sample.png)
+
+```
+Input: root = [1,2,3,4,5,null,7]
+Output: [1,#,2,3,#,4,5,7,#]
+Explanation: Given the above binary tree (Figure A), your function should populate each next pointer to point to its next right node, just like in Figure B. The serialized output is in level order as connected by the next pointers, with '#' signifying the end of each level.
+```
+
+ 
+
+Constraints:
+
+- The number of nodes in the given tree is less than `6000`.
+- `-100 <= node.val <= 100`
+
+Analysis:
+
+We need to connect all nodes by level. The only exception is the last node in each level. We will let the last node naturally connect to NULL.
+
+```java
+    public Node connect(Node root) {
+        
+        Queue<Node> queue = new LinkedList<>();
+        
+        queue.offer(root);
+        
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            
+            for(int i = 0; i < size; i++) {
+                Node cur = queue.poll();
+                
+                if(i != size - 1) {
+                    cur.next = queue.peek();
+                }
+                
+                if(cur.left != null) {
+                    queue.offer(cur.left);
+                }
+                if(cur.right != null) {
+                    queue.offer(cur.right);
+                }
+            }
+            
+        }
+        
+        return root;
+    }
+```
 
 
-###### [137. Clone Graph](https://www.lintcode.com/problem/clone-graph/description)
+
+#### [137. Clone Graph](https://www.lintcode.com/problem/clone-graph/description)
 
 Description:
 
@@ -430,7 +501,7 @@ This question only needs to traverse all nodes without layer's requirement, ther
     }
 ```
 
-###### [618. Search Graph Nodes](https://www.lintcode.com/problem/search-graph-nodes/description)
+#### [618. Search Graph Nodes](https://www.lintcode.com/problem/search-graph-nodes/description)
 
 Given a `undirected graph`, a `node` and a `target`, return the nearest node to given node which value of it is target, return `NULL` if you can't find.
 
@@ -506,7 +577,7 @@ public UndirectedGraphNode searchNode(Map<UndirectedGraphNode, Integer> values,
 }
 ```
 
-######  [431. Connected Component in Undirected Graph](https://www.lintcode.com/problem/connected-component-in-undirected-graph/description)
+####  [431. Connected Component in Undirected Graph](https://www.lintcode.com/problem/connected-component-in-undirected-graph/description)
 
 Find connected component in undirected graph.
 
@@ -576,7 +647,7 @@ public List<List<Integer>> connectedSet(List<UndirectedGraphNode> nodes) {
 }
 ```
 
-###### 178. Graph Valid Tree
+#### [178. Graph Valid Tree](https://www.lintcode.com/problem/178/)
 
 Given `n` nodes labeled from `0` to `n - 1` and a list of `undirected` edges (each edge is a pair of nodes), write a function to check whether these edges make up a valid tree.
 
@@ -654,7 +725,7 @@ public boolean validTree(int n, int[][] edges) {
 }
 ```
 
-######  [127. Topological Sorting](https://www.lintcode.com/problem/topological-sorting/description)
+####  [127. Topological Sorting](https://www.lintcode.com/problem/topological-sorting/description)
 
 Decription:
 
@@ -734,9 +805,9 @@ public ArrayList<DirectedGraphNode> topSort(ArrayList<DirectedGraphNode> graph) 
 }
 ```
 
-##### Shortest Path
+### Shortest Path
 
-###### [814. Shortest Path in Undirected Graph](https://www.lintcode.com/problem/shortest-path-in-undirected-graph/solution)
+#### [814. Shortest Path in Undirected Graph](https://www.lintcode.com/problem/shortest-path-in-undirected-graph/solution)
 
 Description:
 
@@ -864,7 +935,7 @@ BFS Bi directional Solution:
 
 
 
-###### [120. Word Ladder](https://www.lintcode.com/problem/word-ladder/my-submissions)
+#### [120. Word Ladder](https://www.lintcode.com/problem/word-ladder/my-submissions)
 
 Description:
 
@@ -904,7 +975,7 @@ Analysis:
 
 This is a tree problem. As we only care about the shortest transformation. We will use BFS to traverse level by level. The first level we met is the shortest. Here is the decision tree.
 
-![](E:\study\jiuzhang\Notes\wordLadder.jpg)
+![img](wordLadder.jpg)
 
 We will replace the start word each position with a to z 26 characters. If the word is in the dictionary, we will collect it and add the length by 1. Then next level, we will repeat the same operations for all word in this level until we find the end word or traverse all possible combinations without found end.
 
@@ -980,7 +1051,7 @@ One thing needs to pay attention, we need to add the end word into the dictionar
 
 
 
-###### [796. Open the Lock](https://www.lintcode.com/problem/open-the-lock/solution)
+#### [796. Open the Lock](https://www.lintcode.com/problem/open-the-lock/solution)
 
 Description:
 
@@ -1016,7 +1087,7 @@ We can consider one turn (either up or down) as one level of a decision tree. Th
 
 Here is the decision tree,
 
-![openlock](E:\study\jiuzhang\Notes\openlock.jpg)
+![img](openlock.jpg)
 
 Every new level, you can change any digit of 4 digit, as long as long it is not in the upper level and it is not in the dead end set, you can put it into the new level. 
 
@@ -1089,7 +1160,7 @@ Every new level, you can change any digit of 4 digit, as long as long it is not 
     }
 ```
 
-###### [794. Sliding Puzzle II](https://www.lintcode.com/problem/sliding-puzzle-ii/description)
+#### [794. Sliding Puzzle II](https://www.lintcode.com/problem/sliding-puzzle-ii/description)
 
 Descriptions:
 
@@ -1150,7 +1221,7 @@ This question is actually using BFS to find the shortest path of a decision tree
 
 Here is the decision tree.
 
-![slidingPuzzleII](E:\study\jiuzhang\Notes\slidingPuzzleII.jpg)
+![img](slidingPuzzleII.jpg)
 
 ```java
     public int minMoveStep(int[][] init_state, int[][] final_state) {
@@ -1237,14 +1308,14 @@ Here is the decision tree.
     }
 ```
 
-##### BFS in Matrix
+### BFS in Matrix
 
 A graph can be represented in 2 ways. 
 
 - Map: (node, list of direct neighbors)
 - 0 and 1Matrix: If any 2 nodes are connected, the value of indexes with 2 nodes will be 1, otherwise, it will be 0.
 
-###### [433. Number of Islands](https://www.lintcode.com/problem/number-of-islands/solution)
+#### [433. Number of Islands](https://www.lintcode.com/problem/number-of-islands/solution)
 
 Description:
 
@@ -1326,7 +1397,7 @@ Traverse all nodes in the matrix. If the node starts with 1 and not visited, we 
     }
 ```
 
-###### [611. Knight Shortest Path](https://www.lintcode.com/problem/knight-shortest-path/description)
+#### [611. Knight Shortest Path](https://www.lintcode.com/problem/knight-shortest-path/description)
 
 Description: 
 
@@ -1452,7 +1523,7 @@ public class Solution {
 }
 ```
 
-###### [630. Knight Shortest Path II](https://www.lintcode.com/problem/knight-shortest-path-ii/description)
+#### [630. Knight Shortest Path II](https://www.lintcode.com/problem/knight-shortest-path-ii/description)
 
 Descriptions:
 
@@ -1546,7 +1617,7 @@ It is exactly same logic as [611. Knight Shortest Path](#611. Knight Shortest Pa
 
 
 
-###### [598. Zombie in Matrix](https://www.lintcode.com/problem/zombie-in-matrix/description)
+#### [598. Zombie in Matrix](https://www.lintcode.com/problem/zombie-in-matrix/description)
 
 Description:
 
@@ -1632,3 +1703,4 @@ This question is asking how many levels we can traverse the whole graph with. Tr
         
         return (walls + zombies) == rows * cols ? days - 1 : -1;
 ```
+
