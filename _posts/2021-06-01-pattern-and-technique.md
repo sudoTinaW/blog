@@ -1,5 +1,8 @@
 ---
 published: false
+layout: post
+date: '2021-06-01 14:50:00 -0000'
+categories: algo
 ---
 This article is inspired by [Smilence Coding Notes](https://zybuluo.com/smilence/note/76)
 
@@ -165,4 +168,3 @@ This article is inspired by [Smilence Coding Notes](https://zybuluo.com/smilence
    - [Evaluate a Postfix Notation](https://www.lintcode.com/problem/424/)
 
 #### Dynamic Programming
-
