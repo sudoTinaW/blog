@@ -1,5 +1,8 @@
 ---
-published: false
+published: true
+layout: post
+date: '2021-06-01 10:50:00 -0000'
+categories: algo
 ---
 Stack and Queue are both linear data structure. Both of them can be considered as linked lists with limited reading and writing rights.Therefore, stack and queue's problems can also be resolved by more powerful list as well.
 
@@ -261,4 +264,3 @@ When we see an operator, we need to get its former closest two numbers and do th
 ```java
 public int evalRPN(String[] tokens) {  String operators = "+-*/";  Stack<Integer> stack = new Stack<>();  for(String t : tokens) {    if(operators.contains(t)) {      int operand2 = stack.pop();      int operand1 = stack.pop();      int temp = 0;      if( t.equals("+")) {        temp = operand1 + operand2;      }else if (t.equals("-")) {        temp = operand1 - operand2;      }else if(t.equals("*")) {        temp = operand1 * operand2;      }else {        temp = operand1 / operand2;      }      stack.push(temp);    }else {       stack.push(Integer.valueOf(t));    }  }  return stack.peek();}
 ```
-
