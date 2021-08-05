@@ -14,9 +14,9 @@ Quick Sort is the sort algorithm widely used in Java and many other languages. I
 
 - The below template is one of the quick sort templates. 
 
-  - Pivot must be an element in the array, otherwise it may lead to data range can not get smaller for every recursive call.
+  - Pivot must be an element in the array, otherwise data range might not get smaller for every recursive call.
 
-  - We have to make sure`i` and `j` will cross after every recursion call so that we can decrease the recursive call's data range. 
+  - We have to make sure`i` and `j` will cross after every recursive call so that we can decrease the recursive call's data range. 
 
   - ###### 4 cases of the stop position
 
@@ -35,9 +35,9 @@ Quick Sort is the sort algorithm widely used in Java and many other languages. I
 
   - From above, we can see quick sort can divide the input into 2 parts or 3 parts. Therefore, the base case of recursion is `start > end` and `start == end`.
 
-  - When an element's value equals pivot, we will keep swapping. Such way, we can make all elements equals pivot eventually distributed on the left and right side of the place that `i` and `j` meet, which also means, we can make the partition more evenly distribute, so that the algorithm's time complexity can be closer to the best case scenario. After partition,  all elements in `[left, j]` are `<= pivot`, and all elements in `[i, right]`are `>= pivot`. The elements `== pivot` are evenly scattered on both left and right sides.
+  - When an element's value equals pivot, we will keep swapping. Such way, we can make all elements equal to the pivot eventually distributed on the left and right side of the place where `i` and `j` meet. Also, we can make the partition more evenly distributed, so that the algorithm's time complexity can be closer to the best case scenario. After partition,  all elements in `[left, j]` are `<= pivot`, and all elements in `[i, right]`are `>= pivot`. The elements `== pivot` are evenly scattered on both left and right sides.
 
-  - When `i` and `j` both equal to pivot, the template will keep swapping. The swapping itself doesn't have a meaning, but it will let `i` and `j` continue to move towards each other.
+  - When `i` and `j` both equal to the pivot, the template will keep swapping. The swapping itself doesn't have a meaning, but it will let `i` and `j` continue to move towards each other.
 
 ```java
     public void sortIntegers2(int[] A) {
@@ -83,12 +83,12 @@ Quick Sort is the sort algorithm widely used in Java and many other languages. I
 ##### Partition:
 
 - Partition is an extension from Quick Sort. Quick Sort is also a type of two pointer algorithm. The pointers start from both ends of the array, and stop when two pointers meet each other.
-- Partition requires data with same property staying together. Therefore, it usually requires data swapping, and the quick sort without recursion can just accomplish it. Comparing to partition's left and right pointer algorithm, other left and right pointer algorithm usually solves searching for a group of elements issue, and input usually contains a target value.
-- Partition is usually using the quick sort template without recursion. Therefore,  most of time, the stop requirements don't need the left and right pointer crossing over, instead, if they can meet, the partition can stop.
+- Partition requires data with same property staying together. Therefore, it usually requires data swapping, and the quick sort without recursion can just accomplish it. Comparing to partition's left and right pointer algorithm, other left and right pointer algorithms usually solve searching for a group of elements issue and other left and right pointer algorithms' input usually have target values.
+- Partition is usually using the quick sort template without recursion. Therefore,  most of time, the stop requirements don't need the left and right pointer cross-over, instead, if they can meet, the partition can stop.
 
 ### Problems:
 
-###### [461. Kth Smallest Numbers in Unsorted Array](https://www.lintcode.com/problem/kth-smallest-numbers-in-unsorted-array/solution)
+#### [461. Kth Smallest Numbers in Unsorted Array](https://www.lintcode.com/problem/kth-smallest-numbers-in-unsorted-array/solution)
 
 Description:
 
@@ -128,7 +128,7 @@ $$
   -  `{A[j],A[i]}` : if the k is in `[start, A[j]]`, or `[A[i], end]` we can continue to call recursion.
   -  `{A[j], pivot, A[i]}` : if the k is in `[start, A[j]]`, or `[A[i], end]` we can continue to call recursion, and if `k == pivot`, we can directly return.
 
-  Therefore, we have 3 conditions, `k <= j` , `k == pivot`, and `k >= i`. When `k == pivot`, we find the k smallest. When `k <= j` and  `k >= i`, we will continue to call recursion.
+  Therefore, we have 3 conditions, `k <= j` , `k == pivot`, and `k >= i`. When `k == pivot`, we find the kth smallest. When `k <= j` and  `k >= i`, we will continue to call recursion.
 
 - The base case of recursion will be `start == end`.
 
@@ -188,7 +188,7 @@ $$
       }
   ```
 
-###### [31. Partition Array](https://www.lintcode.com/problem/partition-array/description)
+#### [31. Partition Array](https://www.lintcode.com/problem/partition-array/description)
 
 Description:
 
@@ -260,9 +260,8 @@ Analysis:
   }
   ```
 
-  
 
-###### [373. Partition Array by Odd and Even](https://www.lintcode.com/problem/partition-array-by-odd-and-even/description)
+#### [373. Partition Array by Odd and Even](https://www.lintcode.com/problem/partition-array-by-odd-and-even/description)
 
 Description:
 
@@ -314,7 +313,7 @@ It is a partition question. We can use quick sort template without recursion. Ch
     }
 ```
 
-###### [49. Sort Letters by Case](https://www.lintcode.com/problem/sort-letters-by-case/description)
+#### [49. Sort Letters by Case](https://www.lintcode.com/problem/sort-letters-by-case/description)
 
 Description:
 
@@ -323,14 +322,7 @@ Given a string which contains only letters. Sort it by lower case first and uppe
 Example
 
 ```
-Example 1:
-	Input:  "abAcD"
-	Output:  "acbAD"
-
-Example 2:
-	Input: "ABC"
-	Output:  "ABC"
-	
+Example 1:	Input:  "abAcD"	Output:  "acbAD"Example 2:	Input: "ABC"	Output:  "ABC"	
 ```
 
 Challenge:
@@ -346,38 +338,10 @@ Analysis:
 It is the exact same thought as [373. Partition Array by Odd and Even](#373. Partition Array by Odd and Even).
 
 ```java
-public void sortLetters(char[] chars) {
-    if(chars == null || chars.length == 0) {
-        return;
-    }
-
-    int left = 0;
-    int right = chars.length - 1;
-
-    while(left < right) {
-
-        while(left < right && Character.isLowerCase(chars[left])) {
-            left++;
-        }
-
-        while(left < right && Character.isUpperCase(chars[right])) {
-            right--;
-        }
-
-        if(left < right) {
-            char temp = chars[left];
-            chars[left] = chars[right];
-            chars[right] = temp;
-            left++;
-            right--;
-        }
-    }
-}
+public void sortLetters(char[] chars) {    if(chars == null || chars.length == 0) {        return;    }    int left = 0;    int right = chars.length - 1;    while(left < right) {        while(left < right && Character.isLowerCase(chars[left])) {            left++;        }        while(left < right && Character.isUpperCase(chars[right])) {            right--;        }        if(left < right) {            char temp = chars[left];            chars[left] = chars[right];            chars[right] = temp;            left++;            right--;        }    }}
 ```
 
-
-
-###### [148. Sort Colors](https://www.lintcode.com/problem/sort-colors/description)
+#### [148. Sort Colors](https://www.lintcode.com/problem/sort-colors/description)
 
 Description:
 
@@ -388,9 +352,7 @@ Here, we will use the integers `0`, `1`, and `2` to represent the color red, whi
 Example 1
 
 ```
-Input : [1, 0, 1, 2]
-Output : [0, 1, 1, 2]
-Explanation : sort it in-place
+Input : [1, 0, 1, 2]Output : [0, 1, 1, 2]Explanation : sort it in-place
 ```
 
 A rather straight forward solution is a two-pass algorithm using counting sort.
@@ -406,49 +368,10 @@ Analysis:
 If we use quick sort partition once, we can only sort the input into `<= pivot`, and `> pivot` or `< pivot`, and `>= pivot`. If we want to partition into 3 parts in one pass. We have to split the `< and == pivot` situation at the same time. Therefore, we can combine fast and slow pointer with quick sort two pointer partition. Here, we need to check whether fast pointer needs to swap with slow pointer whenever fast pointer moves. What is more, in quick sort,  left (fast) pointer can move in both `<= pivot` or after swap.  Since it is not necessary to move both pointers after swap, we can skip move left pointer to get a cleaner code.
 
 ```java
-    public void sortColors(int[] nums) {
-       
-       if(nums == null || nums.length == 0) {
-           return;
-       }
-       
-       int slow = 0;
-       int leftFast = 0;
-       int right = nums.length - 1;
-       
-       while(leftFast <= right) {
-           while(leftFast <= right && nums[leftFast] <= 1) {
-               if(nums[slow] > nums[leftFast]) {
-                   swap(slow, leftFast, nums);
-               }
-               leftFast++;
-               if(nums[slow] == 0) {
-                   slow++;
-               }
-             
-           }
-           
-           while(leftFast <= right && nums[right] > 1) {
-               right--;
-           }
-           
-           if(leftFast <= right) {
-               swap(leftFast, right, nums);
-               right--;
-           }
-       }
-    }
-    
-    private void swap(int a, int b, int[] nums) {
-      int temp = nums[a];
-      nums[a] = nums[b];
-      nums[b] = temp;
-    }
+    public void sortColors(int[] nums) {              if(nums == null || nums.length == 0) {           return;       }              int slow = 0;       int leftFast = 0;       int right = nums.length - 1;              while(leftFast <= right) {           while(leftFast <= right && nums[leftFast] <= 1) {               if(nums[slow] > nums[leftFast]) {                   swap(slow, leftFast, nums);               }               leftFast++;               if(nums[slow] == 0) {                   slow++;               }                        }                      while(leftFast <= right && nums[right] > 1) {               right--;           }                      if(leftFast <= right) {               swap(leftFast, right, nums);               right--;           }       }    }        private void swap(int a, int b, int[] nums) {      int temp = nums[a];      nums[a] = nums[b];      nums[b] = temp;    }
 ```
 
-
-
-###### [143. Sort Colors II](https://www.lintcode.com/problem/sort-colors-ii/description)
+#### [143. Sort Colors II](https://www.lintcode.com/problem/sort-colors-ii/description)
 
 Description:
 
@@ -457,21 +380,13 @@ Given an array of *n* objects with *k* different colors (numbered from 1 to k), 
 Example1:
 
 ```
-Input: 
-[3,2,2,1,4] 
-4
-Output: 
-[1,2,2,3,4]
+Input: [3,2,2,1,4] 4Output: [1,2,2,3,4]
 ```
 
 Example2:
 
 ```
-Input: 
-[2,1,1,2,2] 
-2
-Output: 
-[1,1,2,2,2]
+Input: [2,1,1,2,2] 2Output: [1,1,2,2,2]
 ```
 
 Challenge:
@@ -501,52 +416,12 @@ It looks more like quick sort. The difference between the quick sort and this qu
 
 
 ```java
-public void sortColors2(int[] colors, int k) {
-    sort(colors, 1, k, 0, colors.length - 1);
-}
-
-private void sort(int[] colors, int startColor,  int endColor, int start, int end) {
-    if(startColor >= endColor) {
-        return;
-    }
-
-
-
-    int left = start;
-    int right = end;
-    int pivot = (startColor + endColor) / 2;
-
-    while(left <= right) {
-
-        while(left <= right && colors[left] <= pivot) {
-            left++;
-        }
-
-        while(left <= right && colors[right] > pivot) {
-            right--;
-        }
-
-        if(left <= right) {
-            int temp = colors[left];
-            colors[left] = colors[right];
-            colors[right] = temp;
-            left++;
-            right--;
-        }
-    }
-
-    sort(colors, startColor, pivot, start, right);
-    sort(colors, pivot + 1, endColor, left, end);
-}
+public void sortColors2(int[] colors, int k) {    sort(colors, 1, k, 0, colors.length - 1);}private void sort(int[] colors, int startColor,  int endColor, int start, int end) {    if(startColor >= endColor) {        return;    }    int left = start;    int right = end;    int pivot = (startColor + endColor) / 2;    while(left <= right) {        while(left <= right && colors[left] <= pivot) {            left++;        }        while(left <= right && colors[right] > pivot) {            right--;        }        if(left <= right) {            int temp = colors[left];            colors[left] = colors[right];            colors[right] = temp;            left++;            right--;        }    }    sort(colors, startColor, pivot, start, right);    sort(colors, pivot + 1, endColor, left, end);}
 ```
 
 
 
-
-
-
-
-######  [144. Interleaving Positive and Negative Numbers](https://www.lintcode.com/problem/interleaving-positive-and-negative-numbers/description)
+####  [144. Interleaving Positive and Negative Numbers](https://www.lintcode.com/problem/interleaving-positive-and-negative-numbers/description)
 
 Description: 
 
@@ -555,9 +430,7 @@ Given an array with positive and negative integers. Re-range it to interleaving 
 Example 1:
 
 ```
-Input : [-1, -2, -3, 4, 5, 6]
-Outout : [-1, 5, -2, 4, -3, 6]
-Explanation :  any other reasonable answer.
+Input : [-1, -2, -3, 4, 5, 6]Outout : [-1, 5, -2, 4, -3, 6]Explanation :  any other reasonable answer.
 ```
 
 Notice:
@@ -578,60 +451,9 @@ One more thing needs to be consider, if positive integer is one more than negati
 We will only posts the second way,
 
 ```java
-public void rerange(int[] A) {
-
-    if(A == null || A.length == 0) {
-        return;
-    }
-
-
-    int pos = 0;
-    int neg = 0;
-
-    for(int a : A) {
-        if(a > 0) {
-            pos++;
-        }else {
-            neg++;
-        }
-    }
-
-
-    int postStart = 1;
-    int negStart = 1;
-
-    if(pos > neg) {
-        postStart = 0;
-    }else {
-        negStart = 0;
-    }
-
-
-    int i = postStart;
-    int j = negStart;
-
-    while(i < A.length && j < A.length) {
-
-        while(i < A.length && (i % 2 == postStart && A[i] > 0)) {
-            i += 2;
-        }
-
-        while(j < A.length && (j % 2 == negStart && A[j] < 0)) {
-            j += 2;
-        }
-
-        if(i < A.length && j < A.length) {
-            int temp = A[i];
-            A[i] = A[j];
-            A[j] = temp;
-
-            i += 2;
-            j += 2;
-        }
-
-    }
-
-}
+public void rerange(int[] A) {    if(A == null || A.length == 0) {        return;    }    int pos = 0;    int neg = 0;    for(int a : A) {        if(a > 0) {            pos++;        }else {            neg++;        }    }    int postStart = 1;    int negStart = 1;    if(pos > neg) {        postStart = 0;    }else {        negStart = 0;    }    int i = postStart;    int j = negStart;    while(i < A.length && j < A.length) {        while(i < A.length && (i % 2 == postStart && A[i] > 0)) {            i += 2;        }        while(j < A.length && (j % 2 == negStart && A[j] < 0)) {            j += 2;        }        if(i < A.length && j < A.length) {            int temp = A[i];            A[i] = A[j];            A[j] = temp;            i += 2;            j += 2;        }    }}
 ```
 
-#####
+#### [96. Partition List](./LinkedList.md)
+
+#### [98. Sort List](
