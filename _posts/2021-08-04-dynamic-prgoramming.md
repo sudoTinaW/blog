@@ -238,7 +238,45 @@ The decision graph after pruning is as following,
 ![img](uniquePathII.png)
 
 ```java
-    public int uniquePathsWithObstacles(int[][] obstacleGrid) {                int m = obstacleGrid.length;        int n = obstacleGrid[0].length;                        int[][] dp = new int[m][n];                for(int i = 0; i < m; i++) {            if(i == 0 && obstacleGrid[i][0] == 0) {                dp[i][0] = 1;                continue;            }                        if(obstacleGrid[i][0] == 0 && dp[i - 1][0] == 1) {                dp[i][0] = 1;            }        }                for(int j = 1; j < n; j++) {            if(obstacleGrid[0][j] == 0 && dp[0][j - 1] == 1) {                dp[0][j] = 1;            }        }                for(int i = 1; i < m; i++) {            for(int j = 1; j < n; j++) {                if(obstacleGrid[i][j] == 0) {                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];                   }else {                    dp[i][j] = 0;                }            }        }                return dp[m - 1][n - 1];    }
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+        
+        
+        int[][] dp = new int[m][n];
+        
+        for(int i = 0; i < m; i++) {
+            if(i == 0 && obstacleGrid[i][0] == 0) {
+                dp[i][0] = 1;
+                continue;
+            }
+            
+            if(obstacleGrid[i][0] == 0 && dp[i - 1][0] == 1) {
+                dp[i][0] = 1;
+
+            }
+        }
+        
+        for(int j = 1; j < n; j++) {
+
+            if(obstacleGrid[0][j] == 0 && dp[0][j - 1] == 1) {
+                dp[0][j] = 1;
+            }
+        }
+        
+        for(int i = 1; i < m; i++) {
+            for(int j = 1; j < n; j++) {
+                if(obstacleGrid[i][j] == 0) {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];   
+                }else {
+                    dp[i][j] = 0;
+                }
+            }
+        }
+        
+        return dp[m - 1][n - 1];
+    }
 ```
 
 
@@ -293,13 +331,74 @@ Since the dp function needs to make sure `i - 1` and `j - 1` inbound. We need to
 Recursive Way:
 
 ```java
-    public int minPathSum(int[][] grid) {        int[][] memo = new int[grid.length][grid[0].length];        findMinSum(grid.length - 1, grid[0].length - 1, memo, grid);                System.out.println(Arrays.deepToString(memo));        return memo[grid.length - 1][grid[0].length - 1];    }        private int findMinSum(int i, int j, int[][] memo, int[][] grid) {        if(memo[i][j] != 0) {                        return memo[i][j];        }                if(i == 0 && j == 0) {            memo[i][j] = grid[i][j];             return memo[i][j];        }                if(i == 0 && j > 0) {            memo[i][j] = findMinSum(i, j - 1, memo, grid) + grid[i][j];            return memo[i][j];        }                if(j == 0 && i > 0) {            memo[i][j] = findMinSum(i - 1, j, memo, grid) + grid[i][j];            return memo[i][j];        }                        memo[i][j] = Math.min(findMinSum(i - 1, j, memo, grid), findMinSum(i, j - 1, memo, grid)) + grid[i][j];                return memo[i][j];            }
+public int minPathSum(int[][] grid) {
+  int[][] memo = new int[grid.length][grid[0].length];
+  findMinSum(grid.length - 1, grid[0].length - 1, memo, grid);
+
+  return memo[grid.length - 1][grid[0].length - 1];
+}
+
+private int findMinSum(int i, int j, int[][] memo, int[][] grid) {
+  if(memo[i][j] != 0) {
+
+    return memo[i][j];
+  }
+
+  if(i == 0 && j == 0) {
+    memo[i][j] = grid[i][j]; 
+    return memo[i][j];
+  }
+
+  if(i == 0 && j > 0) {
+    memo[i][j] = findMinSum(i, j - 1, memo, grid) + grid[i][j];
+    return memo[i][j];
+  }
+
+  if(j == 0 && i > 0) {
+    memo[i][j] = findMinSum(i - 1, j, memo, grid) + grid[i][j];
+    return memo[i][j];
+  }
+
+
+  memo[i][j] = Math.min(findMinSum(i - 1, j, memo, grid), findMinSum(i, j - 1, memo, grid)) + grid[i][j];
+
+  return memo[i][j];
+
+}
 ```
 
 Iterative Way:
 
 ```java
-    public int minPathSum(int[][] grid) {                int[][] dp = new int[grid.length][grid[0].length];                dp[0][0] = grid[0][0];                for(int i = 1; i < grid.length; i++) {                        dp[i][0] = grid[i][0] + dp[i - 1][0];        }                for(int j = 1; j < grid[0].length; j++) {                       dp[0][j] = grid[0][j] + dp[0][j - 1];        }                for(int i = 1; i < grid.length; i++) {                        for(int j = 1; j < grid[0].length; j++) {                                dp[i][j] = grid[i][j] + Math.min(dp[i - 1][j], dp[i][j - 1]);                                            }        }                return dp[grid.length - 1][grid[0].length - 1];    }
+public int minPathSum(int[][] grid) {
+
+  if(grid == null || grid.length == 0 || grid[0].length == 0) {
+    return 0;
+  }
+
+  int m = grid.length;
+  int n = grid[0].length;
+
+  int[][] dp = new int[m][n];
+
+  dp[0][0] = grid[0][0]; 
+
+  for(int i = 1; i < m; i++) {
+    dp[i][0] = dp[i - 1][0] + grid[i][0];  
+  }
+
+  for(int i = 1; i < n; i++) {
+    dp[0][i] = dp[0][i - 1] + grid[0][i];
+  }
+
+  for(int i = 1; i < m; i++) {
+    for(int j = 1; j < n; j++) {
+      dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
+    }
+  }
+
+  return dp[m - 1][n - 1];
+}
 ```
 
 
@@ -359,13 +458,112 @@ From the graph you can clearly see the overlapping subproblem. In the future, we
 The recursion way,
 
 ```java
-class Solution {        private int maxLen = -1;    public int maximalSquare(char[][] matrix) {                int[][] memo = new int[matrix.length][matrix[0].length];                for(int i = 0; i < matrix.length; i++) {            for(int j = 0; j < matrix[0].length; j++) {                memo[i][j] = -1;            }        }                findMaxLen(matrix.length - 1, matrix[0].length - 1, matrix, memo);                System.out.println(Arrays.deepToString(memo));                return maxLen * maxLen;    }        private int findMaxLen(int i, int j, char[][] matrix, int[][] memo) {                if(i < 0 || j < 0){            return 0;        }                if(memo[i][j] != -1) {            return memo[i][j];        }                        int m1 = findMaxLen(i - 1, j, matrix, memo);        int m2 = findMaxLen(i - 1, j - 1, matrix, memo);        int m3 = findMaxLen(i, j - 1, matrix, memo);                if(matrix[i][j] == '0') {            memo[i][j] = 0;        }else {            memo[i][j] = Math.min((Math.min(m1, m2)), m3) + 1;        }                                      if(memo[i][j] > maxLen) {            maxLen = memo[i][j];        }                                      return memo[i][j];    }}
+class Solution {
+    
+    private int maxLen = -1;
+    public int maximalSquare(char[][] matrix) {
+        
+        int[][] memo = new int[matrix.length][matrix[0].length];
+        
+        for(int i = 0; i < matrix.length; i++) {
+            for(int j = 0; j < matrix[0].length; j++) {
+                memo[i][j] = -1;
+            }
+        }
+        
+        findMaxLen(matrix.length - 1, matrix[0].length - 1, matrix, memo);
+        
+        System.out.println(Arrays.deepToString(memo));
+        
+        return maxLen * maxLen;
+    }
+    
+    private int findMaxLen(int i, int j, char[][] matrix, int[][] memo) {
+        
+        if(i < 0 || j < 0){
+            return 0;
+        }
+        
+        if(memo[i][j] != -1) {
+            return memo[i][j];
+        }
+        
+
+        
+        int m1 = findMaxLen(i - 1, j, matrix, memo);
+        int m2 = findMaxLen(i - 1, j - 1, matrix, memo);
+        int m3 = findMaxLen(i, j - 1, matrix, memo);
+        
+        if(matrix[i][j] == '0') {
+            memo[i][j] = 0;
+        }else {
+            memo[i][j] = Math.min((Math.min(m1, m2)), m3) + 1;
+        }
+                              
+        if(memo[i][j] > maxLen) {
+            maxLen = memo[i][j];
+        }
+                              
+        return memo[i][j];
+    }
+}	
 ```
 
 The iterative way,
 
 ```java
-    public int maximalSquare(char[][] matrix) {                int rowLength = matrix.length;        int colLength = matrix[0].length;                int[][] dp = new int[rowLength][colLength];                                dp[0][0] = matrix[0][0] - 48;        int maxLength = dp[0][0];                for(int i = 1; i < rowLength; i++) {            dp[i][0] = matrix[i][0] - 48;            if(dp[i][0] > maxLength) {                maxLength = dp[i][0];            }        }        for(int j = 1; j < colLength; j++) {            dp[0][j] = matrix[0][j] - 48;            if(dp[0][j] > maxLength) {                maxLength = dp[0][j];            }        }                for(int i = 1; i < rowLength; i++) {            for(int j = 1; j < colLength; j++) {                                if(matrix[i][j] == '0') {                    dp[i][j] = 0;                }else {                   dp[i][j] = Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]) + 1;                                         if(dp[i][j] > maxLength) {                        maxLength = dp[i][j];                    }                }                            }        }        return maxLength * maxLength;    }
+class Solution {
+    
+    private int maxLen = -1;
+    public int maximalSquare(char[][] matrix) {
+        
+        int[][] memo = new int[matrix.length][matrix[0].length];
+        
+        for(int i = 0; i < matrix.length; i++) {
+            for(int j = 0; j < matrix[0].length; j++) {
+                memo[i][j] = -1;
+            }
+        }
+        
+        findMaxLen(matrix.length - 1, matrix[0].length - 1, matrix, memo);
+        
+        System.out.println(Arrays.deepToString(memo));
+        
+        return maxLen * maxLen;
+    }
+    
+    private int findMaxLen(int i, int j, char[][] matrix, int[][] memo) {
+        
+        if(i < 0 || j < 0){
+            return 0;
+        }
+        
+        if(memo[i][j] != -1) {
+            if(memo[i][j] > maxLen) {
+                maxLen = memo[i][j];
+            }
+            return memo[i][j];
+        }
+        
+
+        
+        int m1 = findMaxLen(i - 1, j, matrix, memo);
+        int m2 = findMaxLen(i - 1, j - 1, matrix, memo);
+        int m3 = findMaxLen(i, j - 1, matrix, memo);
+        
+        if(matrix[i][j] == '0') {
+            memo[i][j] = 0;
+        }else {
+            memo[i][j] = Math.min((Math.min(m1, m2)), m3) + 1;
+        }
+                              
+        if(memo[i][j] > maxLen) {
+            maxLen = memo[i][j];
+        }
+                              
+        return memo[i][j];
+    }
+}
 ```
 
 #### [516  Paint House II](https://www.lintcode.com/problem/516)
@@ -407,7 +605,55 @@ The initial status will be when we only need to paint one house. To use each col
 Iterative Way:
 
 ```java
-public class Solution {    /**     * @param costs: n x k cost matrix     * @return: an integer, the minimum cost to paint all houses     */    public int minCostII(int[][] costs) {        if(costs == null || costs.length == 0 || costs[0].length == 0) {            return 0;        }        int[][] dp = new int[costs.length][costs[0].length];        for(int j = 0; j < costs[0].length; j++) {            dp[0][j] = costs[0][j];        }        for(int i = 1; i < costs.length; i++) {                        int min = Integer.MAX_VALUE;            int secMin = Integer.MAX_VALUE;            int minIndex = -1;            for(int j = 0; j < costs[0].length; j++) {                if(min > dp[i - 1][j]) {                    secMin = min;                    min = dp[i - 1][j];                    minIndex = j;                } else if(secMin > dp[i - 1][j]) {                    secMin = dp[i - 1][j];                }                            }            for(int j = 0; j < costs[0].length; j++) {                dp[i][j] = j != minIndex ? min + costs[i][j] : secMin + costs[i][j];            }        }        int min = dp[costs.length - 1][0];        for(int d : dp[dp.length - 1]) {            if(min > d) {                min = d;            }        }        return min;        }}
+public class Solution {
+    /**
+     * @param costs: n x k cost matrix
+     * @return: an integer, the minimum cost to paint all houses
+     */
+    public int minCostII(int[][] costs) {
+        if(costs == null || costs.length == 0 || costs[0].length == 0) {
+            return 0;
+        }
+
+        int[][] dp = new int[costs.length][costs[0].length];
+
+        for(int j = 0; j < costs[0].length; j++) {
+            dp[0][j] = costs[0][j];
+        }
+
+        for(int i = 1; i < costs.length; i++) {
+            
+            int min = Integer.MAX_VALUE;
+            int secMin = Integer.MAX_VALUE;
+            int minIndex = -1;
+
+            for(int j = 0; j < costs[0].length; j++) {
+
+                if(min > dp[i - 1][j]) {
+                    secMin = min;
+                    min = dp[i - 1][j];
+                    minIndex = j;
+                } else if(secMin > dp[i - 1][j]) {
+                    secMin = dp[i - 1][j];
+                }
+                
+            }
+
+            for(int j = 0; j < costs[0].length; j++) {
+                dp[i][j] = j != minIndex ? min + costs[i][j] : secMin + costs[i][j];
+            }
+        }
+
+        int min = dp[costs.length - 1][0];
+        for(int d : dp[dp.length - 1]) {
+            if(min > d) {
+                min = d;
+            }
+        }
+        return min;
+    
+    }
+}
 ```
 
 This question we use a trick, since we only need to get the min value of last row with different column index, we will remember the min and second min value. If the current row's element has different column index from min value 's, we can use the last row's min. If the current row's element has the same column index with the min value's, we can use the sec min value. Such way, we can avoid scanning last row for every new elements.
@@ -498,7 +744,34 @@ First we will draw the discontinuous decision tree and try to find patterns. Her
 Form the decision tree, we can see, if we save the results, we only need to compared the green highlight element's result to get the final result. If we loop the level from bottom to top, we can get  recursion function is `dp[i] = max(dp[i + 2], dp[i + 3]) + nums[i]`. The initial value is `dp[len - 1], dp[len - 2]`. Since all other cases are depends on 2 elements, only `dp[len - 3]` depends on 1 element, we need to specially handle`dp[len - 3]` as well. What is more, the final result will get from `max (dp[0] and dp[1])` at the end.
 
 ```java
-public int rob(int[] nums) {  if(nums.length == 1) {    return nums[0];  }  int len = nums.length;  int[] dp = new int[len];  dp[len - 1] = nums[len - 1];  dp[len - 2] = Math.max(dp[len - 1], nums[len - 2]);  for(int i = len - 3; i >= 0; i--) {    if(i + 3 == len) {      dp[i] = nums[i] + dp[i + 2];      continue;    }    dp[i] = nums[i] + Math.max(dp[i + 2], dp[i + 3]);  }  return Math.max(dp[0], dp[1]);}
+class Solution {
+    public int rob(int[] nums) {
+        
+        if(nums.length == 1) {
+            return nums[0];
+        }
+        
+        int len = nums.length;
+        
+        int[] dp = new int[len];
+
+        dp[len - 1] = nums[len - 1];
+        dp[len - 2] = Math.max(dp[len - 1], nums[len - 2]);
+        
+        for(int i = len - 3; i >= 0; i--) {
+            
+            if(i + 3 == len) {
+                dp[i] = nums[i] + dp[i + 2];
+                continue;
+            }
+            
+            dp[i] = nums[i] + Math.max(dp[i + 2], dp[i + 3]);
+        }
+        
+        return Math.max(dp[0], dp[1]);
+        
+    }
+}
 ```
 
 
@@ -531,7 +804,22 @@ dp[len - 2]
 $$
 
 ```java
-    public int rob(int[] nums) {                int len = nums.length;                int[] dp = new int[len + 2];                for(int i = len - 1; i >= 0; i--) {                        dp[i] = Math.max(dp[i + 2] + nums[i], dp[i + 1]);        }                return dp[0];            }
+class Solution {
+    public int rob(int[] nums) {
+        
+        int len = nums.length;
+        
+        int[] dp = new int[len + 2];
+        
+        for(int i = len - 1; i >= 0; i--) {
+            
+            dp[i] = Math.max(dp[i + 2] + nums[i], dp[i + 1]);
+        }
+        
+        return dp[0];
+        
+    }
+}
 ```
 
 Finally, we can find patterns between each results. This method is the easiest to understand, but it is harder to find the pattern between each result. Here `dp[i]: ending with ith house, max money we can rob (Here ending with ith house means the ith house can present or not present).`Depends on different choices, to rob or not, we find its subproblem's element might be `i - 1` and `i - 2`. To find what will be the relationship, we will draw the result table.
@@ -541,7 +829,28 @@ Finally, we can find patterns between each results. This method is the easiest t
 From the picture, we can see `dp[i] = max{dp[i - 1], dp[i - 2] + nums[i]}`
 
 ```java
-    public int rob(int[] nums) {                if(nums.length == 1) {            return nums[0];        }        int[] dp = new int[nums.length];        if(nums.length > 1) {            dp[0] = nums[0];            dp[1] = Math.max(nums[0], nums[1]);        }                        for(int i = 2; i < nums.length; i++) {                        dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);        }                return dp[nums.length - 1];            }
+class Solution {
+    public int rob(int[] nums) {
+        
+        if(nums.length == 1) {
+            return nums[0];
+        }
+        int[] dp = new int[nums.length];
+        if(nums.length > 1) {
+            dp[0] = nums[0];
+            dp[1] = Math.max(nums[0], nums[1]);
+        }
+        
+        
+        for(int i = 2; i < nums.length; i++) {
+            
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
+        }
+        
+        return dp[nums.length - 1];
+        
+    }
+}
 ```
 
 #### [LC 213. House Robber II](https://leetcode.com/problems/house-robber-ii/)
@@ -586,7 +895,39 @@ This is a follow-up of [LC 198. House Robber](https://leetcode.com/problems/hous
 
 
 ```java
-class Solution {    public int rob(int[] nums) {                       if(nums.length == 1) {            return nums[0];        }                int secToLast = robI(Arrays.copyOfRange(nums, 1, nums.length));        int firstToLastSec = robI(Arrays.copyOfRange(nums, 0, nums.length - 1));                return Math.max(secToLast, firstToLastSec);    }        private int robI(int[] nums) {                if(nums.length == 1) {            return nums[0];        }                int[] dp = new int[nums.length];                dp[0] = nums[0];                dp[1] = nums[0] > nums[1] ? nums[0] : nums[1];                for(int i = 2; i < dp.length; i++) {                        dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);        }                return dp[dp.length - 1];    }}
+class Solution {
+    public int rob(int[] nums) {       
+        
+        if(nums.length == 1) {
+            return nums[0];
+        }
+        
+        int secToLast = robI(Arrays.copyOfRange(nums, 1, nums.length));
+        int firstToLastSec = robI(Arrays.copyOfRange(nums, 0, nums.length - 1));
+        
+        return Math.max(secToLast, firstToLastSec);
+    }
+    
+    private int robI(int[] nums) {
+        
+        if(nums.length == 1) {
+            return nums[0];
+        }
+        
+        int[] dp = new int[nums.length];
+        
+        dp[0] = nums[0];
+        
+        dp[1] = nums[0] > nums[1] ? nums[0] : nums[1];
+        
+        for(int i = 2; i < dp.length; i++) {
+            
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
+        }
+        
+        return dp[dp.length - 1];
+    }
+}
 ```
 
 #### [LC 300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
@@ -639,7 +980,39 @@ We can find the recursion function as,
 `dp[i] = Math.max(dp[j],...,dp[k]) + 1, ( nums[j] < nums[i], nums[k] < nums[i], 0 <= j < k < i)`
 
 ```java
-public int lengthOfLIS(int[] nums) {  int[] dp = new int[nums.length];  dp[0] = 1;  for(int i = 1; i < nums.length; i++) {    int max = 0;    for(int j = 0; j < i; j++) {      if(nums[i] > nums[j]){        if(dp[j] > max) {          max = dp[j];        }      }    }    dp[i] = max + 1;  }  int longest = 0;  for(int d : dp) {    longest = Math.max(longest, d);  }  return longest;}
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        
+        int[] dp = new int[nums.length];
+        
+        dp[0] = 1;
+
+        
+        for(int i = 1; i < nums.length; i++) {
+            
+            int max = 0;
+            
+            for(int j = 0; j < i; j++) {
+                
+                if(nums[i] > nums[j]){
+                    if(dp[j] > max) {
+                        max = dp[j];
+                    }
+                }
+            }
+            
+            dp[i] = max + 1;
+        }
+        
+        int longest = 0;
+        for(int d : dp) {
+            longest = Math.max(longest, d);
+        }
+        
+        return longest;
+        
+    }
+}
 ```
 
 Second, `dp[i]: starting from ith element till the last element, longest increasing subsequence length.` This question can not draw continuous decision tree, because each new `ith` result can depend on its former more than 2 elements' results, and the elements between every two level are not fixed. Therefore, we will draw discontinuous decision tree as below,
@@ -651,7 +1024,35 @@ The green highlight are the elements calculated. The rest are directly using the
 `dp[i] = max{dp[j]}(j >= i + 1, and nums[j] > nums[i])`
 
 ```java
-public int lengthOfLIS(int[] nums) {  int n = nums.length;  int[] dp = new int[nums.length];  Arrays.fill(dp, 1);  for(int i = n - 1; i >= 0; i--) {    for(int j = i + 1; j < n; j++) {      if(nums[j] > nums[i]) {        dp[i] = Math.max(dp[j] + 1, dp[i]);      }    }  }  int max = dp[0];  for(int d : dp) {    if(max < d) {      max = d;    }  }  return max;}
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, 1);
+        
+        for(int i = n - 1; i >= 0; i--) {
+            
+            for(int j = i + 1; j < n; j++) {
+                
+                if(nums[j] > nums[i]) {
+                    
+                    dp[i] = Math.max(dp[j] + 1, dp[i]);
+                }
+            }
+        }
+        
+        int max = dp[0];
+        for(int d : dp) {
+            if(max < d) {
+                max = d;
+            }
+        }
+        
+        return max;
+        
+    }
+}
 ```
 
 
@@ -698,7 +1099,24 @@ Here we notice that the diagram only has two 2 levels, there is no need to find 
 Here, we can still have an optimization. Among the comparison of elements `(4), (6, 4), (3, 6, 4), (5, 3, 6, 4), (1, , 5, 3, 6, 4)`, if we can save the max value  of its left sibliing's result, we can use its former comparison result to avoid some redundant calculation. 
 
 ```java
-public int maxProfit(int[] prices) {  int result = 0;  int max = 0;  for(int i = prices.length - 1; i >= 0; i--) {    result = Math.max(result, max - prices[i]);    if(prices[i] > max) {      max = prices[i];    }    }  return result;}
+class Solution {
+    public int maxProfit(int[] prices) {
+        
+        int result = 0;
+        
+        int max = 0;
+        for(int i = prices.length - 1; i >= 0; i--) {
+            
+            result = Math.max(result, max - prices[i]);
+            
+            if(prices[i] > max) {
+                max = prices[i];
+            }  
+        }
+        
+        return result;
+    }
+}
 ```
 
 #### [122. Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
@@ -757,7 +1175,30 @@ This question's initial status is a bit special. The last step's negative status
 
 
 ```java
-public int maxProfit(int[] prices) {  if(prices.length <= 1) {    return 0;  }  int n = prices.length;  int[][] dp = new int[n][2];  dp[n - 1][0] = 0;   dp[n - 1][1] = prices[n - 1];  for(int i = n - 2; i >= 0; i--) {    dp[i][0] = Math.max(-prices[i] + dp[i + 1][1], dp[i + 1][0]);    dp[i][1] = Math.max(prices[i] + dp[i + 1][0], dp[i + 1][1]);  }  return dp[0][0];}
+class Solution {
+    public int maxProfit(int[] prices) {
+        
+        if(prices.length <= 1) {
+            return 0;
+        }
+        
+        int n = prices.length;
+        
+        int[][] dp = new int[n][2];
+        
+        dp[n - 1][0] = 0; 
+        dp[n - 1][1] = prices[n - 1];
+        
+        for(int i = n - 2; i >= 0; i--) {
+            
+            dp[i][0] = Math.max(-prices[i] + dp[i + 1][1], dp[i + 1][0]);
+            dp[i][1] = Math.max(prices[i] + dp[i + 1][0], dp[i + 1][1]);
+        }
+                
+        
+        return dp[0][0];
+    }
+}
 ```
 
 This question has another greedy solution, we will not discuss here.
@@ -820,7 +1261,25 @@ The final result will be `dp[0][1]`
 The initial value will be `dp[n - 1][0] = 0` and `dp[n - 1][1] = nums[n - 1]` Here we need to notice that if the last element is negative, we will not add it up to the total sum. Its best value will be `0`.
 
 ```java
-public long maxAlternatingSum(int[] nums) {  int n = nums.length;  long[][] dp = new long[n][2];  dp[n - 1][0] = 0;  dp[n - 1][1] = nums[n - 1];  for(int i = n - 2; i >= 0; i--) {    dp[i][0] = Math.max(dp[i + 1][1] - nums[i], dp[i + 1][0]);    dp[i][1] = Math.max(dp[i + 1][0] + nums[i], dp[i + 1][1]);  }  return dp[0][1];}
+class Solution {
+    public long maxAlternatingSum(int[] nums) {
+        
+        int n = nums.length;
+        
+        long[][] dp = new long[n][2];
+        
+        dp[n - 1][0] = 0;
+        dp[n - 1][1] = nums[n - 1];
+        
+        for(int i = n - 2; i >= 0; i--) {
+            dp[i][0] = Math.max(dp[i + 1][1] - nums[i], dp[i + 1][0]);
+            dp[i][1] = Math.max(dp[i + 1][0] + nums[i], dp[i + 1][1]);
+        }
+        
+        return dp[0][1];
+        
+    }
+}
 ```
 
 ###  Continuous Segment Type:
@@ -871,10 +1330,112 @@ From the diagram, we can find DP function as
 To consider any perfect square number's result as  `1`, `dp[0]` shall be `0`.
 
 ```java
-public int numSquares(int n) {  int[] dp = new int[n + 1];  dp[0] = 0;  for(int i = 1; i <= n; i++) {    dp[i] = Integer.MAX_VALUE;    for(int j = 1; j * j <= i; j++) {      dp[i] = Math.min(dp[i], dp[i - j * j] + 1);    }  }  return dp[n];}
+class Solution {
+    public int numSquares(int n) {
+        
+        int[] dp = new int[n + 1];
+        
+        dp[0] = 0;
+        
+        for(int i = 1; i <= n; i++) {
+            dp[i] = Integer.MAX_VALUE;
+            
+            for(int j = 1; j * j <= i; j++) {
+                
+                dp[i] = Math.min(dp[i], dp[i - j * j] + 1);
+            }
+        }
+        
+        return dp[n];
+    }
+}
 ```
 
-####  132. Palindrome Partitioning II
+#### [139. Word Break](https://leetcode.com/problems/word-break/)
+
+Description:
+
+Given a string `s` and a dictionary of strings `wordDict`, return `true` if `s` can be segmented into a space-separated sequence of one or more dictionary words.
+
+**Note** that the same word in the dictionary may be reused multiple times in the segmentation.
+
+ 
+
+Example 1:
+
+```
+Input: s = "leetcode", wordDict = ["leet","code"]
+Output: true
+Explanation: Return true because "leetcode" can be segmented as "leet code".
+```
+
+Example 2:
+
+```
+Input: s = "applepenapple", wordDict = ["apple","pen"]
+Output: true
+Explanation: Return true because "applepenapple" can be segmented as "apple pen apple".
+Note that you are allowed to reuse a dictionary word.
+```
+
+Example 3:
+
+```
+Input: s = "catsandog", wordDict = ["cats","dog","sand","and","cat"]
+Output: false
+```
+
+ 
+
+Constraints:
+
+- `1 <= s.length <= 300`
+- `1 <= wordDict.length <= 1000`
+- `1 <= wordDict[i].length <= 20`
+- `s` and `wordDict[i]` consist of only lowercase English letters.
+- All the strings of `wordDict` are **unique**.
+
+Analysis:
+
+First we need to find all elements used in the recursion function, the elements are all elements cutting off a possible word in the dictionary.
+
+To find the relationship, we will draw a result diagram,
+
+![img](wordbreak.png)
+
+From the diagram, we can derive the DP function, `dp[i] = dp[i] || dp[i - 1], (1 <= j <= i)`
+
+```java
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        
+        
+        Set<String> dict = new HashSet<>();
+        
+        for(String w: wordDict) {
+            dict.add(w);
+        }
+        
+        int len = s.length();
+        boolean[] dp = new boolean[len + 1];
+        dp[0] = true;
+        
+        for(int i = 1; i <= len; i++) {
+            for(int j = 1; j <= i; j++) {
+                if(dict.contains(s.substring(i - j, i))) {
+                    dp[i] = dp[i] || dp[i - j];
+                }
+            }
+        }
+        
+        return dp[len];
+    }
+}
+```
+
+
+
+####  [132. Palindrome Partitioning II](https://leetcode.com/problems/palindrome-partitioning-ii/)
 
 Given a string `s`, partition `s` such that every substring of the partition is a palindrome.
 
@@ -922,7 +1483,43 @@ From the diagram, we can derive the DP function as
 `dp[0]`shall be `-1` so that any palindrome string follow the formula can be counted as `0`.
 
 ```java
-public int minCut(String s) {  int[] dp = new int[s.length() + 1];  dp[0] = -1;  for(int i = 1; i <= s.length(); i++) {    dp[i] = Integer.MAX_VALUE;    for(int j = 1; j <= i; j++) {      if(isPalindrome(s.substring(i - j, i))) {        dp[i] = Math.min(dp[i], dp[i - j] + 1);      }    }  }  return dp[s.length()];}private boolean isPalindrome(String s) {  int left = 0;  int right = s.length() - 1;  while(left < right) {    if(s.charAt(left) != s.charAt(right)) {      return false;    }    left++;    right--;  }  return true;}
+class Solution {
+    public int minCut(String s) {
+        
+        int[] dp = new int[s.length() + 1];
+        dp[0] = -1;
+        
+        for(int i = 1; i <= s.length(); i++) {
+            dp[i] = Integer.MAX_VALUE;
+            
+            for(int j = 1; j <= i; j++) {
+                
+                if(isPalindrome(s.substring(i - j, i))) {
+                    dp[i] = Math.min(dp[i], dp[i - j] + 1);
+                }
+            }
+        }
+        System.out.println(Arrays.toString(dp));
+        return dp[s.length()];
+    }
+    
+    private boolean isPalindrome(String s) {
+        
+        int left = 0;
+        int right = s.length() - 1;
+        
+        while(left < right) {
+            
+            if(s.charAt(left) != s.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        
+        return true;
+    }
+}
 ```
 
 
@@ -970,7 +1567,51 @@ To get the row 1 following our formula, we will create an extra 0 segment row. I
 The recursion function is `dp[r][i]=min(j=0,...,i){max{dp[r-1][j],pages[j]+...+pages[i-1]}}`
 
 ```java
-public class Solution {    /**     * @param pages: an array of integers     * @param k: An integer     * @return: an integer     */    public int copyBooks(int[] pages, int k) {        int n = pages.length;        if(k >= n) {            k = n;        }        int[][] dp = new int[k + 1][n + 1];                dp[0][0] = 0;        for(int j = 1; j < n; j++) {            dp[0][j] = Integer.MAX_VALUE;        }        for(int r = 1; r <= k; r++) {            for(int i = 1; i <= n; i++) {                dp[r][i] = Integer.MAX_VALUE;                                int sum = pages[i - 1];                for(int j = 1; j <= i; j++) {                    dp[r][i] = Math.min(dp[r][i], Math.max(dp[r - 1][i - j], sum));                    if(i - j - 1 >= 0) {                        sum += pages[i - j - 1];                    }                }            }        }        return dp[k][n];    }}
+public class Solution {
+    /**
+     * @param pages: an array of integers
+     * @param k: An integer
+     * @return: an integer
+     */
+    public int copyBooks(int[] pages, int k) {
+
+        int n = pages.length;
+
+        if(k >= n) {
+            k = n;
+        }
+
+        int[][] dp = new int[k + 1][n + 1];
+        
+        dp[0][0] = 0;
+
+        for(int j = 1; j < n; j++) {
+            dp[0][j] = Integer.MAX_VALUE;
+        }
+
+        for(int r = 1; r <= k; r++) {
+
+            for(int i = 1; i <= n; i++) {
+
+                dp[r][i] = Integer.MAX_VALUE;
+                
+                int sum = pages[i - 1];
+                for(int j = 1; j <= i; j++) {
+                    dp[r][i] = Math.min(dp[r][i], Math.max(dp[r - 1][i - j], sum));
+                    if(i - j - 1 >= 0) {
+                        sum += pages[i - j - 1];
+
+                    }
+                }
+            }
+        }
+
+        return dp[k][n];
+
+
+    }
+
+}
 ```
 
 
@@ -1049,7 +1690,38 @@ Sometimes, `dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1]`have max / min relation
 This question initial situations shall be `dp[i][0] = 0`, and` dp[0][j] = 0`.
 
 ```java
-public int longestCommonSubsequence(String text1, String text2) {        int m = text1.length();    int n = text2.length();        int[][] dp = new int[m + 1][n + 1];        for(int i = 0; i < m + 1; i++) {        dp[i][0] = 0;    }        for(int j = 1; j < n + 1; j++) {        dp[0][j] = 0;    }        for(int i = 1; i < m + 1; i++) {        for(int j = 1; j < n + 1; j++) {            if(text1.charAt(i - 1) == text2.charAt(j - 1)) {                dp[i][j] = Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]) + 1;            }else {                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);            }        }    }        return dp[m][n];    }
+class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        
+        // "tex1[i] == tex[j] dp[i - 1][j - 1] + 1 "
+        //dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j])
+        
+        int n = text1.length();
+        int m = text2.length();
+        int[][] dp = new int[n + 1][m + 1];
+        
+        for(int j = 0; j < m + 1; j++) {
+            dp[0][j] = 0;
+        }
+        
+        for(int i = 1; i < n + 1; i++) {
+            dp[i][0] = 0;
+        }
+        
+        for(int i = 1; i < n + 1; i++) {
+            for(int j = 1; j < m + 1; j++) {
+                
+                if(text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                }else {
+                    dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j]);
+                }
+            }
+        }
+        
+        return dp[n][m];
+    }
+}
 ```
 
 
@@ -1100,7 +1772,40 @@ The initial value shall be `dp[0][0] = 0, dp[i][0] = dp[i - 1][0] + 1, dp[0][j] 
 
 
 ```java
-public int minDistance(String word1, String word2) {  int m = word1.length();  int n = word2.length();  int[][] dp = new int[m + 1][n + 1];  dp[0][0] = 0;  for(int i = 1; i < m + 1; i++) {    dp[i][0] = dp[i - 1][0] + 1;  }  for(int j = 1; j < n + 1; j++) {    dp[0][j] = dp[0][j - 1] + 1;  }  for(int i = 1; i < m + 1; i++) {    for(int j = 1; j < n + 1; j++) {      if(word1.charAt(i - 1) == word2.charAt(j - 1)) {        dp[i][j] = dp[i - 1][j - 1];      }else {        dp[i][j] = Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]) + 1;      }    }  }  return dp[m][n];}
+class Solution {
+    public int minDistance(String word1, String word2) {
+        
+        int m = word1.length();
+        int n = word2.length();
+        
+        int[][] dp = new int[m + 1][n + 1];
+        
+        dp[0][0] = 0;
+        
+        for(int i = 1; i < m + 1; i++) {
+            dp[i][0] = dp[i - 1][0] + 1;
+        }
+        
+        for(int j = 1; j < n + 1; j++) {
+            dp[0][j] = dp[0][j - 1] + 1;
+        }
+        
+        for(int i = 1; i < m + 1; i++) {
+            
+            for(int j = 1; j < n + 1; j++) {
+                
+                if(word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }else {
+                    dp[i][j] = Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]) + 1;
+                }
+            }
+        }
+        
+        
+        return dp[m][n];
+    }
+}
 ```
 
 
@@ -1173,7 +1878,53 @@ The initial value `dp[0][0] = true`
 `when s2.charAt(j - 1) == s3.charAt(j - 1) && dp[0][j - 1], dp[0][j] = true`
 
 ```java
-public boolean isInterleave(String s1, String s2, String s3) {  int m = s1.length();  int n = s2.length();  if(m + n != s3.length()) {    return false;  }  boolean[][] dp = new boolean[m + 1][n + 1];  dp[0][0] = true;  for(int i = 1; i < m + 1; i++) {    if(s1.charAt(i - 1) == s3.charAt(i - 1) && dp[i - 1][0]) {      dp[i][0] = true;    }  }  for(int j = 1; j < n + 1; j++) {    if(s2.charAt(j - 1) == s3.charAt(j - 1) && dp[0][j - 1]) {      dp[0][j] = true;    }  }  for(int i = 1; i < m + 1; i++) {    for(int j = 1; j< n + 1; j++) {      if(dp[i - 1][j] && s1.charAt(i - 1) == s3.charAt(i + j - 1)) {        dp[i][j] = true;      }else if(dp[i][j - 1] && s2.charAt(j - 1) == s3.charAt(i + j - 1)) {        dp[i][j] = true;      }    }  }  return dp[m][n];}
+class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        
+        int m = s1.length();
+        int n = s2.length();
+        
+        if(m + n != s3.length()) {
+            return false;
+        }
+        
+        
+        boolean[][] dp = new boolean[m + 1][n + 1];
+        
+        dp[0][0] = true;
+        
+        for(int i = 1; i < m + 1; i++) {
+            
+            if(s1.charAt(i - 1) == s3.charAt(i - 1) && dp[i - 1][0]) {
+                dp[i][0] = true;
+            }
+        }
+        
+        for(int j = 1; j < n + 1; j++) {
+            
+            if(s2.charAt(j - 1) == s3.charAt(j - 1) && dp[0][j - 1]) {
+                dp[0][j] = true;
+            }
+            
+        }
+        
+        for(int i = 1; i < m + 1; i++) {
+            
+            for(int j = 1; j< n + 1; j++) {
+                
+                if(dp[i - 1][j] && s1.charAt(i - 1) == s3.charAt(i + j - 1)) {
+                    dp[i][j] = true;
+                }else if(dp[i][j - 1] && s2.charAt(j - 1) == s3.charAt(i + j - 1)) {
+                    dp[i][j] = true;
+                }
+                
+            }
+        }
+        
+        
+        return dp[m][n];
+    }
+}
 ```
 
 
@@ -1215,7 +1966,42 @@ This question can be treated as an easy version of knapsack problem. `dp[i][j] w
 Here we add an empty row of `0` to simplify the initialization. It is not necessary to be used all the time.
 
 ```java
-public int backPack(int m, int[] A) {  int n = A.length;  int[][] dp = new int[n + 1][m + 1];  for(int i = 0; i < n + 1; i++) {    dp[i][0] = 0;  }  for(int j = 1; j < m + 1; j++) {    dp[0][j] = 0;  }  for(int i = 1; i < n + 1; i++) {    for(int j = 1; j < m + 1; j++) {      if(j < A[i - 1]) {        dp[i][j] = dp[i - 1][j];        continue;      }      dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - A[i - 1]] + A[i - 1]);    }  }  return dp[n][m];}
+public class Solution {
+    /**
+     * @param m: An integer m denotes the size of a backpack
+     * @param A: Given n items with size A[i]
+     * @return: The maximum size
+     */
+    public int backPack(int m, int[] A) {
+        
+        int n = A.length;
+
+        int[][] dp = new int[n + 1][m + 1];
+
+        for(int i = 0; i < n + 1; i++) {
+            dp[i][0] = 0;
+        }
+
+        for(int j = 1; j < m + 1; j++) {
+            dp[0][j] = 0;
+        }
+
+        for(int i = 1; i < n + 1; i++) {
+            
+            for(int j = 1; j < m + 1; j++) {
+
+                if(j < A[i - 1]) {
+                    dp[i][j] = dp[i - 1][j];
+                    continue;
+                }
+
+                dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - A[i - 1]] + A[i - 1]);
+            }
+        }
+
+        return dp[n][m];
+    }
+}
 ```
 
 
@@ -1273,7 +2059,43 @@ Analysis:
 This is the 01 knapsack problem template. The thought has been described in the general description. Here we will only post the code.
 
 ```java
-public int backPackII(int m, int[] A, int[] V) {  int n = A.length;  int[][] dp = new int[n + 1][m + 1];  for(int i = 0; i < n + 1; i++) {    dp[i][0] = 0;  }  for(int j = 1; j < m + 1; j++) {    dp[0][j] = 0;  }  for(int i = 1; i < n + 1; i++) {    for(int j = 1; j < m + 1; j++) {      if(j < A[i - 1]) {        dp[i][j] = dp[i - 1][j];      }else {        dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - A[i - 1]] + V[i - 1]);      }    }  }  return dp[n][m];}
+public class Solution {
+    /**
+     * @param m: An integer m denotes the size of a backpack
+     * @param A: Given n items with size A[i]
+     * @param V: Given n items with value V[i]
+     * @return: The maximum value
+     */
+    public int backPackII(int m, int[] A, int[] V) {
+
+        int n = A.length;
+
+        int[][] dp = new int[n + 1][m + 1];
+
+        for(int i = 0; i < n + 1; i++) {
+            dp[i][0] = 0;
+        }
+
+        for(int j = 1; j < m + 1; j++) {
+            dp[0][j] = 0;
+        }
+
+        for(int i = 1; i < n + 1; i++) {
+            for(int j = 1; j < m + 1; j++) {
+                
+                if(j < A[i - 1]) {
+                    dp[i][j] = dp[i - 1][j];
+                }else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - A[i - 1]] + V[i - 1]);
+                }
+            }
+        }
+
+        return dp[n][m];
+
+
+    }
+}
 ```
 
 #### [440 · Backpack III](https://www.lintcode.com/problem/440)
@@ -1303,7 +2125,40 @@ Analysis:
 This is the unbounded knapsack problem's template. The thought has been described in the general description. Here we will only post the code.
 
 ```java
-public int backPackIII(int[] A, int[] V, int m) {  int n = A.length;  int[][] dp = new int[n + 1][m + 1];  for(int i = 0; i < n + 1; i++) {    dp[i][0] = 0;  }  for(int j = 1; j < m + 1; j++) {    dp[0][j] = 0;  }  for(int i = 1; i < n + 1; i ++) {    for(int j = 1; j < m + 1; j++) {      if(j < A[i - 1]) {        dp[i][j] = dp[i - 1][j];      }else {        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - A[i - 1]] + V[i - 1]);      }    }  }  return dp[n][m];}
+public class Solution {
+    /**
+     * @param A: an integer array
+     * @param V: an integer array
+     * @param m: An integer
+     * @return: an array
+     */
+    public int backPackIII(int[] A, int[] V, int m) {
+        int n = A.length;
+
+        int[][] dp = new int[n + 1][m + 1];
+
+        for(int i = 0; i < n + 1; i++) {
+            dp[i][0] = 0;
+        }
+
+        for(int j = 1; j < m + 1; j++) {
+            dp[0][j] = 0;
+        }
+
+        for(int i = 1; i < n + 1; i ++) {
+            for(int j = 1; j < m + 1; j++) {
+
+                if(j < A[i - 1]) {
+                    dp[i][j] = dp[i - 1][j];
+                }else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - A[i - 1]] + V[i - 1]);
+                }
+            }
+        }
+
+        return dp[n][m];
+    }
+}
 ```
 
 
@@ -1333,7 +2188,39 @@ Analysis:
 This question is a 01 knapsack variation. When we select the `ith`element, the total number of ways is  `dp[i][j] = dp[i - 1][j] + dp[i - 1][j - w[i]] `. When we are not selecting the `ith` element, the total number of ways are the former `dp[i - 1][j]`. This question's initialization is a bit different. There is one way to make sum as 0 which is not selecting any element. However, if there is no element, there is 0 way that make any weights except 0.
 
 ```java
-public int backPackV(int[] nums, int target) {  int m = nums.length;  int[][] dp = new int[m + 1][target + 1];  for(int i = 0; i < m + 1; i++) {    dp[i][0] = 1;  }  for(int j = 1; j < target + 1; j++) {    dp[0][j] = 0;  }  for(int i = 1; i < m + 1; i++) {    for(int j = 1; j < target + 1; j++) {      if(j < nums[i - 1]) {        dp[i][j] = dp[i - 1][j];      }else {        dp[i][j] = dp[i - 1][j] + dp[i - 1][j - nums[i - 1]];      }    }  }  return dp[m][target];}
+public class Solution {
+    /**
+     * @param nums: an integer array and all positive numbers
+     * @param target: An integer
+     * @return: An integer
+     */
+    public int backPackV(int[] nums, int target) {
+        
+        int m = nums.length;
+        int[][] dp = new int[m + 1][target + 1];
+        
+        for(int i = 0; i < m + 1; i++) {
+            dp[i][0] = 1;
+        }
+
+        for(int j = 1; j < target + 1; j++) {
+            dp[0][j] = 0;
+        }
+
+        for(int i = 1; i < m + 1; i++) {
+            for(int j = 1; j < target + 1; j++) {
+                if(j < nums[i - 1]) {
+                    dp[i][j] = dp[i - 1][j];
+                }else {
+                    dp[i][j] = dp[i - 1][j] + dp[i - 1][j - nums[i - 1]];
+                }
+            }
+        }
+
+        return dp[m][target];
+
+    }
+}
 ```
 
 
@@ -1367,10 +2254,51 @@ This question is a variation of 01 knapsack problem. The question can be transla
 There is a detail, if the sum is an odd number, we definitely can not find a partition.
 
 ```java
-    public boolean canPartition(int[] nums) {                int m = nums.length;                int sum = 0;                for(int i = 0; i < m; i++) {            sum += nums[i];        }                if(sum % 2 == 1) {            return false;        }                int n = sum / 2;                boolean[][] dp = new boolean[m + 1][n + 1];                for(int i = 0; i < m + 1; i++) {            dp[i][0] = true;        }                for(int j = 1; j < n + 1; j++) {            dp[0][j] = false;        }                for(int i = 1; i < m + 1 ;i++) {                        for(int j = 1; j < n + 1; j++) {                                if(j < nums[i - 1]) {                    dp[i][j] = dp[i - 1][j];                }else {                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i - 1]];                }            }        }                return dp[m][n];    }
+class Solution {
+    public boolean canPartition(int[] nums) {
+        
+        int m = nums.length;
+        
+        int sum = 0;
+        
+        for(int i = 0; i < m; i++) {
+            sum += nums[i];
+        }
+        
+        if(sum % 2 == 1) {
+            return false;
+        }
+        
+        int n = sum / 2;
+        
+        boolean[][] dp = new boolean[m + 1][n + 1];
+        
+        for(int i = 0; i < m + 1; i++) {
+            dp[i][0] = true;
+        }
+        
+        for(int j = 1; j < n + 1; j++) {
+            dp[0][j] = false;
+        }
+        
+        for(int i = 1; i < m + 1 ;i++) {
+            
+            for(int j = 1; j < n + 1; j++) {
+                
+                if(j < nums[i - 1]) {
+                    dp[i][j] = dp[i - 1][j];
+                }else {
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i - 1]];
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+}
 ```
 
-####  [322. Coin Change]()
+####  [322. Coin Change](https://leetcode.com/problems/coin-change/)
 
 Description:
 
@@ -1425,7 +2353,36 @@ Analysis:
 This question is an unbounded knapsack problem. Since this question is getting the min value, we need to initialize the impossible situation as MAX. During the calculation, we shall avoid MAX + 1 situation to avoid overflowing to MIN.
 
 ```java
-public int coinChange(int[] coins, int amount) {  int m = coins.length;  int[][] dp = new int[m + 1][amount + 1];  for(int i = 0; i < m + 1; i++) {    dp[i][0] = 0;  }  for(int j = 1; j < amount + 1; j++) {    dp[0][j] = Integer.MAX_VALUE;  }  for(int i = 1; i < m + 1; i++) {    for(int j = 1; j < amount + 1; j++) {      if(j < coins[i - 1] || dp[i][j - coins[i - 1]] == Integer.MAX_VALUE) {        dp[i][j] = dp[i - 1][j];      }else {        dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - coins[i - 1]] + 1);      }    }  }  return dp[m][amount] == Integer.MAX_VALUE? -1 : dp[m][amount];}
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        
+        int m = coins.length;
+        
+        int[][] dp = new int[m + 1][amount + 1];
+        
+        for(int i = 0; i < m + 1; i++) {
+            dp[i][0] = 0;
+        }
+        
+        for(int j = 1; j < amount + 1; j++) {
+            dp[0][j] = Integer.MAX_VALUE;
+        }
+        
+        for(int i = 1; i < m + 1; i++) {
+            
+            for(int j = 1; j < amount + 1; j++) {
+                
+                if(j < coins[i - 1] || dp[i][j - coins[i - 1]] == Integer.MAX_VALUE) {
+                    dp[i][j] = dp[i - 1][j];
+                }else {
+                    dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - coins[i - 1]] + 1);
+                }
+            }
+        }
+        
+        return dp[m][amount] == Integer.MAX_VALUE? -1 : dp[m][amount];
+    }
+}
 ```
 
 
@@ -1476,7 +2433,35 @@ Analysis:
 This is also an unbounded knapsack problem. This questions is asking for how many ways. If we pick the item, the total ways is its `dp[i - 1][j] + dp[i][j - coins[i - 1]]`.
 
 ```java
-public int change(int amount, int[] coins) {  int m = coins.length;  int[][] dp = new int[m + 1][amount + 1];  for(int i = 0; i < m + 1; i++) {    dp[i][0] = 1;  }  for(int j = 1; j < amount + 1; j++) {    dp[0][j] = 0;  }  for(int i = 1; i < m + 1; i++) {    for(int j = 1; j < amount + 1; j++) {      if(j < coins[i - 1]) {        dp[i][j] = dp[i - 1][j];      }else {        dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i - 1]];      }    }  }  return dp[m][amount];}
+class Solution {
+    public int change(int amount, int[] coins) {
+        
+        int m = coins.length;
+        
+        int[][] dp = new int[m + 1][amount + 1];
+        
+        for(int i = 0; i < m + 1; i++) {
+            dp[i][0] = 1;
+        }
+        
+        for(int j = 1; j < amount + 1; j++) {
+            dp[0][j] = 0;
+        }
+        
+        for(int i = 1; i < m + 1; i++) {
+            for(int j = 1; j < amount + 1; j++) {
+                
+                if(j < coins[i - 1]) {
+                    dp[i][j] = dp[i - 1][j];
+                }else {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i - 1]];
+                }
+            }
+        }
+        
+        return dp[m][amount];
+    }
+}
 ```
 
 
@@ -1784,4 +2769,4 @@ This article is inspired from the following articles,
 
 [P.yh Blog](https://juejin.cn/post/6844903985711677447)
 
-[Labuladong Blog](https://labuladong.gitbook.io/algo/mu-lu-ye-2)
+[Labuladong Blog](
