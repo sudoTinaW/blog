@@ -152,39 +152,6 @@ First we will draw the discontinuous decision tree and try to find patterns. Her
 
 Form the decision tree, we can see, if we save the results, we only need to compared the green highlight element's result to get the final result. If we loop the level from bottom to top, we can get  recursion function is `dp[i] = max(dp[i + 2], dp[i + 3]) + nums[i]`. The initial value is `dp[len - 1], dp[len - 2]`. Since all other cases are depends on 2 elements, only `dp[len - 3]` depends on 1 element, we need to specially handle`dp[len - 3]` as well. What is more, the final result will get from `max (dp[0] and dp[1])` at the end.
 
-```java
-class Solution {
-    public int rob(int[] nums) {
-        
-        if(nums.length == 1) {
-            return nums[0];
-        }
-        
-        int len = nums.length;
-        
-        int[] dp = new int[len];
-
-        dp[len - 1] = nums[len - 1];
-        dp[len - 2] = Math.max(dp[len - 1], nums[len - 2]);
-        
-        for(int i = len - 3; i >= 0; i--) {
-            
-            if(i + 3 == len) {
-                dp[i] = nums[i] + dp[i + 2];
-                continue;
-            }
-            
-            dp[i] = nums[i] + Math.max(dp[i + 2], dp[i + 3]);
-        }
-        
-        return Math.max(dp[0], dp[1]);
-        
-    }
-}
-```
-
-
-
 Second, we notice each element only uses maximum 2 elements from lower level, and the 2 elements index are relatively fixed. Therefore, we also can use the continuous decision tree.   `dp[i]` has the same definition as the first way. 
 
 ![img](hosuerobSubSequence.png)
@@ -212,55 +179,12 @@ dp[len - 2]
 \end{align*}
 $$
 
-```java
-class Solution {
-    public int rob(int[] nums) {
-        
-        int len = nums.length;
-        
-        int[] dp = new int[len + 2];
-        
-        for(int i = len - 1; i >= 0; i--) {
-            
-            dp[i] = Math.max(dp[i + 2] + nums[i], dp[i + 1]);
-        }
-        
-        return dp[0];
-        
-    }
-}
-```
 
 Finally, we can find patterns between each results. This method is the easiest to understand, but it is harder to find the pattern between each result. Here `dp[i]: ending with ith house, max money we can rob (Here ending with ith house means the ith house can present or not present).`Depends on different choices, to rob or not, we find its subproblem's element might be `i - 1` and `i - 2`. To find what will be the relationship, we will draw the result table.
 
 ![img](houseRobbery.png)
 
 From the picture, we can see `dp[i] = max{dp[i - 1], dp[i - 2] + nums[i]}`
-
-```java
-class Solution {
-    public int rob(int[] nums) {
-        
-        if(nums.length == 1) {
-            return nums[0];
-        }
-        int[] dp = new int[nums.length];
-        if(nums.length > 1) {
-            dp[0] = nums[0];
-            dp[1] = Math.max(nums[0], nums[1]);
-        }
-        
-        
-        for(int i = 2; i < nums.length; i++) {
-            
-            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
-        }
-        
-        return dp[nums.length - 1];
-        
-    }
-}
-```
 
 #### [LC 213. House Robber II](https://leetcode.com/problems/house-robber-ii/)
 
@@ -301,43 +225,6 @@ Analysis:
 
 This is a follow-up of [LC 198. House Robber](https://leetcode.com/problems/house-robber/). Since the houses are in a circle, which means the first house and last house can not be robbed at the same time. Therefore, we shall pick the max f containing the first house but not the last and the last house without first house as the final result.
 
-
-
-```java
-class Solution {
-    public int rob(int[] nums) {       
-        
-        if(nums.length == 1) {
-            return nums[0];
-        }
-        
-        int secToLast = robI(Arrays.copyOfRange(nums, 1, nums.length));
-        int firstToLastSec = robI(Arrays.copyOfRange(nums, 0, nums.length - 1));
-        
-        return Math.max(secToLast, firstToLastSec);
-    }
-    
-    private int robI(int[] nums) {
-        
-        if(nums.length == 1) {
-            return nums[0];
-        }
-        
-        int[] dp = new int[nums.length];
-        
-        dp[0] = nums[0];
-        
-        dp[1] = nums[0] > nums[1] ? nums[0] : nums[1];
-        
-        for(int i = 2; i < dp.length; i++) {
-            
-            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
-        }
-        
-        return dp[dp.length - 1];
-    }
-}
-```
 
 #### [LC 300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
 
@@ -388,41 +275,6 @@ We can find the recursion function as,
 
 `dp[i] = Math.max(dp[j],...,dp[k]) + 1, ( nums[j] < nums[i], nums[k] < nums[i], 0 <= j < k < i)`
 
-```java
-class Solution {
-    public int lengthOfLIS(int[] nums) {
-        
-        int[] dp = new int[nums.length];
-        
-        dp[0] = 1;
-
-        
-        for(int i = 1; i < nums.length; i++) {
-            
-            int max = 0;
-            
-            for(int j = 0; j < i; j++) {
-                
-                if(nums[i] > nums[j]){
-                    if(dp[j] > max) {
-                        max = dp[j];
-                    }
-                }
-            }
-            
-            dp[i] = max + 1;
-        }
-        
-        int longest = 0;
-        for(int d : dp) {
-            longest = Math.max(longest, d);
-        }
-        
-        return longest;
-        
-    }
-}
-```
 
 Second, `dp[i]: starting from ith element till the last element, longest increasing subsequence length.` This question can not draw continuous decision tree, because each new `ith` result can depend on its former more than 2 elements' results, and the elements between every two level are not fixed. Therefore, we will draw discontinuous decision tree as below,
 
@@ -431,39 +283,6 @@ Second, `dp[i]: starting from ith element till the last element, longest increas
 The green highlight are the elements calculated. The rest are directly using the result. From the picture, we can see, each element's result will depends on its direct lower level's elements whose values are greater than it. The recursion function is 
 
 `dp[i] = max{dp[j]}(j >= i + 1, and nums[j] > nums[i])`
-
-```java
-class Solution {
-    public int lengthOfLIS(int[] nums) {
-        int n = nums.length;
-        
-        int[] dp = new int[nums.length];
-        Arrays.fill(dp, 1);
-        
-        for(int i = n - 1; i >= 0; i--) {
-            
-            for(int j = i + 1; j < n; j++) {
-                
-                if(nums[j] > nums[i]) {
-                    
-                    dp[i] = Math.max(dp[j] + 1, dp[i]);
-                }
-            }
-        }
-        
-        int max = dp[0];
-        for(int d : dp) {
-            if(max < d) {
-                max = d;
-            }
-        }
-        
-        return max;
-        
-    }
-}
-```
-
 
 
 #### [121. Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
@@ -507,26 +326,6 @@ Here we notice that the diagram only has two 2 levels, there is no need to find 
 
 Here, we can still have an optimization. Among the comparison of elements `(4), (6, 4), (3, 6, 4), (5, 3, 6, 4), (1, , 5, 3, 6, 4)`, if we can save the max value  of its left sibliing's result, we can use its former comparison result to avoid some redundant calculation. 
 
-```java
-class Solution {
-    public int maxProfit(int[] prices) {
-        
-        int result = 0;
-        
-        int max = 0;
-        for(int i = prices.length - 1; i >= 0; i--) {
-            
-            result = Math.max(result, max - prices[i]);
-            
-            if(prices[i] > max) {
-                max = prices[i];
-            }  
-        }
-        
-        return result;
-    }
-}
-```
 
 #### [122. Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
 
@@ -581,34 +380,6 @@ From the diagram, we can see, the closet two numbers are only one level away. Th
 
 This question's initial status is a bit special. The last step's negative status is not possible. If the last step can only be negative, we will choose 0 as the last step's result, which is not sell nor buy. Therefore, the initial status are`dp[n- 1][0] = 0` and `dp[n - 1][1] = prices[n - 1]`.
 
-
-
-```java
-class Solution {
-    public int maxProfit(int[] prices) {
-        
-        if(prices.length <= 1) {
-            return 0;
-        }
-        
-        int n = prices.length;
-        
-        int[][] dp = new int[n][2];
-        
-        dp[n - 1][0] = 0; 
-        dp[n - 1][1] = prices[n - 1];
-        
-        for(int i = n - 2; i >= 0; i--) {
-            
-            dp[i][0] = Math.max(-prices[i] + dp[i + 1][1], dp[i + 1][0]);
-            dp[i][1] = Math.max(prices[i] + dp[i + 1][0], dp[i + 1][1]);
-        }
-                
-        
-        return dp[0][0];
-    }
-}
-```
 
 This question has another greedy solution, we will not discuss here.
 
@@ -669,27 +440,6 @@ The final result will be `dp[0][1]`
 
 The initial value will be `dp[n - 1][0] = 0` and `dp[n - 1][1] = nums[n - 1]` Here we need to notice that if the last element is negative, we will not add it up to the total sum. Its best value will be `0`.
 
-```java
-class Solution {
-    public long maxAlternatingSum(int[] nums) {
-        
-        int n = nums.length;
-        
-        long[][] dp = new long[n][2];
-        
-        dp[n - 1][0] = 0;
-        dp[n - 1][1] = nums[n - 1];
-        
-        for(int i = n - 2; i >= 0; i--) {
-            dp[i][0] = Math.max(dp[i + 1][1] - nums[i], dp[i + 1][0]);
-            dp[i][1] = Math.max(dp[i + 1][0] + nums[i], dp[i + 1][1]);
-        }
-        
-        return dp[0][1];
-        
-    }
-}
-```
 
 ###  Continuous Segment Type:
 
@@ -738,27 +488,7 @@ From the diagram, we can find DP function as
 
 To consider any perfect square number's result as  `1`, `dp[0]` shall be `0`.
 
-```java
-class Solution {
-    public int numSquares(int n) {
-        
-        int[] dp = new int[n + 1];
-        
-        dp[0] = 0;
-        
-        for(int i = 1; i <= n; i++) {
-            dp[i] = Integer.MAX_VALUE;
-            
-            for(int j = 1; j * j <= i; j++) {
-                
-                dp[i] = Math.min(dp[i], dp[i - j * j] + 1);
-            }
-        }
-        
-        return dp[n];
-    }
-}
-```
+
 
 #### [139. Word Break](https://leetcode.com/problems/word-break/)
 
@@ -814,35 +544,6 @@ To find the relationship, we will draw a result diagram,
 
 From the diagram, we can derive the DP function, `dp[i] = dp[i] || dp[i - 1], (1 <= j <= i)`
 
-```java
-class Solution {
-    public boolean wordBreak(String s, List<String> wordDict) {
-        
-        
-        Set<String> dict = new HashSet<>();
-        
-        for(String w: wordDict) {
-            dict.add(w);
-        }
-        
-        int len = s.length();
-        boolean[] dp = new boolean[len + 1];
-        dp[0] = true;
-        
-        for(int i = 1; i <= len; i++) {
-            for(int j = 1; j <= i; j++) {
-                if(dict.contains(s.substring(i - j, i))) {
-                    dp[i] = dp[i] || dp[i - j];
-                }
-            }
-        }
-        
-        return dp[len];
-    }
-}
-```
-
-
 
 ####  [132. Palindrome Partitioning II](https://leetcode.com/problems/palindrome-partitioning-ii/)
 
@@ -890,47 +591,6 @@ From the diagram, we can derive the DP function as
 `dp[i] = min(dp[j] + 1), ( 1 <= j <= i)`
 
 `dp[0]`shall be `-1` so that any palindrome string follow the formula can be counted as `0`.
-
-```java
-class Solution {
-    public int minCut(String s) {
-        
-        int[] dp = new int[s.length() + 1];
-        dp[0] = -1;
-        
-        for(int i = 1; i <= s.length(); i++) {
-            dp[i] = Integer.MAX_VALUE;
-            
-            for(int j = 1; j <= i; j++) {
-                
-                if(isPalindrome(s.substring(i - j, i))) {
-                    dp[i] = Math.min(dp[i], dp[i - j] + 1);
-                }
-            }
-        }
-        System.out.println(Arrays.toString(dp));
-        return dp[s.length()];
-    }
-    
-    private boolean isPalindrome(String s) {
-        
-        int left = 0;
-        int right = s.length() - 1;
-        
-        while(left < right) {
-            
-            if(s.charAt(left) != s.charAt(right)) {
-                return false;
-            }
-            left++;
-            right--;
-        }
-        
-        return true;
-    }
-}
-```
-
 
 
 #### [437 Copy Books](https://www.lintcode.com/problem/437/)
