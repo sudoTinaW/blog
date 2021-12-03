@@ -53,7 +53,7 @@ The difficulty of DP is how to define optimal subproblems. We will introduce som
 
 ### Matrix Type:
 
-If the question offers a matrix as input, and it is not finding the shortest path or it is finding the shortest path but weights are not always 1, we shall think of using DP. Matrix can be consider as a graph, the node will be each cell, and its neighbours will be its surrounding cells, which also means a cell and its surrounding cells are connected. **For the matrix type DP, we shall think of how to transit the states from its neighbours to the cell.** 
+If the question offers a matrix as input, and it is not finding the shortest path or finding the shortest path but with weights not always 1, we shall think of using DP. Matrix can be consider as a graph, the node will be each cell, and its neighbours will be its surrounding cells, which also means a cell and its surrounding cells are connected. **For the matrix type DP, we shall think of how to transit the states from its neighbours to the cell.** 
 
 个人总结了一个小技巧，Matrix Type question， 不像sub sequence type，一般**不会**根据不同的choice选择用**不同**元素的subproblem的答案来组成新的problem。**所有**用来组成新答案的元素的结果通常就是我们recursion function里要用的子问题的结果。所以Matrix Type的子问题比较好找。找到这些元素后，我们可以用例子，自己算一遍每一个位置的结果，并找到每个新元素与其前面用的元素的结果的关系。从两头推导， 更容易找到recursion function。
 
