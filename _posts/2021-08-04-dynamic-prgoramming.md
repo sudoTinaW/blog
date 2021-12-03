@@ -1264,4 +1264,4 @@ This article is inspired from the following articles,
 
 [P.yh Blog](https://juejin.cn/post/6844903985711677447)
 
-[Labuladong Blog](
+[Labuladong Blog](https://labuladong.gitbook.io/algo/mu-lu-ye-2)
