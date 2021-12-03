@@ -635,56 +635,6 @@ To get the row 1 following our formula, we will create an extra 0 segment row. I
 
 The recursion function is `dp[r][i]=min(j=0,...,i){max{dp[r-1][j],pages[j]+...+pages[i-1]}}`
 
-```java
-public class Solution {
-    /**
-     * @param pages: an array of integers
-     * @param k: An integer
-     * @return: an integer
-     */
-    public int copyBooks(int[] pages, int k) {
-
-        int n = pages.length;
-
-        if(k >= n) {
-            k = n;
-        }
-
-        int[][] dp = new int[k + 1][n + 1];
-        
-        dp[0][0] = 0;
-
-        for(int j = 1; j < n; j++) {
-            dp[0][j] = Integer.MAX_VALUE;
-        }
-
-        for(int r = 1; r <= k; r++) {
-
-            for(int i = 1; i <= n; i++) {
-
-                dp[r][i] = Integer.MAX_VALUE;
-                
-                int sum = pages[i - 1];
-                for(int j = 1; j <= i; j++) {
-                    dp[r][i] = Math.min(dp[r][i], Math.max(dp[r - 1][i - j], sum));
-                    if(i - j - 1 >= 0) {
-                        sum += pages[i - j - 1];
-
-                    }
-                }
-            }
-        }
-
-        return dp[k][n];
-
-
-    }
-
-}
-```
-
-
-
 ### Two Sub Sequences Type:
 
 This type of question's input is usually two strings. Some sample questions are as following,
@@ -758,42 +708,6 @@ Sometimes, `dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1]`have max / min relation
 
 This question initial situations shall be `dp[i][0] = 0`, and` dp[0][j] = 0`.
 
-```java
-class Solution {
-    public int longestCommonSubsequence(String text1, String text2) {
-        
-        // "tex1[i] == tex[j] dp[i - 1][j - 1] + 1 "
-        //dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j])
-        
-        int n = text1.length();
-        int m = text2.length();
-        int[][] dp = new int[n + 1][m + 1];
-        
-        for(int j = 0; j < m + 1; j++) {
-            dp[0][j] = 0;
-        }
-        
-        for(int i = 1; i < n + 1; i++) {
-            dp[i][0] = 0;
-        }
-        
-        for(int i = 1; i < n + 1; i++) {
-            for(int j = 1; j < m + 1; j++) {
-                
-                if(text1.charAt(i - 1) == text2.charAt(j - 1)) {
-                    dp[i][j] = dp[i - 1][j - 1] + 1;
-                }else {
-                    dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j]);
-                }
-            }
-        }
-        
-        return dp[n][m];
-    }
-}
-```
-
-
 
 #### [72. Edit Distance](https://leetcode.com/problems/edit-distance/)
 
@@ -837,47 +751,6 @@ From the diagram, we can see,
 The initial value shall be `dp[0][0] = 0, dp[i][0] = dp[i - 1][0] + 1, dp[0][j] = dp[0][j - 1] + 1 `
 
 ![img](editDis.png)
-
-
-
-```java
-class Solution {
-    public int minDistance(String word1, String word2) {
-        
-        int m = word1.length();
-        int n = word2.length();
-        
-        int[][] dp = new int[m + 1][n + 1];
-        
-        dp[0][0] = 0;
-        
-        for(int i = 1; i < m + 1; i++) {
-            dp[i][0] = dp[i - 1][0] + 1;
-        }
-        
-        for(int j = 1; j < n + 1; j++) {
-            dp[0][j] = dp[0][j - 1] + 1;
-        }
-        
-        for(int i = 1; i < m + 1; i++) {
-            
-            for(int j = 1; j < n + 1; j++) {
-                
-                if(word1.charAt(i - 1) == word2.charAt(j - 1)) {
-                    dp[i][j] = dp[i - 1][j - 1];
-                }else {
-                    dp[i][j] = Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]) + 1;
-                }
-            }
-        }
-        
-        
-        return dp[m][n];
-    }
-}
-```
-
-
 
 #### [97. Interleaving String](https://leetcode.com/problems/interleaving-string/)
 
@@ -946,58 +819,6 @@ The initial value `dp[0][0] = true`
 
 `when s2.charAt(j - 1) == s3.charAt(j - 1) && dp[0][j - 1], dp[0][j] = true`
 
-```java
-class Solution {
-    public boolean isInterleave(String s1, String s2, String s3) {
-        
-        int m = s1.length();
-        int n = s2.length();
-        
-        if(m + n != s3.length()) {
-            return false;
-        }
-        
-        
-        boolean[][] dp = new boolean[m + 1][n + 1];
-        
-        dp[0][0] = true;
-        
-        for(int i = 1; i < m + 1; i++) {
-            
-            if(s1.charAt(i - 1) == s3.charAt(i - 1) && dp[i - 1][0]) {
-                dp[i][0] = true;
-            }
-        }
-        
-        for(int j = 1; j < n + 1; j++) {
-            
-            if(s2.charAt(j - 1) == s3.charAt(j - 1) && dp[0][j - 1]) {
-                dp[0][j] = true;
-            }
-            
-        }
-        
-        for(int i = 1; i < m + 1; i++) {
-            
-            for(int j = 1; j< n + 1; j++) {
-                
-                if(dp[i - 1][j] && s1.charAt(i - 1) == s3.charAt(i + j - 1)) {
-                    dp[i][j] = true;
-                }else if(dp[i][j - 1] && s2.charAt(j - 1) == s3.charAt(i + j - 1)) {
-                    dp[i][j] = true;
-                }
-                
-            }
-        }
-        
-        
-        return dp[m][n];
-    }
-}
-```
-
-
-
 ### Knapsack Type:
 
 Knapsack Problem is a typical DP question, and Its input is easily distinguished. The problem offers a sum, and a weight array whose element value can be a part of sum, as inputs. Sometimes, it offers another cost array whose element's index same as weight array. The Knapsack problem's subproblem is in 2D dimension. One dimension is sum from 0 to the total result. Another dimension is index of weight array. Since weight array and cost array own the same index, we can find its cost easily as well. 
@@ -1033,47 +854,6 @@ Both knapsack problems' recursion function have meanings, the meaning explanatio
 This question can be treated as an easy version of knapsack problem. `dp[i][j] will represent the max sum until i and j`. Since every item can be only used once, this is a 01 knapsack variation.We will directly use the 01 knapsack template.
 
 Here we add an empty row of `0` to simplify the initialization. It is not necessary to be used all the time.
-
-```java
-public class Solution {
-    /**
-     * @param m: An integer m denotes the size of a backpack
-     * @param A: Given n items with size A[i]
-     * @return: The maximum size
-     */
-    public int backPack(int m, int[] A) {
-        
-        int n = A.length;
-
-        int[][] dp = new int[n + 1][m + 1];
-
-        for(int i = 0; i < n + 1; i++) {
-            dp[i][0] = 0;
-        }
-
-        for(int j = 1; j < m + 1; j++) {
-            dp[0][j] = 0;
-        }
-
-        for(int i = 1; i < n + 1; i++) {
-            
-            for(int j = 1; j < m + 1; j++) {
-
-                if(j < A[i - 1]) {
-                    dp[i][j] = dp[i - 1][j];
-                    continue;
-                }
-
-                dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - A[i - 1]] + A[i - 1]);
-            }
-        }
-
-        return dp[n][m];
-    }
-}
-```
-
-
 
 #### [125 Backpack II](https://www.lintcode.com/problem/125)
 
@@ -1127,46 +907,6 @@ Analysis:
 
 This is the 01 knapsack problem template. The thought has been described in the general description. Here we will only post the code.
 
-```java
-public class Solution {
-    /**
-     * @param m: An integer m denotes the size of a backpack
-     * @param A: Given n items with size A[i]
-     * @param V: Given n items with value V[i]
-     * @return: The maximum value
-     */
-    public int backPackII(int m, int[] A, int[] V) {
-
-        int n = A.length;
-
-        int[][] dp = new int[n + 1][m + 1];
-
-        for(int i = 0; i < n + 1; i++) {
-            dp[i][0] = 0;
-        }
-
-        for(int j = 1; j < m + 1; j++) {
-            dp[0][j] = 0;
-        }
-
-        for(int i = 1; i < n + 1; i++) {
-            for(int j = 1; j < m + 1; j++) {
-                
-                if(j < A[i - 1]) {
-                    dp[i][j] = dp[i - 1][j];
-                }else {
-                    dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - A[i - 1]] + V[i - 1]);
-                }
-            }
-        }
-
-        return dp[n][m];
-
-
-    }
-}
-```
-
 #### [440 · Backpack III](https://www.lintcode.com/problem/440)
 
 Description
@@ -1193,45 +933,6 @@ Analysis:
 
 This is the unbounded knapsack problem's template. The thought has been described in the general description. Here we will only post the code.
 
-```java
-public class Solution {
-    /**
-     * @param A: an integer array
-     * @param V: an integer array
-     * @param m: An integer
-     * @return: an array
-     */
-    public int backPackIII(int[] A, int[] V, int m) {
-        int n = A.length;
-
-        int[][] dp = new int[n + 1][m + 1];
-
-        for(int i = 0; i < n + 1; i++) {
-            dp[i][0] = 0;
-        }
-
-        for(int j = 1; j < m + 1; j++) {
-            dp[0][j] = 0;
-        }
-
-        for(int i = 1; i < n + 1; i ++) {
-            for(int j = 1; j < m + 1; j++) {
-
-                if(j < A[i - 1]) {
-                    dp[i][j] = dp[i - 1][j];
-                }else {
-                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - A[i - 1]] + V[i - 1]);
-                }
-            }
-        }
-
-        return dp[n][m];
-    }
-}
-```
-
-
-
 #### [562 Backpack IV](https://www.lintcode.com/problem/563)
 
 Description
@@ -1255,44 +956,6 @@ return `2`
 Analysis:
 
 This question is a 01 knapsack variation. When we select the `ith`element, the total number of ways is  `dp[i][j] = dp[i - 1][j] + dp[i - 1][j - w[i]] `. When we are not selecting the `ith` element, the total number of ways are the former `dp[i - 1][j]`. This question's initialization is a bit different. There is one way to make sum as 0 which is not selecting any element. However, if there is no element, there is 0 way that make any weights except 0.
-
-```java
-public class Solution {
-    /**
-     * @param nums: an integer array and all positive numbers
-     * @param target: An integer
-     * @return: An integer
-     */
-    public int backPackV(int[] nums, int target) {
-        
-        int m = nums.length;
-        int[][] dp = new int[m + 1][target + 1];
-        
-        for(int i = 0; i < m + 1; i++) {
-            dp[i][0] = 1;
-        }
-
-        for(int j = 1; j < target + 1; j++) {
-            dp[0][j] = 0;
-        }
-
-        for(int i = 1; i < m + 1; i++) {
-            for(int j = 1; j < target + 1; j++) {
-                if(j < nums[i - 1]) {
-                    dp[i][j] = dp[i - 1][j];
-                }else {
-                    dp[i][j] = dp[i - 1][j] + dp[i - 1][j - nums[i - 1]];
-                }
-            }
-        }
-
-        return dp[m][target];
-
-    }
-}
-```
-
-
 
 #### [416 Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum/)
 
@@ -1322,50 +985,6 @@ This question is a variation of 01 knapsack problem. The question can be transla
 
 There is a detail, if the sum is an odd number, we definitely can not find a partition.
 
-```java
-class Solution {
-    public boolean canPartition(int[] nums) {
-        
-        int m = nums.length;
-        
-        int sum = 0;
-        
-        for(int i = 0; i < m; i++) {
-            sum += nums[i];
-        }
-        
-        if(sum % 2 == 1) {
-            return false;
-        }
-        
-        int n = sum / 2;
-        
-        boolean[][] dp = new boolean[m + 1][n + 1];
-        
-        for(int i = 0; i < m + 1; i++) {
-            dp[i][0] = true;
-        }
-        
-        for(int j = 1; j < n + 1; j++) {
-            dp[0][j] = false;
-        }
-        
-        for(int i = 1; i < m + 1 ;i++) {
-            
-            for(int j = 1; j < n + 1; j++) {
-                
-                if(j < nums[i - 1]) {
-                    dp[i][j] = dp[i - 1][j];
-                }else {
-                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i - 1]];
-                }
-            }
-        }
-        
-        return dp[m][n];
-    }
-}
-```
 
 ####  [322. Coin Change](https://leetcode.com/problems/coin-change/)
 
@@ -1421,41 +1040,6 @@ Analysis:
 
 This question is an unbounded knapsack problem. Since this question is getting the min value, we need to initialize the impossible situation as MAX. During the calculation, we shall avoid MAX + 1 situation to avoid overflowing to MIN.
 
-```java
-class Solution {
-    public int coinChange(int[] coins, int amount) {
-        
-        int m = coins.length;
-        
-        int[][] dp = new int[m + 1][amount + 1];
-        
-        for(int i = 0; i < m + 1; i++) {
-            dp[i][0] = 0;
-        }
-        
-        for(int j = 1; j < amount + 1; j++) {
-            dp[0][j] = Integer.MAX_VALUE;
-        }
-        
-        for(int i = 1; i < m + 1; i++) {
-            
-            for(int j = 1; j < amount + 1; j++) {
-                
-                if(j < coins[i - 1] || dp[i][j - coins[i - 1]] == Integer.MAX_VALUE) {
-                    dp[i][j] = dp[i - 1][j];
-                }else {
-                    dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - coins[i - 1]] + 1);
-                }
-            }
-        }
-        
-        return dp[m][amount] == Integer.MAX_VALUE? -1 : dp[m][amount];
-    }
-}
-```
-
-
-
 #### [518. Coin Change 2](https://leetcode.com/problems/coin-change-2/)
 
 Description:
@@ -1500,40 +1084,6 @@ Constraints:
 Analysis:
 
 This is also an unbounded knapsack problem. This questions is asking for how many ways. If we pick the item, the total ways is its `dp[i - 1][j] + dp[i][j - coins[i - 1]]`.
-
-```java
-class Solution {
-    public int change(int amount, int[] coins) {
-        
-        int m = coins.length;
-        
-        int[][] dp = new int[m + 1][amount + 1];
-        
-        for(int i = 0; i < m + 1; i++) {
-            dp[i][0] = 1;
-        }
-        
-        for(int j = 1; j < amount + 1; j++) {
-            dp[0][j] = 0;
-        }
-        
-        for(int i = 1; i < m + 1; i++) {
-            for(int j = 1; j < amount + 1; j++) {
-                
-                if(j < coins[i - 1]) {
-                    dp[i][j] = dp[i - 1][j];
-                }else {
-                    dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i - 1]];
-                }
-            }
-        }
-        
-        return dp[m][amount];
-    }
-}
-```
-
-
 
 #### [89 · k Sum](https://www.lintcode.com/problem/89)
 
@@ -1581,38 +1131,6 @@ There is only one method. 1 + 2 + 3 = 6
 Analysis:
 
 This question is a 01 knapsack problem with one more dimension which is k. When we don't pick the item, to get the r sum, its value shall be its former `dp[i - 1][j][r]`. If we pick the item, the value shall be ` dp[i][j][r] = dp[i - 1][j][r] + dp[i - 1][j - A[i - 1]][r - 1]`.
-
-
-
-```java
-    public int kSum(int[] A, int k, int target) {
-                
-        int m = A.length;
-        int[][][] dp = new int[m + 1][target + 1][k + 1];
-
-        for(int i = 0; i < m + 1; i++) {
-            dp[i][0][0] = 1;
-        }
-
-        for(int i = 1; i < m + 1; i++) {
-            for(int j = 1; j < target + 1; j++) {
-
-                for(int r = 1; r < k + 1; r++) {
-
-                    if(j < A[i - 1]) {
-                        dp[i][j][r] = dp[i - 1][j][r];
-                    }else {
-                        dp[i][j][r] = dp[i - 1][j][r] + dp[i - 1][j - A[i - 1]][r - 1];
-                    }
-                }
-            }
-        }
-
-        return dp[m][target][k];
-    }
-```
-
-
 
 ### Interval Type:
 
@@ -1680,47 +1198,6 @@ Since the recursion function is growing diagonally, to avoid more difficult diag
 
 The decision tree is actually traversing from top left conner in the result table to the diagonal line of the diagram. Therefore,`i` and `j` update are reversed as our recursion function. From the decision tree, we can see, there are only 3 possibilities on each row. Therefore, we will call recursion function for 3 times.
 
-```java
-class Solution {
-    public int longestPalindromeSubseq(String s) {
-        
-        int[][] dp = new int[s.length()][s.length()];
-        return helper(s, 0, s.length() - 1, dp);
-        
-        
-        
-    }
-    
-    private int helper(String s, int i, int j, int[][] dp) {
-        
-        if(i > j) {
-            return 0;
-        }
-        
-        
-        if(dp[i][j] != 0) {
-            return dp[i][j];
-        }
-        
-        if(i == j) {
-            dp[i][j] = 1;
-            return dp[i][j];
-        }
-        
-        if(s.charAt(i) == s.charAt(j)) {
-            dp[i][j] = helper(s, i + 1, j - 1, dp) + 2;
-        }else {
-            dp[i][j] = Math.max(helper(s, i + 1, j, dp) , helper(s, i, j - 1, dp) );
-        }
-        
-        return dp[i][j];
-        
-    }
-}
-```
-
-
-
 #### [312. Burst Balloons](https://leetcode.com/problems/burst-balloons/)
 
 Description:
@@ -1775,59 +1252,8 @@ Since it is an interval question, we will use DFS + memorization.  Here is the d
 
 ![img](burstBullom.png)
 
-```java
-public int maxCoins(int[] nums) {
-
-  int[][] dp = new int[nums.length][nums.length];
-
-
-  helper(nums, 0, nums.length - 1, dp);
-
-  System.out.println(Arrays.deepToString(dp));
-
-  return 0;
-
-
-
-}
-
-private int helper(int[] nums, int start, int end, int[][] dp) {
-
-  if(start > end) {
-    return 0;
-  }
-
-
-  if(dp[start][end] != 0) {
-    return dp[start][end];
-  }
-
-
-
-  for(int i = start; i <= end; i++) {
-
-    dp[start][end] = Math.max(dp[start][end], getNum(nums, start - 1) * nums[i] * getNum(nums, end + 1)
-                              + helper(nums, start, i - 1, dp) + helper(nums, i + 1, end, dp));
-  }
-
-  return dp[start][end];
-}
-
-private int getNum(int[] nums, int i) {
-  if(i < 0 || i >= nums.length) {
-    return 1;
-  }else {
-    return nums[i];
-  }
-}
-```
-
-
 
 There are 2 special cases which are start or end are on the edges. Here we use `getNum` function to handle this situation. If start or end is on the edge, we will set its interval value as `1`.
-
-
-
 
 
 This article is inspired from the following articles,
