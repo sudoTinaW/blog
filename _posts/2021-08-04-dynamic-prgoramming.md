@@ -43,7 +43,7 @@ There are 3 steps to find solve a DP problem,
 
 - Define recursion functions. The function's return is often the original problem's solution. The function's input are status. We can suppose that we have get all subproblems' result but not the last step's. We need to find how we can find the last step's result by using the former result. The recursion function both work for DFS and DP. The difference is DP will use a DP table to save some middle result.
 
-  如果reucrsion function 里，其中一些子问题不仅能组成（更大）下一层子问题的结果，还可以组成同层的答案，那么就说明存在重复子问题，我们应该考虑用DP。For example, If we find the recursion function is as  `f(n) = f(n - 1) + c `, it is a DFS. There is not an overlapping problem. If the recursion function is `f(n) = f(n - 1) + f(n - 2)`, we can use DP. `f(n - 2)` can compose `f(n)` , at the same time, `f(n - 2)` can compose `f(n - 1)`. ß 
+  如果reucrsion function 里，其中一些子问题不仅能组成（更大）下一层子问题的结果，还可以组成同层的答案，那么就说明存在重复子问题，我们应该考虑用DP。For example, If we find the recursion function is as  `f(n) = f(n - 1) + c `, it is a DFS. There is not an overlapping problem. If the recursion function is `f(n) = f(n - 1) + f(n - 2)`, we can use DP. `f(n - 2)` can compose `f(n)` , at the same time, `f(n - 2)` can compose `f(n - 1)`.
 
 - Find the initialization value. Usually, we start from divergence side.
 
