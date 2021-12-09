@@ -176,11 +176,26 @@ String's `compareTo` function will compare two string sequentially and lexicogra
 
 
 
-#### Calculate Modulus of Any Positive Or Negative Integer Without Overflow
+#### Avoid Getting Negative Reminder from Modulo Operation `a mod b`
 
 `a % b = (a % b + b) % b `
 
 Usually in case we get a modulus as a negative number, we will do as  `(a + b) % b`. However, if `a > - b `, we will still get a negative modules. Therefore, we will let `a % b` to make sure the negative modulus is less than b and apply the same operation  as `(a % b + b) % b `
+
+
+
+#### Common-used Modulo Multiplication Property
+
+`(a * b) % k = ((a % k) * (b % k)) % k`
+
+Proof:
+$$
+{a = kx + y} <=> a \% k = y \\
+b = kz + w  <=> b \% k = w\\
+a * b = kxkz + kxw + kzy + yw \\
+(a * b) \% k = kxkz + kxw + kzy + yw \% k = wy \% k <=> ((a \% k) * (b \% k)) \% k
+$$
+
 
 #### Modify Linked List Node
 
@@ -220,6 +235,10 @@ When we want to update those elements, there are two cases,
 - Those elements are not initialized. Here we need to create the object and update owner object's property, which are array or map, to point to the new created object.
 - Those elements are initialized. We can directly update the object without touching owner object.
 
+#### HashMap `getOrDefault` function Returned Default Value Is not Put into Map
+
+When we use `map.getOrDefault(key, default value)` function, we need to call `map.put(key, default value)` if we want to save the default value into the map.
+
 #### String and Char Array Transformation
 
 String to Char Array : `char[] chars = str.toCharArray()`
@@ -237,6 +256,11 @@ Collections like map, set etc., all have iterators. When we use an iterator of a
 #### Split a String by Whitespaces
 
 `String[] strs = s.split("\\s+")`
+
+#### Tab, Enter, Dot Char vs String
+
+'\t', '\n', '\\.'is one Character regex representing tab, enter and dot. "\t", "\n", "\\." are two characters' string with no special meaning. Some String function's parameters are regex, but other functions' parameters are string. For example, `split()`function receives regex, if we need to split a string by dot, we need to use as `split(""\\.")`. However, `contains()`function receives string, if we need to check whether a string contains a dot, we can directly do `contains(".")`.
+
 #### The Difference of any Two Elements in a Sorted Array Variation Pattern
 
 - The difference of any two elements in a sorted array is increasing as the two elements are getting further apart (两元素相隔越远，两元素差越大).
@@ -244,3 +268,20 @@ Collections like map, set etc., all have iterators. When we use an iterator of a
 - If the two elements are separated in the same distance, the difference has no monotonicity.
 - The smallest difference can only exist in every 2 closest elements(相临两元素之间).
 - The biggest difference can only be the difference of the last element and first element, which are the two elements furthest apart.
+
+#### StringBuilder Used in DFS Template
+
+DFS template usually requires its input variable can be revered to the upper level after returning from the current level's call. StringBuilder's shall be used as a list. The difference is we are building a string not a list of elements.
+
+#### Parenthesis Related Problem
+
+Parenthesis has two characters
+
+- Total number of open bracket must be equal to total number of closed bracket
+- At any time, the number of closed bracket must be less or equal to the number of open bracket.
+
+#### HashCode of Objects and Collections
+
+- Default HashCode of objects are calculated from its address, which means, even we update the property of an object, its HashCode keeps the same. 
+- Default HashCode of a collections are often calculated from its elements, which means, if we update the elements in a list, its HashCode will change as well. 
+
